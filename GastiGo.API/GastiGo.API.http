@@ -1,0 +1,6 @@
+@GastiGo.API_HostAddress = http://localhost:5094
+
+GET {{GastiGo.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
