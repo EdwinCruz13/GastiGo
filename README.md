@@ -1,6 +1,6 @@
 # GASTIGO - APP
 
-**GASTIGO** es una aplicacion modular de **gestión empresarial multiempresa**, diseñada para centralizar y automatizar procesos administrativos, financieros y operativos en organizaciones con múltiples filiales o sucursales.
+**GASTIGO** es una aplicacion de **finanza personal**, que permite administrar tus gastos al detalle.
 
 Este repositorio contiene la **API REST** desarrollada en **ASP.NET Core (.NET 9)** que sirve como backend del sistema.
 
