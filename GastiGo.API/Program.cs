@@ -22,6 +22,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerDocumentation();
 
 
+//cadenas para variables de conexion
+builder.Configuration
+       .AddJsonFile("appsettings.json", optional: false)
+       .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+       .AddEnvironmentVariables();
+
+
 var app = builder.Build();
 
 
