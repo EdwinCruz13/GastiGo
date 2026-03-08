@@ -18,11 +18,11 @@ namespace Domain.Features.Finances.Entities
         public Guid? ParentID { get; private set; } = null;
         public Category Parent { get; private set; } = default!;
 
-        public int NatureID { get; private set; } 
+        public Guid NatureID { get; private set; } 
         public Nature Nature { get; private set; } = default!;
 
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public String Name { get; private set; }
+        public String Description { get; private set; }
 
         private Category() { } // EF
 
@@ -35,7 +35,7 @@ namespace Domain.Features.Finances.Entities
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="parentId"></param>
-        public Category(Guid userId, int natureId, string name, string description, Guid? parentId = null)
+        public Category(Guid userId, Guid natureId, string name, string description, Guid? parentId = null)
         {
             UserID = userId;
             NatureID = natureId;

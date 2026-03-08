@@ -13,6 +13,13 @@ namespace Application.Features.Users.Interfaces
     /// </summary>
     public interface IUserRepository
     {
+
+        /// <summary>
+        /// obtiene un usuario por su ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<User?> GetByIdAsync(Guid id);
         /// <summary>
         /// obtiene un usuario por su correo electrónico
         /// </summary>
@@ -25,12 +32,7 @@ namespace Application.Features.Users.Interfaces
         /// <param name="username"></param>
         /// <returns></returns>
         Task<User?> GetByUsernameAsync(string username);
-        /// <summary>
-        /// obtiene un usuario por su ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<User?> GetByIdAsync(Guid id);
+        
         /// <summary>
         /// metodo para guardar nuevo usuario en la base de datos
         /// </summary>

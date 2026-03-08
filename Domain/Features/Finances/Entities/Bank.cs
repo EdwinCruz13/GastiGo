@@ -9,7 +9,7 @@ namespace Domain.Features.Finances.Entities
 {
     public class Bank : AuditableEntity
     {
-        public Guid BankID { get; private set; }
+        public Guid BankID => Id; // alias para el Id de AuditableEntity, para que sea más claro en el contexto de Bank
         public String Name { get; private set; }
         public String Abbre { get; private set; }
         public double TransferFee { get; private set; }
@@ -18,7 +18,6 @@ namespace Domain.Features.Finances.Entities
 
         public Bank(String name, String abbre, double transferFee)
         {
-            BankID = this.Id;
             Name = name;
             Abbre = abbre;
             TransferFee = transferFee;

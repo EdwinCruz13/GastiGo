@@ -31,7 +31,7 @@ namespace Infrastructure.Persistence
         ///////////////////////////////////////////////////////////////
         public DbSet<Nature> Natures => Set<Nature>();
         public DbSet<Bank> Banks => Set<Bank>();
-        public DbSet<Currency> Currecies => Set<Currency>();
+        public DbSet<Currency> Currencies => Set<Currency>();
         public DbSet<TransactionType> TransactionTypes => Set<TransactionType>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<AccountType> AccountTypes => Set<AccountType>();
@@ -81,15 +81,16 @@ namespace Infrastructure.Persistence
 
             modelBuilder.Entity<Nature>(entity =>
             {
-                entity.HasKey(x => x.NatureID);
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Id).HasColumnName("NatureID");
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Abbre).IsRequired().HasMaxLength(5);
             });
 
             //anadrir datos semilla para los para naturalezas
             modelBuilder.Entity<Nature>().HasData(
-                new Nature(1, "Income", "I"),
-                new Nature(2, "Expenses", "E")
+                new Nature("Income", "I"),
+                new Nature("Expenses", "E")
             );
 
             modelBuilder.Entity<Bank>(entity =>
@@ -116,6 +117,12 @@ namespace Infrastructure.Persistence
                 entity.Property(x => x.Symbol).IsRequired().HasMaxLength(3);
             });
 
+            modelBuilder.Entity<Currency>().HasData(
+                new Currency("Dolar Estadounidense", "USD", "$"),
+                new Currency("Cordoba Nicaraguense", "NIO", "C$"),
+                new Currency("Euro", "EUR", "€")
+            );
+
 
             modelBuilder.Entity<TransactionType>(entity =>
             {
@@ -139,8 +146,14 @@ namespace Infrastructure.Persistence
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Id).HasColumnName("AccountTypeID");
                 entity.Property(x => x.Name).IsRequired();
-                entity.Property(x => x.Abbre).IsRequired().HasMaxLength(5);
+                entity.Property(x => x.Abbre).IsRequired().HasMaxLength(8);
             });
+
+            modelBuilder.Entity<AccountType>().HasData(
+               new AccountType("Transfer", "TYPE-TRF"),
+                new AccountType("Expense", "TYPE-EXP"),
+               new AccountType("Income", "TYPE-INC")
+           );
 
 
 

@@ -16,15 +16,15 @@ namespace Infrastructure.Repositories.Users
             _context = context;
         }
 
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users
                 .FirstOrDefaultAsync(x => x.Email == email);
-        }
-
-        public Task<User?> GetByUsernameAsync(string username)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task AddAsync(User user)
@@ -37,14 +37,12 @@ namespace Infrastructure.Repositories.Users
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User?> GetByIdAsync(Guid id)
+
+
+        public Task<User?> GetByUsernameAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
+            throw new NotImplementedException();
         }
-
-       
-
-        
 
         public Task UpdateAsync(User user)
         {

@@ -11,9 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Finances\DTOs\" />
-    <Folder Include="Features\Finances\Interfaces\" />
-    <Folder Include="Features\Finances\Services\" />
     <Folder Include="Features\Users\DTOs\" />
     <Folder Include="Features\Users\Services\" />
   </ItemGroup>

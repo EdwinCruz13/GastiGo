@@ -1,9 +1,7 @@
 ﻿using Application.Auth.DTOs;
 using Application.Common;
 using Application.Features.Auth.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
 
 namespace GastiGo.API.Controllers
 {
@@ -11,9 +9,12 @@ namespace GastiGo.API.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-
         private readonly AuthService _authService;
 
+        /// <summary>
+        /// Controlador para manejar las operaciones relacionadas con la autenticación
+        /// </summary>
+        /// <param name="authService"></param>
         public AuthController(AuthService authService)
         {
             _authService = authService;

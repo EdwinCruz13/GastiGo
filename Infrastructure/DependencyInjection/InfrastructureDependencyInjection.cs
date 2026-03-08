@@ -21,6 +21,11 @@ namespace Infrastructure.DependencyInjection
 
             services.AddAuthInfrastructure();
             services.AddUsersInfrastructure();
+            services.AddCategoriesInfrastructure();
+            services.AddCurrenciesInfrastructure();
+            services.AddBanksInfrastructure();
+            services.AddNaturesInfrastructure();
+            services.AddAccountTypeInfrastructure();
 
             return services;
         }
