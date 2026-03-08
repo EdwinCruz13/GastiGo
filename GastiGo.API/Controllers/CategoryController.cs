@@ -28,7 +28,7 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> Create(CategoryDTO response)
         {
             await _categoryService.CreateCategoryAsync(response);
@@ -45,7 +45,7 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("getbyid")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetByID(Guid id)
         {
             var list = await _categoryService.GetCategoryByIdAsync(id);
@@ -74,8 +74,8 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet("getbyuserid")]
-        public async Task<IActionResult> GetByUserID(Guid userId)
+        [HttpGet]
+        public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
         {
             var item = await _categoryService.GetCategoriesByUserIdAsync(userId);
             if (item == null || !item.Any())

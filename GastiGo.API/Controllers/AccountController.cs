@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GastiGo.API.Controllers
 {
     [ApiController]
-    [Route("api/finance/account")]
+    [Route("api/finance/accounts")]
     public class AccountController : ControllerBase
     {
         private readonly AccountService _accountService;
@@ -25,7 +25,7 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> Create(AccountDTO response)
         {
             await _accountService.CreateAccountAsync(response);
@@ -42,7 +42,7 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("getbyid")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetByID(Guid id)
         {
             var list = await _accountService.GetAccountByIDAsync(id);
@@ -71,8 +71,8 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet("getbyuserid")]
-        public async Task<IActionResult> GetByUserID(Guid userId)
+        [HttpGet]
+        public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
         {
             var item = await _accountService.GetAllAccountsByUserIDAsync(userId);
             if (item == null || !item.Any())

@@ -77,6 +77,10 @@ namespace Infrastructure.Persistence
                 entity.Property(x => x.Email).IsRequired().HasMaxLength(150);
             });
 
+            modelBuilder.Entity<User>().HasData(
+                new User("edwincruz130691@gmail.com", "Egeminis13", "edwincruz130691@gmail.com", "Edwin Cruz")
+            );
+
 
 
             modelBuilder.Entity<Nature>(entity =>

@@ -26,7 +26,7 @@ namespace GastiGo.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             await _authService.RegisterAsync(request);
             return Ok(new ApiResponse<object>
@@ -43,7 +43,7 @@ namespace GastiGo.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var token = await _authService.LoginAsync(request);
             return Ok(new ApiResponse<object>
@@ -54,8 +54,8 @@ namespace GastiGo.API.Controllers
             });
         }
 
-        [HttpPost("verify-2fa")]
-        public async Task<IActionResult> Verify2FA(VerifyTwoFactorRequest request)
+        [HttpPost("2fa/verify")]
+        public async Task<IActionResult> Verify2FA([FromBody] VerifyTwoFactorRequest request)
         {
             var result = await _authService.VerifyTwoFactorAsync(request);
 
@@ -68,7 +68,7 @@ namespace GastiGo.API.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh(RefreshTokenRequest request)
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
             var result = await _authService.RefreshAsync(request);
 

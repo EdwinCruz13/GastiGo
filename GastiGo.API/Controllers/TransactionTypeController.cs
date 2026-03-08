@@ -53,7 +53,7 @@ namespace GastiGo.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("getbyid")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var item = await _accountTypeService.GetAccountTypeByIdAsync(id);
