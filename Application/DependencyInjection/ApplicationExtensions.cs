@@ -17,6 +17,9 @@ namespace Application.DependencyInjection
             services.AddScoped<BankService>();
             services.AddScoped<NatureService>();
             services.AddScoped<AccountTypeService>();
+            services.AddScoped<AccountService>();
+            services.AddScoped<TransactionTypeService>();
+            services.AddScoped<TransactionService>();
 
             //retornar servicios
             return services;

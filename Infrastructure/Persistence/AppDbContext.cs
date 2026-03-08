@@ -145,14 +145,15 @@ namespace Infrastructure.Persistence
             {
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Id).HasColumnName("AccountTypeID");
-                entity.Property(x => x.Name).IsRequired();
-                entity.Property(x => x.Abbre).IsRequired().HasMaxLength(8);
+                entity.Property(x => x.Name).IsRequired().HasMaxLength(25);
+                entity.Property(x => x.Abbre).IsRequired().HasMaxLength(9);
             });
 
             modelBuilder.Entity<AccountType>().HasData(
-               new AccountType("Transfer", "TYPE-TRF"),
-                new AccountType("Expense", "TYPE-EXP"),
-               new AccountType("Income", "TYPE-INC")
+               new AccountType("Cash", "TYPE-CASH"),
+               new AccountType("Debit", "TYPE-DEBT"),
+               new AccountType("Savings", "TYPE-SAVS"),
+               new AccountType("Investment", "TYPE-INVS")
            );
 
 

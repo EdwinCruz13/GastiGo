@@ -3,14 +3,14 @@ using Infrastructure.Repositories.Finances;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.DependencyInjection.DI
 {
-    public static class BankDependencyInjection
+    public static class CurrencyDependencyInjection
     {
-        public static IServiceCollection AddBanksInfrastructure(
+        public static IServiceCollection AddCurrenciesInfrastructure(
             this IServiceCollection services)
         {
-            services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 
             return services;
         }

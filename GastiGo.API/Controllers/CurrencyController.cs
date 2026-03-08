@@ -24,7 +24,7 @@ namespace GastiGo.API.Controllers
         /// obtiene todas las monedas, si no se encuentran devuelve un mensaje de error,
         /// </summary>
         /// <returns></returns>
-        [HttpGet("getall")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var currencies = await _currencyService.GetAllCurrenciesAsync();

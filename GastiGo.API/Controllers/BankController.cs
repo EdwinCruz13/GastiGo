@@ -20,7 +20,7 @@ namespace GastiGo.API.Controllers
         /// obtiene todas las bnacos, si no se encuentran devuelve un mensaje de error,
         /// </summary>
         /// <returns></returns>
-        [HttpGet("getall")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var banks = await _bankService.GetAllBanksAsync();

@@ -3,7 +3,7 @@ using Infrastructure.Repositories.Finances;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.DependencyInjection.DI
 {
     
     public static class AccountTypeDependecyInjection

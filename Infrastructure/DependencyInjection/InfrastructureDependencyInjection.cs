@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Persistence;
+using Infrastructure.DependencyInjection.DI;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -26,6 +27,9 @@ namespace Infrastructure.DependencyInjection
             services.AddBanksInfrastructure();
             services.AddNaturesInfrastructure();
             services.AddAccountTypeInfrastructure();
+            services.AddAccountInfrastructure();
+            services.AddTransactionTypeInfrastructure();
+            services.AddTransactionInfrastructure();
 
             return services;
         }

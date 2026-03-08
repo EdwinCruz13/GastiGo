@@ -3,7 +3,7 @@ using Infrastructure.Repositories.Auths;
 using Infrastructure.Services.Auths;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.DependencyInjection.DI
 {
     /// <summary>
     /// anade la dependicas de los servicios de auth a la coleccion de servicios de la aplicacion

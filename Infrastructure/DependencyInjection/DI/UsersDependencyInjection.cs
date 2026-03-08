@@ -2,7 +2,7 @@
 using Infrastructure.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.DependencyInjection.DI
 {
     /// <summary>
     /// anade la dependicas de los servicios de users a la coleccion de servicios de la aplicacion

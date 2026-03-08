@@ -1,27 +1,24 @@
 ﻿using Application.Common;
-using Microsoft.AspNetCore.Mvc;
 using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GastiGo.API.Controllers
 {
     [ApiController]
-    [Route("api/finance/categories")]
-    public class CategoryController : ControllerBase
+    [Route("api/finance/account")]
+    public class AccountController : ControllerBase
     {
-        private readonly CategoryService _categoryService;
+        private readonly AccountService _accountService;
 
         /// <summary>
-        /// Controlador para manejar las operaciones relacionadas con las categorías
-        /// Este controlador se encarga de recibir las solicitudes HTTP relacionadas 
-        /// con las categorías y delegar la lógica de negocio al servicio correspondiente.
+        /// injecta el servicio de cuentas para manejar las operaciones relacionadas con las cuentas financieras.
         /// </summary>
-        /// <param name="categoryService"></param>
-        public CategoryController(CategoryService categoryService)
+        /// <param name="accountService"></param>
+        public AccountController(AccountService accountService)
         {
-            _categoryService = categoryService;
+            _accountService = accountService;
         }
-
 
         /// <summary>
         /// crear una nueva categoría de finanzas
@@ -29,13 +26,13 @@ namespace GastiGo.API.Controllers
         /// <param name="response"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CategoryDTO response)
+        public async Task<IActionResult> Create(AccountDTO response)
         {
-            await _categoryService.CreateCategoryAsync(response);
+            await _accountService.CreateAccountAsync(response);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
-                Message = "Categoria creada correctamente",
+                Message = "Cuenta creada correctamente",
                 Data = null
             });
         }
@@ -48,15 +45,15 @@ namespace GastiGo.API.Controllers
         [HttpGet("getbyid")]
         public async Task<IActionResult> GetByID(Guid id)
         {
-            var list = await _categoryService.GetCategoryByIdAsync(id);
+            var list = await _accountService.GetAccountByIDAsync(id);
             if (list == null)
             {
                 return NotFound(new ApiResponse<object>
                 {
                     Success = false,
-                    Message = "Categoria no encontrada",
+                    Message = "",
                     Data = null,
-                    Errors = new List<string> { $"No se encontró una categoría con el ID {id}." }
+                    Errors = new List<string> { $"No se encontró una cuenta con el ID {id}." }
                 });
             }
 
@@ -77,15 +74,15 @@ namespace GastiGo.API.Controllers
         [HttpGet("getbyuserid")]
         public async Task<IActionResult> GetByUserID(Guid userId)
         {
-            var item = await _categoryService.GetCategoriesByUserIdAsync(userId);
+            var item = await _accountService.GetAllAccountsByUserIDAsync(userId);
             if (item == null || !item.Any())
             {
                 return NotFound(new ApiResponse<object>
                 {
                     Success = false,
-                    Message = "No se encontraron categorías para el usuario especificado",
+                    Message = "No se encontraron cuentas para el usuario especificado",
                     Data = null,
-                    Errors = new List<string> { $"No se encontraron categorías para el usuario con ID {userId}." }
+                    Errors = new List<string> { $"No se encontraron cuentas para el usuario con ID {userId}." }
                 });
             }
             return Ok(new ApiResponse<object>

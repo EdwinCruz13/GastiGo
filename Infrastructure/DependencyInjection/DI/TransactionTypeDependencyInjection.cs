@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.DependencyInjection.DI
 {
-    public static class NatureDependencyInjection
+    
+    public static class TransactionTypeDependencyInjection
     {
-        public static IServiceCollection AddNaturesInfrastructure(
+        public static IServiceCollection AddTransactionTypeInfrastructure(
             this IServiceCollection services)
         {
-            services.AddScoped<INatureRepository, NatureRepository>();
+            services.AddScoped<ITransactionTypeRepository, TransactionTypeRepository>();
 
             return services;
         }

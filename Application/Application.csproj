@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Users\DTOs\" />
     <Folder Include="Features\Users\Services\" />
   </ItemGroup>
 
