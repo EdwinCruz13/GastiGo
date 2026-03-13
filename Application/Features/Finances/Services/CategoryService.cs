@@ -108,21 +108,31 @@ namespace Application.Features.Finances.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<CategoryDTO?>> GetCategoriesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<CategoryResponseDTO?>> GetCategoriesByUserIdAsync(Guid userId)
         {
             if (userId == Guid.Empty)
                 throw new ArgumentException("El ID del usuario no puede ser vacío.");
 
             var categories = await _categoryRepository.GetByUserIdAsync(userId);
 
-            return categories.Select(c => c == null ? null : new CategoryDTO
+            return categories.Select(c => c == null ? null : new CategoryResponseDTO
             {
                 CategoryID = c.Id,
                 UserID = c.UserID,
                 ParentID = c.ParentID,
                 NatureID = c.NatureID,
                 Name = c.Name,
-                Description = c.Description
+                Description = c.Description,
+                Children = c.Subcategories.Select(s => new CategoryResponseDTO
+                {
+                    CategoryID = s.Id,
+                    UserID = s.UserID,
+                    ParentID = s.ParentID,
+                    NatureID = s.NatureID,
+                    Name = s.Name,
+                    Description = s.Description
+                }).ToList()
+
             });
         }
 

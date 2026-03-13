@@ -29,9 +29,22 @@ builder.Configuration
        .AddEnvironmentVariables();
 
 
+//anadiendo cors para permitir peticiones desde el frontend de angular
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular",
+        policy => policy
+            .WithOrigins("http://localhost:54941")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
+
+
+// ================================
+// Construir la aplicación
+// ================================
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,6 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("Angular");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();

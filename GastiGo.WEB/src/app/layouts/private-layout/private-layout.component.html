@@ -1,0 +1,18 @@
+<div class="app-shell" [class.dark]="theme.darkMode()">
+  <!-- overlay mobile -->
+<div class="mobile-overlay" [class.show]="layout.mobileMenuOpen()" (click)="layout.toggleMobileMenu()"></div>
+
+  <!-- aside -->
+  <app-sidebar></app-sidebar>
+
+  <!-- right side -->
+  <div class="right-panel">
+    <!-- header -->
+    <app-topbar></app-topbar>
+
+    <!-- main -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

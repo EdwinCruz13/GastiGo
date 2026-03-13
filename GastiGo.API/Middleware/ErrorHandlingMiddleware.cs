@@ -23,7 +23,7 @@ namespace GastiGo.API.Middleware
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = 400;
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 context.Response.ContentType = "application/json";
 
                 var response = new ApiResponse<object>

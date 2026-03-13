@@ -1,0 +1,47 @@
+    <header class="header">
+      <div class="header-left">
+        <button
+          class="mobile-menu-btn mobile-only"
+          type="button"
+          (click)="layout.toggleMobileMenu()"
+          aria-label="Abrir menú"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <h1 class="page-title">{{ menu.pageTitle() }}</h1>
+      </div>
+
+      <div class="header-right">
+        <button
+          class="theme-btn"
+          type="button"
+          (click)="theme.toggleTheme()"
+          [attr.aria-label]="theme.darkMode() ? 'Activar modo claro' : 'Activar modo oscuro'"
+        >
+          @if(theme.darkMode()){
+            <i class="fa-solid fa-sun-plant-wilt"></i>
+          }@else{
+            <i class="fa-solid fa-moon"></i>
+          }
+        </button>
+
+        <div class="user-menu-wrapper">
+          <button class="user-button" type="button" (click)="toggleUserMenu()">
+            <div class="avatar">{{ auth.avatarInitial() }}</div>
+
+            <div class="user-info desktop-user-info">
+              <span class="user-name">{{ auth.userName() }}</span>
+              <span class="user-caret"><i class="fa-solid fa-caret-down"></i></span>
+            </div>
+          </button>
+
+          @if (userMenuOpen()) {
+            <div class="user-dropdown">
+              <a class="dropdown-item" routerLink="/settings"><i class="fa-solid fa-address-card"></i> Configuración</a>
+              <button class="dropdown-item danger" type="button" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+            </div>
+          }
+        </div>
+      </div>
+    </header>

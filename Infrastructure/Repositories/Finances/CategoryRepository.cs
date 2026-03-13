@@ -33,7 +33,9 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<List<Category>> GetByUserIdAsync(Guid userId)
         {
-            return await _context.Categories.Where(x => x.UserID == userId).ToListAsync();
+            return await _context.Categories.Where(x => x.UserID == userId)
+                .Include(s => s.Subcategories)
+                .ToListAsync();
         }
 
         public async Task SaveChangesAsync()

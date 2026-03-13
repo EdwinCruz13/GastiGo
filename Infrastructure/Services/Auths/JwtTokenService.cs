@@ -23,9 +23,10 @@ namespace Infrastructure.Services.Auths
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email)
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("name", user.FullName)
+            };
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));

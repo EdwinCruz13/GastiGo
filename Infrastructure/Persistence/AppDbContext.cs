@@ -77,9 +77,9 @@ namespace Infrastructure.Persistence
                 entity.Property(x => x.Email).IsRequired().HasMaxLength(150);
             });
 
-            modelBuilder.Entity<User>().HasData(
-                new User("edwincruz130691@gmail.com", "Egeminis13", "edwincruz130691@gmail.com", "Edwin Cruz")
-            );
+            //modelBuilder.Entity<User>().HasData(
+            //    new User("edwincruz130691@gmail.com", "Egeminis13", "edwincruz130691@gmail.com", "Edwin Cruz")
+            //);
 
 
 
@@ -178,7 +178,7 @@ namespace Infrastructure.Persistence
                       .WithMany() // una naturaleza puede tener muchas categorías
                       .HasForeignKey(x => x.NatureID);
                 entity.HasOne(x => x.Parent) // relación consigo misma para categorías anidadas
-                      .WithMany() // una categoría padre puede tener muchas categorías hijas
+                      .WithMany(x => x.Subcategories) // una categoría padre puede tener muchas categorías hijas
                       .HasForeignKey(x => x.ParentID)
                       .OnDelete(DeleteBehavior.Restrict); // evitar eliminación en cascada para no borrar toda la jerarquía
             });

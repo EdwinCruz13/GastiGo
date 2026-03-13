@@ -24,6 +24,8 @@ namespace Domain.Features.Finances.Entities
         public String Name { get; private set; }
         public String Description { get; private set; }
 
+        public ICollection<Category> Subcategories { get; private set; } = new List<Category>();
+
         private Category() { } // EF
 
 

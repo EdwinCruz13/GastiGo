@@ -14,5 +14,18 @@ namespace Application.Features.Finances.DTOs
         public Guid NatureID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        
+    }
+
+    public class CategoryResponseDTO
+    {
+        public Guid CategoryID { get; set; }
+        public Guid UserID { get; set; }
+        public Guid? ParentID { get; set; }
+        public List<CategoryResponseDTO> Children { get; set; } = new();
+        public Guid NatureID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
     }
 }

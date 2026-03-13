@@ -54,7 +54,7 @@ namespace Application.Features.Auth.Services
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
             if (user == null)
-                throw new Exception("Credenciales inválidas.");
+                throw new Exception("Correo no encontrado.");
 
             if (!_passwordHasher.Verify(request.Password, user.PasswordHash))
                 throw new Exception("Credenciales inválidas.");

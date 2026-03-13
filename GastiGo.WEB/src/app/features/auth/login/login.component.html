@@ -1,0 +1,87 @@
+<div class="login-wrapper">
+  <!-- PANEL IZQUIERDO -->
+  <div class="login-brand">
+    <div class="brand-content">
+      <div class="logo">
+        <span class="logo-box">G</span>
+        <span class="logo-text">astiGo</span>
+      </div>
+
+      <h1>Controla tus ingresos, gastos y ahorros en un solo lugar.</h1>
+      <p class="brand-sub">Tu dinero bajo control.</p>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="login-form">
+    <div class="form-box">
+      <div class="logo-mobile">
+        <span class="logo-box">G</span>
+        <span class="logo-text">GastiGo</span>
+      </div>
+
+      <div class="form-header">
+        <div class="form-tabs">
+          <a
+            routerLink="/auth/login"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="tab"
+          >
+            Iniciar sesión
+          </a>
+
+          <a routerLink="/auth/register" routerLinkActive="active" class="tab"> Registrarse </a>
+        </div>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- EMAIL -->
+        <div class="form-group">
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            formControlName="email"
+            autocomplete="off"
+          />
+
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <small class="error"> Correo inválido </small>
+          }
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <input
+            type="password"
+            placeholder="Contraseña"
+            formControlName="password"
+            autocomplete="off"
+          />
+
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <small class="error"> Contraseña inválida </small>
+          }
+        </div>
+
+        <div class="forgot">
+          <a>¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit">Ingresar</button>
+
+
+        @if(apiErrors.length > 0){
+          <div class="api-errors">
+            @for(error of apiErrors; track error){
+              <div class="error-message">
+                {{error}}
+              </div>
+            }
+          </div>
+        }
+
+      </form>
+    </div>
+  </div>
+</div>

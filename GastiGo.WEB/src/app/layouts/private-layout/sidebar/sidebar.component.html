@@ -1,0 +1,36 @@
+<aside class="sidebar" [class.collapsed]="layout.collapsed()" [class.mobile-open]="layout.mobileMenuOpen()">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-box">G</div>
+        @if (!layout.collapsed()) {
+          <div class="brand-text">GastiGO</div>
+        }
+      </div>
+
+      <button
+        class="collapse-btn desktop-only"
+        type="button"
+        (click)="layout.toggleSidebar()"
+        [attr.aria-label]="layout.collapsed() ? 'Expandir menú' : 'Colapsar menú'"
+      >
+        <span class="chevron" [class.rotated]="layout.collapsed()">❮</span>
+      </button>
+    </div>
+
+    <nav class="menu">
+      @for (item of menu.menuItems; track item.route) {
+        <a
+          class="menu-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="menu-icon"><i [class]="item.icon" ></i></span>
+
+          @if (!layout.collapsed()) {
+            <span class="menu-label">{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+  </aside>
