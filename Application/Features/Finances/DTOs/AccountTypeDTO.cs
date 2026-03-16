@@ -8,7 +8,7 @@ namespace Application.Features.Finances.DTOs
 {
     public class AccountTypeDTO
     {
-        public Guid AccountTypeID { get; set; }
+        public Guid AccountTypeId { get; set; }
         public String Name { get; set; }
         public String Abbre { get; set; }
     }

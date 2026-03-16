@@ -9,7 +9,7 @@ namespace Domain.Features.Finances.Entities
 {
     public class Currency : AuditableEntity
     {
-        public Guid CurrencyID => Id;
+        public Guid CurrencyId => Id;
         public String Name { get; private set; }
         public String Code { get; private set; }
         public string Symbol { get; private set; }

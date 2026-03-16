@@ -1,0 +1,99 @@
+.category-node {
+  font-family: system-ui;
+  font-size: 16px;
+}
+
+.node-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background .2s;
+  color: var(--text-primary);
+}
+
+.node-row:hover {
+  background: var(--node-hover);
+  color: var(--text-hover) ;
+  cursor: pointer;
+}
+
+.node-row.selected {
+  background: #e5eefc;
+}
+
+
+
+.toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 18px;
+  color: var(--text-primary)
+}
+
+.icon {
+  width: 20px;
+}
+
+.name {
+  flex: 1;
+}
+
+.children {
+  padding-left: 26px;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.node-row:hover .actions {
+  opacity: 1;
+}
+
+.action-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.action-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.action-btn.delete:hover {
+  color: #ef4444;
+}
+
+.action-btn.edit:hover {
+  color: #3b82f6;
+}
+
+.action-btn.add:hover {
+  color: #22c55e;
+}
+
+.income{
+  color: #22c55e;
+  font-size: 12px;
+  margin-left:6px;
+}
+
+.expense{
+  color: #ef4444;
+  font-size: 12px;
+  margin-left:6px;
+}
+
+.toggle.hidden{
+  visibility: hidden;
+}

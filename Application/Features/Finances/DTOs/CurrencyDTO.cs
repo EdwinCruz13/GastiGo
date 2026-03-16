@@ -8,7 +8,7 @@ namespace Application.Features.Finances.DTOs
 {
     public class CurrencyDTO
     {
-        public Guid CurrencyID { get; set; }
+        public Guid CurrencyId { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public string Symbol { get; set; }

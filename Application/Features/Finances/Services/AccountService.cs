@@ -33,7 +33,7 @@ namespace Application.Features.Finances.Services
                 var account = await _accountRepository.GetAccountByIdAsync(id);
                 return account == null ? null : new AccountResponseDTO
                 {
-                    AccountID = account.AccountID,
+                    AccountId = account.AccountId,
                     User = new UserDTO
                     {
                         UserID = account.User.UserID,
@@ -42,20 +42,20 @@ namespace Application.Features.Finances.Services
                     },
                     AccountType = new AccountTypeDTO
                     {
-                        AccountTypeID = account.AccountType.AccountTypeID,
+                        AccountTypeId = account.AccountType.AccountTypeId,
                         Name = account.AccountType.Name,
                         Abbre = account.AccountType.Abbre
                     },
                     Currecy = new CurrencyDTO
                     {
-                        CurrencyID = account.CurrecyID,
+                        CurrencyId = account.CurrecyId,
                         Name = account.Currecy.Name,
                         Symbol = account.Currecy.Symbol,
                         Code = account.Currecy.Code
                     },
                     Bank = new BankDTO
                     {
-                        BankID = account.Bank.BankID,
+                        BankId = account.Bank.BankId,
                         Name = account.Bank.Name,
                         Abbre = account.Bank.Abbre,
                         TransferFee = account.Bank.TransferFee
@@ -94,7 +94,7 @@ namespace Application.Features.Finances.Services
                 //retorna el dto
                 var accountResponseDTOs = accounts.Select(account => account == null ? null : new AccountResponseDTO
                 {
-                    AccountID = account.AccountID,
+                    AccountId = account.AccountId,
                     User = new UserDTO
                     {
                         UserID = account.User.UserID,
@@ -103,20 +103,20 @@ namespace Application.Features.Finances.Services
                     },
                     AccountType = new AccountTypeDTO
                     {
-                        AccountTypeID = account.AccountType.AccountTypeID,
+                        AccountTypeId = account.AccountType.AccountTypeId,
                         Name = account.AccountType.Name,
                         Abbre = account.AccountType.Abbre
                     },
                     Currecy = new CurrencyDTO
                     {
-                        CurrencyID = account.CurrecyID,
+                        CurrencyId = account.CurrecyId,
                         Name = account.Currecy.Name,
                         Symbol = account.Currecy.Symbol,
                         Code = account.Currecy.Code
                     },
                     Bank = new BankDTO
                     {
-                        BankID = account.Bank.BankID,
+                        BankId = account.Bank.BankId,
                         Name = account.Bank.Name,
                         Abbre = account.Bank.Abbre,
                         TransferFee = account.Bank.TransferFee
@@ -153,18 +153,18 @@ namespace Application.Features.Finances.Services
                 if (account.Balance < 0)
                     throw new ArgumentException("El balance inicial no puede ser negativo.");
 
-                if (account.UserID == null)
+                if (account.UserId == null)
                     throw new ArgumentException("Debe de ingresar un usuario valido");
 
-                if (account.AccountTypeID == null)
+                if (account.AccountTypeId == null)
                     throw new ArgumentException("Debe de ingresar un tipo de cuenta valido");
 
-                if (account.BankID == null)
+                if (account.BankId == null)
                     throw new ArgumentException("Debe de ingresar el tipo de banco");
 
 
                 //crear la nueva cuenta
-                var Account = new Account(account.UserID, account.AccountTypeID, account.CurrencyID, account.BankID, account.Name, account.Description, account.Balance);
+                var Account = new Account(account.UserId, account.AccountTypeId, account.CurrencyId, account.BankId, account.Name, account.Description, account.Balance);
                 await _accountRepository.AddAsync(Account);
                 await _accountRepository.SaveChangesAsync();
             }
@@ -192,16 +192,16 @@ namespace Application.Features.Finances.Services
                     throw new ArgumentException("Debe de ingresar una descripcion");
                 if (account.Balance < 0)
                     throw new ArgumentException("El balance inicial no puede ser negativo.");
-                if (account.UserID == null)
+                if (account.UserId == null)
                     throw new ArgumentException("Debe de ingresar un usuario valido");
-                if (account.AccountTypeID == null)
+                if (account.AccountTypeId == null)
                     throw new ArgumentException("Debe de ingresar un tipo de cuenta valido");
-                if (account.BankID == null)
+                if (account.BankId == null)
                     throw new ArgumentException("Debe de ingresar el tipo de banco");
 
 
                 //actualiza la cuenta contable
-                var newAccount = new Account(account.UserID, account.AccountTypeID, account.CurrencyID, account.BankID, account.Name, account.Description, account.Balance);
+                var newAccount = new Account(account.UserId, account.AccountTypeId, account.CurrencyId, account.BankId, account.Name, account.Description, account.Balance);
                 await _accountRepository.UpdateAsync(newAccount);
 
             }

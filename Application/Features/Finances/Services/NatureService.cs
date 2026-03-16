@@ -26,7 +26,7 @@ namespace Application.Features.Finances.Services
             var natures = await _natureRepository.GetAllNaturesAsync();
             return natures.Select(n => n == null ? null : new NatureDTO
             {
-                NatureID = n.Id,
+                NatureId = n.Id,
                 Name = n.Name,
                 Abbre = n.Abbre
             });
@@ -44,7 +44,7 @@ namespace Application.Features.Finances.Services
             var nature = await _natureRepository.GetNatureByIdAsync(id);
             return nature == null ? null : new NatureDTO
             {
-                NatureID = nature.Id,
+                NatureId = nature.Id,
                 Name = nature.Name,
                 Abbre = nature.Abbre
             };

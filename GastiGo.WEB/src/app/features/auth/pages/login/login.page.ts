@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LoginRequest } from '@core/models/auth/login-request.model';
@@ -12,13 +12,13 @@ import { AuthService } from '@core/services/auth/auth.service';
  */
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.css'],
   imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterLinkActive],
   standalone: true
 })
 
-export class LoginComponent {
+export class LoginPage {
   //inyecta el servicio de auth service para conectarse
   authService = inject(AuthService);
 

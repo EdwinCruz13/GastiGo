@@ -11,7 +11,7 @@ namespace Application.Features.Finances.DTOs
     /// </summary>
     public class TransactionTypeDTO
     {
-        public Guid TransactionTypeID { get; set; }
+        public Guid TransactionTypeId { get; set; }
         public String Name { get; set; }
         public String Code { get; set; }
         public int CurrentValue { get; set; }

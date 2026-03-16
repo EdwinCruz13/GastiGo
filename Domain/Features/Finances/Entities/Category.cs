@@ -10,15 +10,15 @@ namespace Domain.Features.Finances.Entities
 {
     public class Category : AuditableEntity
     {
-        public Guid CategoryID => Id;
+        public Guid CategoryId => Id;
 
-        public Guid UserID { get; private set; }
+        public Guid UserId { get; private set; }
         public User User { get; private set; } = default!;
 
-        public Guid? ParentID { get; private set; } = null;
+        public Guid? ParentId { get; private set; } = null;
         public Category Parent { get; private set; } = default!;
 
-        public Guid NatureID { get; private set; } 
+        public Guid NatureId { get; private set; } 
         public Nature Nature { get; private set; } = default!;
 
         public String Name { get; private set; }
@@ -39,11 +39,19 @@ namespace Domain.Features.Finances.Entities
         /// <param name="parentId"></param>
         public Category(Guid userId, Guid natureId, string name, string description, Guid? parentId = null)
         {
-            UserID = userId;
-            NatureID = natureId;
+            UserId = userId;
+            NatureId = natureId;
             Name = name;
             Description = description;
-            ParentID = parentId;
+            ParentId = parentId;
+        }
+
+        public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId)
+        {
+            Name = name;
+            Description = description;
+            NatureId = natureId;
+            ParentId = parentId;
         }
     }
 }

@@ -1,0 +1,57 @@
+<div class="tree-node">
+  <div class="node-row" [style.padding-left.px]="node.level * 20" >
+    <button class="toggle" [class.hidden]="!node.children?.length" (click) = "selectNode(node)">
+
+      <i class="fa-solid" [class.fa-chevron-right]="!expanded()" [class.fa-chevron-down]="expanded()">
+      </i>
+
+    </button>
+
+    <span class="icon">
+     <i class="fa-solid"
+      [class.fa-folder]="node.level === 0"
+      [class.fa-folder-open]="node.level === 1"
+      [class.fa-tag]="node.level > 1">
+    </i>
+
+    </span>
+
+    <span class="name">
+      {{ node.label }}
+      @if(node.type === 'I'){
+        <i class="fa-solid fa-arrow-trend-up income"></i>
+      }
+      @if(node.type === 'E'){
+        <i class="fa-solid fa-arrow-trend-down expense"></i>
+      }
+
+      
+    </span>
+
+    <div class="actions">
+
+      <button class="action-btn add" (click)="add.emit(node)">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+
+      <button class="action-btn edit" (click)="edit.emit(node)">
+        <i class="fa-solid fa-pen"></i>
+      </button>
+
+      <button class="action-btn delete" (click)="delete.emit(node)">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="children" *ngIf="expanded() && node.children?.length">
+
+    <app-tree-node *ngFor="let child of node.children" [node]="child" (add)="add.emit($event)"
+      (edit)="edit.emit($event)" (delete)="delete.emit($event)">
+    </app-tree-node>
+
+  </div>
+
+</div>

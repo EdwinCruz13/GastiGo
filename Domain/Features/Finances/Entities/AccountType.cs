@@ -9,7 +9,7 @@ namespace Domain.Features.Finances.Entities
 {
     public class AccountType : AuditableEntity
     {
-        public Guid AccountTypeID => Id;
+        public Guid AccountTypeId => Id;
         public String Name { get; private set; }
         public String Abbre { get; private set; }
 

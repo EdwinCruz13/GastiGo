@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AUTH_ROUTE } from '../features/auth/auth.routes';
+import { AUTH_ROUTE } from '@features/auth/routes/auth.routes';
 
 
 /**
@@ -9,6 +9,6 @@ import { AUTH_ROUTE } from '../features/auth/auth.routes';
 export const PUBLIC_ROUTES: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('../features/auth/auth.routes').then(m => m.AUTH_ROUTE)
+    loadChildren: () => import('@features/auth/routes/auth.routes').then(m => m.AUTH_ROUTE)
   }
 ];

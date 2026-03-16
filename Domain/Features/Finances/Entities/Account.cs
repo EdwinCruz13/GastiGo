@@ -6,18 +6,18 @@ namespace Domain.Features.Finances.Entities
 {
     public class Account : AuditableEntity
     {
-        public Guid AccountID => Id;
+        public Guid AccountId => Id;
 
-        public Guid UserID { get; private set; }
+        public Guid UserId { get; private set; }
         public User User { get; private set; } = default!;
 
-        public Guid AccountTypeID { get; private set; }
+        public Guid AccountTypeId { get; private set; }
         public AccountType AccountType { get; private set; } = default!;
 
-        public Guid CurrecyID { get; private set; }
+        public Guid CurrecyId { get; private set; }
         public Currency Currecy { get; private set; } = default!;
 
-        public Guid BankID { get; private set; }
+        public Guid BankId { get; private set; }
         public Bank Bank { get; private set; } = default!;
 
         public String Name { get; set; }
@@ -28,10 +28,10 @@ namespace Domain.Features.Finances.Entities
 
         public Account(Guid userId, Guid accountTypeId, Guid currecyId, Guid bankId, string name, string description, double balance)
         {
-            UserID = userId;
-            AccountTypeID = accountTypeId;
-            CurrecyID = currecyId;
-            BankID = bankId;
+            UserId = userId;
+            AccountTypeId = accountTypeId;
+            CurrecyId = currecyId;
+            BankId = bankId;
             Name = name;
             Description = description;
             Balance = balance;

@@ -1,0 +1,78 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  min-width: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: inherit;
+  backdrop-filter: blur(6px);
+  transition: all .15s ease;
+}
+
+.btn-primary {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-color);
+}
+
+.btn-primary:hover {
+  background: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-border);
+  color: var(--btn-secondary-color);
+}
+
+.btn-secondary:hover {
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+.btn-success {
+  background: var(--btn-success-bg);
+  border-color: var(--btn-success-border);
+  color: var(--btn-success-color);
+}
+
+.btn-success:hover {
+  background: var(--btn-success-hover-bg);
+  border-color: var(--btn-success-hover-border);
+}
+
+.btn-danger {
+  background: var(--btn-danger-bg);
+  border-color: var(--btn-danger-border);
+  color: var(--btn-danger-color);
+}
+
+.btn-danger:hover {
+  background: var(--btn-danger-hover-bg);
+  border-color: var(--btn-danger-hover-border);
+}
+
+
+.btn-add-root {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+}
+
+.btn-add-root:hover {
+    background: rgba(229, 72, 77, 0.15);
+    border-color: #e5484d;
+}

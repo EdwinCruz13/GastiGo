@@ -35,15 +35,15 @@ namespace Application.Features.Finances.Services
             try
             {
                 var transactionEntity = new Transaction(
-                transaction.UserID,
-                transaction.TransactionTypeID,
-                transaction.CategoryID,
-                transaction.AccountID,
+                transaction.UserId,
+                transaction.TransactionTypeId,
+                transaction.CategoryId,
+                transaction.AccountId,
                 transaction.Amount,
                 transaction.Description,
                 transaction.TransactionDate,
                 transaction.Reference,
-                transaction.TransferGroupID
+                transaction.TransferGroupId
             );
 
                 await _transactionRepository.AddAsync(transactionEntity);
@@ -72,7 +72,7 @@ namespace Application.Features.Finances.Services
                 var transaction = await _transactionRepository.GetAllTransactionsByUserIDAsync(UserID);
                 return transaction.Select(t => t == null ? null : new TransactionResponseDTO
                 {
-                    TransactionID = t.TransactionID,
+                    TransactionID = t.TransactionId,
                     Amount = t.Amount,
                     Description = t.Description,
                     TransactionDate = t.TransactionDate,
@@ -85,39 +85,39 @@ namespace Application.Features.Finances.Services
                     },
                     TransactionType = new TransactionTypeDTO
                     {
-                        TransactionTypeID = t.TransactionType.TransactionTypeID,
+                        TransactionTypeId = t.TransactionType.TransactionTypeId,
                         Name = t.TransactionType.Name,
                         Code = t.TransactionType.Code,
                         CurrentValue = t.TransactionType.CurrentValue
                     },
-                    Category = new CategoryDTO
+                    Category = new CategoryResponseDTO
                     {
-                        CategoryID = t.Category.CategoryID,
+                        CategoryId = t.Category.CategoryId,
                         Name = t.Category.Name,
                         Description = t.Category.Description,
-                        NatureID = t.Category.NatureID,
+                        Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
                     },
                     Account = new AccountResponseDTO
                     {
-                        AccountID = t.Account.AccountID,
+                        AccountId = t.Account.AccountId,
                         Name = t.Account.Name,
                         Description = t.Account.Description,
                         AccountType = new AccountTypeDTO
                         {
-                            AccountTypeID = t.Account.AccountType.AccountTypeID,
+                            AccountTypeId = t.Account.AccountType.AccountTypeId,
                             Name = t.Account.AccountType.Name,
                             Abbre = t.Account.AccountType.Abbre
                         },
                         Currecy = new CurrencyDTO
                         {
-                            CurrencyID = t.Account.Currecy.CurrencyID,
+                            CurrencyId = t.Account.Currecy.CurrencyId,
                             Name = t.Account.Currecy.Name,
                             Symbol = t.Account.Currecy.Symbol,
                             Code = t.Account.Currecy.Code
                         },
                         Bank = new BankDTO
                         {
-                            BankID = t.Account.Bank.BankID,
+                            BankId = t.Account.Bank.BankId,
                             Name = t.Account.Bank.Name,
                             Abbre = t.Account.Bank.Abbre,
                             TransferFee = t.Account.Bank.TransferFee
@@ -148,7 +148,7 @@ namespace Application.Features.Finances.Services
                 var t = await _transactionRepository.GetByIDAsync(Id);
                 return t == null ? null : new TransactionResponseDTO
                 {
-                    TransactionID = t.TransactionID,
+                    TransactionID = t.TransactionId,
                     Amount = t.Amount,
                     Description = t.Description,
                     TransactionDate = t.TransactionDate,
@@ -161,39 +161,39 @@ namespace Application.Features.Finances.Services
                     },
                     TransactionType = new TransactionTypeDTO
                     {
-                        TransactionTypeID = t.TransactionType.TransactionTypeID,
+                        TransactionTypeId = t.TransactionType.TransactionTypeId,
                         Name = t.TransactionType.Name,
                         Code = t.TransactionType.Code,
                         CurrentValue = t.TransactionType.CurrentValue
                     },
-                    Category = new CategoryDTO
+                    Category = new CategoryResponseDTO
                     {
-                        CategoryID = t.Category.CategoryID,
+                        CategoryId = t.Category.CategoryId,
                         Name = t.Category.Name,
                         Description = t.Category.Description,
-                        NatureID = t.Category.NatureID,
+                        Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
                     },
                     Account = new AccountResponseDTO
                     {
-                        AccountID = t.Account.AccountID,
+                        AccountId = t.Account.AccountId,
                         Name = t.Account.Name,
                         Description = t.Account.Description,
                         AccountType = new AccountTypeDTO
                         {
-                            AccountTypeID = t.Account.AccountType.AccountTypeID,
+                            AccountTypeId = t.Account.AccountType.AccountTypeId,
                             Name = t.Account.AccountType.Name,
                             Abbre = t.Account.AccountType.Abbre
                         },
                         Currecy = new CurrencyDTO
                         {
-                            CurrencyID = t.Account.Currecy.CurrencyID,
+                            CurrencyId = t.Account.Currecy.CurrencyId,
                             Name = t.Account.Currecy.Name,
                             Symbol = t.Account.Currecy.Symbol,
                             Code = t.Account.Currecy.Code
                         },
                         Bank = new BankDTO
                         {
-                            BankID = t.Account.Bank.BankID,
+                            BankId = t.Account.Bank.BankId,
                             Name = t.Account.Bank.Name,
                             Abbre = t.Account.Bank.Abbre,
                             TransferFee = t.Account.Bank.TransferFee

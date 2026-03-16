@@ -29,7 +29,7 @@ namespace Application.Features.Finances.Services
 
             return types.Select(t => t == null ? null : new AccountTypeDTO
             {
-                AccountTypeID = t.Id,
+                AccountTypeId = t.Id,
                 Name = t.Name,
                 Abbre = t.Abbre
             }); ;
@@ -46,7 +46,7 @@ namespace Application.Features.Finances.Services
 
             return type == null ? null : new AccountTypeDTO
             {
-                AccountTypeID = type.Id,
+                AccountTypeId = type.Id,
                 Name = type.Name,
                 Abbre = type.Abbre
             };

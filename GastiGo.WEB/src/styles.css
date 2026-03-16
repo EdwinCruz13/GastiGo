@@ -1,2 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+@import './styles/theme.css';
+@import './styles/button.css';
+@import './styles/modal.css';
+@import './styles/form.css';
+@import './styles/dropdown.css';
+@import './styles/tree-node.css';
+
+
+.container {
+  padding: 16px;
+}
+
+.toolbar-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+

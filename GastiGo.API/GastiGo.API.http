@@ -1,6 +1,46 @@
 @GastiGo.API_HostAddress = http://localhost:5094
 
-GET {{GastiGo.API_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{GastiGo.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+{
+  "email": "edwincruz130691@gmail.com",
+  "password": "edwincruz130691@gmail.com",
+  "fullName": "Edwin Cruz",
+  "username": "Egeminis13"
+}
+###
+
+POST {{GastiGo.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+{
+  "email": "edwincruz130691@gmail.com",
+  "password": "edwincruz130691@gmail.com"
+}
+###
+
+
+
+
+
+POST {{GastiGo.API_HostAddress}}/api/finance/categories
+Content-Type: application/json
+{
+  "categoryID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "parentID": null,
+  "natureID": "87c6347b-0120-4284-a3ee-6c6cb51003fd",
+  "name": "Pago de salario",
+  "description": "Pago salario mensual"
+}
 
 ###
+
+
+
+get {{GastiGo.API_HostAddress}}/api/finance/categories?userId=e35452d3-7ff1-4489-8b1d-912e7c6e78fc
+
+###
+
+
+get {{GastiGo.API_HostAddress}}/api/finance/natures
+

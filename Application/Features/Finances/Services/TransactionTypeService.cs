@@ -32,7 +32,7 @@ namespace Application.Features.Finances.Services
             var types = await _transactionTypeRepository.GetAllTransactionTypesAsync();
             return types.Select(t => t == null ? null : new TransactionTypeDTO
             {
-                TransactionTypeID = t.Id,
+                TransactionTypeId = t.Id,
                 Name = t.Name,
                 Code = t.Code,
                 CurrentValue = t.CurrentValue
@@ -50,7 +50,7 @@ namespace Application.Features.Finances.Services
             var type = await _transactionTypeRepository.GetTransactionTypeByIdAsync(id);
             return type == null ? null : new TransactionTypeDTO
             {
-                TransactionTypeID = type.Id,
+                TransactionTypeId = type.Id,
                 Name = type.Name,
                 Code = type.Code,
                 CurrentValue = type.CurrentValue

@@ -32,7 +32,7 @@ namespace Application.Features.Finances.Services
             var bank = await _bankRepository.GetBankByIdAsync(id);
             return bank == null ? null : new BankDTO
             {
-                BankID = bank.Id,
+                BankId = bank.Id,
                 Name = bank.Name,
                 Abbre = bank.Abbre,
                 TransferFee = bank.TransferFee
@@ -49,7 +49,7 @@ namespace Application.Features.Finances.Services
             var banks = await _bankRepository.GetAllBanksAsync();
             return banks.Select(b => b == null ? null : new BankDTO
             {
-                BankID = b.Id,
+                BankId = b.Id,
                 Name = b.Name,
                 Abbre = b.Abbre,
                 TransferFee = b.TransferFee

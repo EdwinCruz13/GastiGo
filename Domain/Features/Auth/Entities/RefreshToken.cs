@@ -9,8 +9,8 @@ namespace Domain.Features.Auth.Entities
 {
     public class RefreshToken : AuditableEntity 
     {
-        public Guid RefreshTokenID => Id; // esta sera la llave primaria
-        public Guid UserID { get; private set; }
+        public Guid RefreshTokenId => Id; // esta sera la llave primaria
+        public Guid UserId { get; private set; }
         public string Token { get; private set; } = default!;
         public DateTime ExpiresAt { get; private set; }
         public bool Revoked { get; private set; }
@@ -19,7 +19,7 @@ namespace Domain.Features.Auth.Entities
 
         public RefreshToken(Guid userId, string token, DateTime expiresAt)
         {
-            UserID = userId;
+            UserId = userId;
             Token = token;
             ExpiresAt = expiresAt;
             Revoked = false;

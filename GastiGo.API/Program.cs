@@ -3,6 +3,7 @@ using GastiGo.API.Extensions;
 using GastiGo.API.Middleware;
 
 using Infrastructure.DependencyInjection;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,14 @@ builder.Services
     .AddJwtAuthentication(builder.Configuration);
 
 
-builder.Services.AddControllers();
+builder.Services
+.AddControllers()
+.AddJsonOptions(options =>
+ {
+     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+ });
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,6 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Angular",
         policy => policy
             .WithOrigins("http://localhost:54941")
+            .WithOrigins("http://127.0.0.1:54941")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -57,4 +66,5 @@ app.UseCors("Angular");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();

@@ -28,14 +28,12 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<Category?> GetByIdAsync(Guid id)
         {
-            return await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Categories.Include(n => n.Nature).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Category>> GetByUserIdAsync(Guid userId)
         {
-            return await _context.Categories.Where(x => x.UserID == userId)
-                .Include(s => s.Subcategories)
-                .ToListAsync();
+            return await _context.Categories.Where(x => x.UserId == userId).Include(n => n.Nature).ToListAsync();
         }
 
         public async Task SaveChangesAsync()
@@ -43,10 +41,10 @@ namespace Infrastructure.Repositories.Finances
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Category category)
+        public Task UpdateAsync(Category category)
         {
-            await _context.Categories.FindAsync(category.CategoryID);
-            _context.Entry(category).State = EntityState.Modified;
+             _context.Categories.Update(category);
+            return Task.CompletedTask;
         }
     }
 }

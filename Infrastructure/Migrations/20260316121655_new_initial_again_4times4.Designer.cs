@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260309150241_recreating_my_work_done_on_weekend")]
-    partial class recreating_my_work_done_on_weekend
+    [Migration("20260316121655_new_initial_again_4times4")]
+    partial class new_initial_again_4times4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("RefreshTokenID");
+                        .HasColumnName("RefreshTokenId");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -46,7 +46,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -54,7 +54,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Token")
                         .IsUnique();
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens", "auth");
                 });
@@ -64,7 +64,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("TwoFactorCodeID");
+                        .HasColumnName("TwoFactorCodeId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -76,57 +76,57 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TwoFactorStatusID")
+                    b.Property<int>("TwoFactorStatusId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TwoFactorStatusID");
+                    b.HasIndex("TwoFactorStatusId");
 
-                    b.HasIndex("UserID", "Code");
+                    b.HasIndex("UserId", "Code");
 
                     b.ToTable("TwoFactorCodes", "auth");
                 });
 
             modelBuilder.Entity("Domain.Features.Auth.Entities.TwoFactorStatus", b =>
                 {
-                    b.Property<int>("TwoFactorStatusID")
+                    b.Property<int>("TwoFactorStatusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TwoFactorStatusID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TwoFactorStatusId"));
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.HasKey("TwoFactorStatusID");
+                    b.HasKey("TwoFactorStatusId");
 
                     b.ToTable("TwoFactorStatus", "auth");
 
                     b.HasData(
                         new
                         {
-                            TwoFactorStatusID = 1,
+                            TwoFactorStatusId = 1,
                             Status = "Active"
                         },
                         new
                         {
-                            TwoFactorStatusID = 2,
+                            TwoFactorStatusId = 2,
                             Status = "Used"
                         },
                         new
                         {
-                            TwoFactorStatusID = 3,
+                            TwoFactorStatusId = 3,
                             Status = "Expired"
                         },
                         new
                         {
-                            TwoFactorStatusID = 4,
+                            TwoFactorStatusId = 4,
                             Status = "Replaced"
                         });
                 });
@@ -136,21 +136,21 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("AccountID");
+                        .HasColumnName("AccountId");
 
-                    b.Property<Guid>("AccountTypeID")
+                    b.Property<Guid>("AccountTypeId")
                         .HasColumnType("uuid");
 
                     b.Property<double>("Balance")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("BankID")
+                    b.Property<Guid>("BankId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CurrecyID")
+                    b.Property<Guid>("CurrecyId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -162,18 +162,18 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountTypeID");
+                    b.HasIndex("AccountTypeId");
 
-                    b.HasIndex("BankID");
+                    b.HasIndex("BankId");
 
-                    b.HasIndex("CurrecyID");
+                    b.HasIndex("CurrecyId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Accounts", "finances");
                 });
@@ -183,7 +183,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("AccountTypeID");
+                        .HasColumnName("AccountTypeId");
 
                     b.Property<string>("Abbre")
                         .IsRequired()
@@ -205,30 +205,30 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b8047c91-1696-45db-8dcc-b4e6e36c849a"),
+                            Id = new Guid("99f16153-db8f-412e-a7af-437fe62c7f33"),
                             Abbre = "TYPE-CASH",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7981),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5471),
                             Name = "Cash"
                         },
                         new
                         {
-                            Id = new Guid("5fdf49af-1cdb-4371-a82f-e81ac5ea9ea1"),
+                            Id = new Guid("33bd93c8-eec4-406a-9619-ff3af41bc799"),
                             Abbre = "TYPE-DEBT",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7982),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5474),
                             Name = "Debit"
                         },
                         new
                         {
-                            Id = new Guid("7006ffd1-a781-4e63-847e-b84878948fe7"),
+                            Id = new Guid("e635117b-0551-40fa-afb1-5389cfcd3ce2"),
                             Abbre = "TYPE-SAVS",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7985),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5475),
                             Name = "Savings"
                         },
                         new
                         {
-                            Id = new Guid("88e55ca7-3728-4057-b7c5-4c6be03800cc"),
+                            Id = new Guid("b1528456-c62e-4b45-9aa2-f9b8fa22bca0"),
                             Abbre = "TYPE-INVS",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7985),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5476),
                             Name = "Investment"
                         });
                 });
@@ -238,7 +238,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("BankID");
+                        .HasColumnName("BankId");
 
                     b.Property<string>("Abbre")
                         .IsRequired()
@@ -262,17 +262,17 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("15ee2ab9-de8a-4a37-8768-e484f59ada08"),
+                            Id = new Guid("8ec5eab9-3a72-40b2-8746-b94e2ab3579b"),
                             Abbre = "BAC",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7395),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(3986),
                             Name = "BANCO DE AMERICA",
                             TransferFee = 2.0
                         },
                         new
                         {
-                            Id = new Guid("2ae15d4f-519d-4456-8a0f-7eed95e33c1e"),
+                            Id = new Guid("90d3db5d-0c60-462a-93c9-3f0bd46c642f"),
                             Abbre = "BANPRO",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7397),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(3989),
                             Name = "BANCO DE LA PRODUCCION",
                             TransferFee = 2.0
                         });
@@ -283,7 +283,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("CategoryID");
+                        .HasColumnName("CategoryId");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -297,22 +297,22 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("NatureID")
+                    b.Property<Guid>("NatureId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ParentID")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NatureID");
+                    b.HasIndex("NatureId");
 
-                    b.HasIndex("ParentID");
+                    b.HasIndex("ParentId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories", "finances");
                 });
@@ -322,7 +322,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("CurrecyID");
+                        .HasColumnName("CurrecyId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -348,25 +348,25 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3a797abe-e99e-48e0-809c-4e3b42d8709c"),
+                            Id = new Guid("31e3c165-a6c6-4f84-9f6a-2159ba16a29e"),
                             Code = "USD",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7612),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(4489),
                             Name = "Dolar Estadounidense",
                             Symbol = "$"
                         },
                         new
                         {
-                            Id = new Guid("77e2eab2-1e7c-44a3-b2b1-83803ec64abd"),
+                            Id = new Guid("1424bdef-0fa6-4e2a-a52b-c6d43d25df96"),
                             Code = "NIO",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7616),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(4492),
                             Name = "Cordoba Nicaraguense",
                             Symbol = "C$"
                         },
                         new
                         {
-                            Id = new Guid("492d3d09-bfc7-47bb-a540-82e8e386c0ed"),
+                            Id = new Guid("f39e961f-b290-4559-91e5-2fe47e4e424d"),
                             Code = "EUR",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7617),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(4493),
                             Name = "Euro",
                             Symbol = "€"
                         });
@@ -377,7 +377,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("NatureID");
+                        .HasColumnName("NatureId");
 
                     b.Property<string>("Abbre")
                         .IsRequired()
@@ -398,16 +398,16 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d8083824-04a6-4ba4-8f6a-6a63323bfac6"),
+                            Id = new Guid("4477b269-2acb-4649-9560-e9d09191b588"),
                             Abbre = "I",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7184),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(3519),
                             Name = "Income"
                         },
                         new
                         {
-                            Id = new Guid("0f0d6731-48b4-4cf6-ac22-3734589b2e0a"),
+                            Id = new Guid("b1153a41-286d-4fe7-88da-1604d4ddf8ec"),
                             Abbre = "E",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7186),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(3523),
                             Name = "Expenses"
                         });
                 });
@@ -417,15 +417,15 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("TransactionID");
+                        .HasColumnName("TransactionId");
 
-                    b.Property<Guid>("AccountID")
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("CategoryID")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -443,26 +443,26 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("TransactionTypeID")
+                    b.Property<Guid>("TransactionTypeId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("TransferGroupID")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("AccountId");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Reference");
 
-                    b.HasIndex("TransactionTypeID");
+                    b.HasIndex("TransactionTypeId");
 
-                    b.HasIndex("UserID", "TransactionDate");
+                    b.HasIndex("UserId", "TransactionDate");
 
                     b.ToTable("Transactions", "finances");
                 });
@@ -472,7 +472,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("TransactionTypeID");
+                        .HasColumnName("TransactionTypeId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -498,25 +498,25 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9fe172a3-3d70-420b-afc5-9711d56f8839"),
+                            Id = new Guid("1419b9a1-8119-418e-a679-90f4794b9b06"),
                             Code = "INC",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7830),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5035),
                             CurrentValue = 0,
                             Name = "Income"
                         },
                         new
                         {
-                            Id = new Guid("2faf81f5-af9b-4718-8747-66b26b02c840"),
+                            Id = new Guid("b158f17a-9967-434f-b5a9-3c499688966e"),
                             Code = "EXP",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7832),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5039),
                             CurrentValue = 0,
                             Name = "Expenses"
                         },
                         new
                         {
-                            Id = new Guid("6d0318eb-d2b5-41e3-9e6e-1ceb71e81094"),
+                            Id = new Guid("959bde9a-1eb6-47e0-9977-fb10ebd606a4"),
                             Code = "TRF",
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(7833),
+                            CreatedAt = new DateTime(2026, 3, 16, 12, 16, 55, 0, DateTimeKind.Utc).AddTicks(5041),
                             CurrentValue = 0,
                             Name = "Transfers"
                         });
@@ -527,7 +527,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("UserID");
+                        .HasColumnName("UserId");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -561,26 +561,13 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", "users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("97bffb5b-86f4-41a4-879c-5aa8151a72f8"),
-                            CreatedAt = new DateTime(2026, 3, 9, 15, 2, 41, 27, DateTimeKind.Utc).AddTicks(6960),
-                            Email = "edwincruz130691@gmail.com",
-                            FullName = "Edwin Cruz",
-                            IsActive = true,
-                            PasswordHash = "edwincruz130691@gmail.com",
-                            TwoFactorEnabled = false,
-                            Username = "Egeminis13"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Features.Auth.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Features.Users.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -589,13 +576,13 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Features.Auth.Entities.TwoFactorStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("TwoFactorStatusID")
+                        .HasForeignKey("TwoFactorStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Users.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -606,25 +593,25 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Features.Finances.Entities.AccountType", "AccountType")
                         .WithMany()
-                        .HasForeignKey("AccountTypeID")
+                        .HasForeignKey("AccountTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.Bank", "Bank")
                         .WithMany()
-                        .HasForeignKey("BankID")
+                        .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.Currency", "Currecy")
                         .WithMany()
-                        .HasForeignKey("CurrecyID")
+                        .HasForeignKey("CurrecyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Users.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -641,18 +628,18 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Features.Finances.Entities.Nature", "Nature")
                         .WithMany()
-                        .HasForeignKey("NatureID")
+                        .HasForeignKey("NatureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.Category", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentID")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Features.Users.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -667,25 +654,25 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Features.Finances.Entities.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("AccountID")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.TransactionType", "TransactionType")
                         .WithMany()
-                        .HasForeignKey("TransactionTypeID")
+                        .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Users.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -696,6 +683,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("TransactionType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Features.Finances.Entities.Category", b =>
+                {
+                    b.Navigation("Subcategories");
                 });
 #pragma warning restore 612, 618
         }

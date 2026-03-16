@@ -35,7 +35,7 @@ namespace Application.Features.Finances.Services
             //si no se encuentra la moneda, devuelve null, si se encuentra devuelve la moneda encontrada
             return currency == null ? null : new CurrencyDTO
             {
-                CurrencyID = currency.Id,
+                CurrencyId = currency.Id,
                 Name = currency.Name,
                 Code = currency.Code,
                 Symbol = currency.Symbol
@@ -53,7 +53,7 @@ namespace Application.Features.Finances.Services
            var currencies = await _currencyRepository.GetAllCurrenciesAsync();
            return currencies.Select(c => c == null ? null : new CurrencyDTO
            {
-               CurrencyID = c.Id,
+               CurrencyId = c.Id,
                Name = c.Name,
                Code = c.Code,
                Symbol = c.Symbol

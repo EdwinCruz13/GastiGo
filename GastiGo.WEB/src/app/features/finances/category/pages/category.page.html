@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="toolbar-options">
+    <button class="btn btn-primary" (click)="addRootCategory()">
+      <i class="fa-solid fa-plus"></i>
+      Nueva categoría
+    </button>
+  </div>
+
+  @for (node of tree(); track node.id) {
+  <app-tree-node [node]="node" (add)="addCategory($event)" (edit)="editCategory($event)"
+    (delete)="deleteCategory($event)"></app-tree-node>
+  }
+</div>
+
+
+
+
+
+
+
+
+<app-modal [open]="modalOpen()" (close)="modalOpen.set(false)">
+
+  <div modal-header>
+    <span>Nueva categoría</span>
+    <button (click)="modalOpen.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div modal-body>
+    <form id="categoryForm" class="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">
+          Nombre
+        </label>
+        <input type="text" class="form-input" placeholder="Nombre de la categoría" formControlName="name"
+          autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Descripción
+        </label>
+
+        <textarea class="form-input" rows="3" placeholder="Descripción" formControlName="description"
+          autocomplete="off">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Categoria padre
+        </label>
+
+        <input 
+          type="text"
+          class="form-input"
+          placeholder="Categoria padre"
+          formControlName="parentName"
+          readonly>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Naturaleza
+        </label>
+
+        <app-dropdown-select [items]="natures()" labelField="name" valueField="natureId"
+          placeholder="Seleccione la naturaleza" (valueChange)="onCategoryChange($event)" [selectedValue]="categoryForm.get('natureId')?.value">
+        </app-dropdown-select>
+      </div>
+    </form>
+  </div>
+
+  <div modal-footer>
+
+    
+    @if(apiErrors.length > 0){
+    <div class="api-errors">
+      @for(error of apiErrors; track error){
+      <div class="error-message">
+        {{error}}
+      </div>
+      }
+    </div>
+    }
+
+    <button class="btn btn-secondary" (click)="modalOpen.set(false)">
+      Cancelar
+    </button>
+
+    <button type="submit" form="categoryForm" class="btn btn-primary">
+      Guardar
+    </button>
+
+  </div>
+</app-modal>
+
+
+
+
+
+
+
+<app-modal [open]="modalMessage()" (close)="modalMessage.set(false)">
+  <div modal-header>
+    <span>Mensaje</span>
+    <button (click)="modalMessage.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div modal-body>
+      Categoria creada exitosamente.
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-danger" (click)="modalMessage.set(false)">
+      Cerrar
+    </button>
+  </div>
+</app-modal>

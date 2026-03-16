@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserIDAsync(Guid UserID)
         {
-            return await _context.Transactions.Where(u => u.UserID == UserID)
+            return await _context.Transactions.Where(u => u.UserId == UserID)
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
                 .Include(c => c.Category)

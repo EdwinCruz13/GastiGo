@@ -9,14 +9,14 @@ namespace Domain.Features.Auth.Entities
 
     public class TwoFactorStatus
     {
-        public Int32 TwoFactorStatusID { get; private set; }
+        public Int32 TwoFactorStatusId { get; private set; }
         public string Status { get; private set; }
 
 
         public TwoFactorStatus() { } //EF 
         public TwoFactorStatus(Int32 twoFactorStatusID, string status)
         {
-            TwoFactorStatusID = twoFactorStatusID;
+            TwoFactorStatusId = twoFactorStatusID;
             Status = status;
         }
 

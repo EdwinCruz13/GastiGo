@@ -40,7 +40,7 @@ namespace Infrastructure.Repositories.Auths
                 .FirstOrDefaultAsync(x =>
                     x.Id == twoFactorId &&
                     x.Code == code &&
-                    x.Status.TwoFactorStatusID == 1 &&
+                    x.Status.TwoFactorStatusId == 1 &&
                     x.ExpiresAt > DateTime.UtcNow);
 
 
@@ -53,8 +53,8 @@ namespace Infrastructure.Repositories.Auths
         public async Task<List<TwoFactorCode>> GetActiveByUserAsync(Guid userId)
         {
             return await _context.TwoFactorCodes
-                .Where(x => x.UserID == userId &&
-                            x.Status.TwoFactorStatusID == 1)
+                .Where(x => x.UserId == userId &&
+                            x.Status.TwoFactorStatusId == 1)
                 .ToListAsync();
         }
 

@@ -11,18 +11,18 @@ namespace Domain.Features.Finances.Entities
 {
     public class Transaction : AuditableEntity
     {
-        public Guid TransactionID => Id;
+        public Guid TransactionId => Id;
 
-        public Guid UserID { get; private set; } 
+        public Guid UserId { get; private set; } 
         public User User { get; private set; } = default!;
 
-        public Guid TransactionTypeID { get; private set; } 
+        public Guid TransactionTypeId { get; private set; } 
         public TransactionType TransactionType { get; private set; } = default!;
 
-        public Guid CategoryID { get; private set; } 
+        public Guid CategoryId { get; private set; } 
         public Category Category { get; private set; } = default!;
 
-        public Guid AccountID { get; private set; } 
+        public Guid AccountId { get; private set; } 
         public Account Account { get; private set; } = default!;
 
         public double Amount { get; private set; }
@@ -38,10 +38,10 @@ namespace Domain.Features.Finances.Entities
 
         public Transaction(Guid userId, Guid transactionTypeId, Guid categoryId, Guid accountId, double amount, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
         {
-            UserID = userId;
-            TransactionTypeID = transactionTypeId;
-            CategoryID = categoryId;
-            AccountID = accountId;
+            UserId = userId;
+            TransactionTypeId = transactionTypeId;
+            CategoryId = categoryId;
+            AccountId = accountId;
             Amount = amount;
             Description = description;
             TransactionDate = DateTime.UtcNow;  //transactionDate ?? DateTime.UtcNow; //por si es nulo, se asigna la fecha actual

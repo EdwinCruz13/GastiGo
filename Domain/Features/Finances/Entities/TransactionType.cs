@@ -11,7 +11,7 @@ namespace Domain.Features.Finances.Entities
 {
     public class TransactionType : AuditableEntity
     {
-        public Guid TransactionTypeID => Id;
+        public Guid TransactionTypeId => Id;
         public String Name { get; private set; }
         public String Code { get; private set; }
         public int CurrentValue { get; private set; }

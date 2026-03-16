@@ -18,6 +18,7 @@ export class AuthService {
 
   // señal para almacenar el nombre del usuario autenticado
   userName = signal<string | null>(null);
+  userId = signal<string | null>(null);
 
   // señal computada para obtener la inicial del avatar a partir del nombre del usuario
   avatarInitial = computed(() => {
@@ -61,12 +62,14 @@ export class AuthService {
     localStorage.removeItem("token");
   }
 
-  //inicializa el nombre del usuario a partir del token almacenado
+  // inicializa el nombre del usuario y el ID del usuario a partir del 
+  // token almacenado en el localstorage
   initUser(): void {
     const token = localStorage.getItem('token');
     if (!token) return;
     const decoded = jwtDecode<JwtPayload>(token);
     this.userName.set(decoded.name);
+    this.userId.set(decoded.sub);
   }
 
 }

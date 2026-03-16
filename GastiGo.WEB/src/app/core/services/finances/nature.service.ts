@@ -1,0 +1,23 @@
+import { Injectable } from '@angular/core';
+import { Nature } from '@core/models/finances/nature.model';
+
+import { environment } from '@env/environment';
+import { HttpClient } from '@angular/common/http';
+import { ApiResponse } from '@core/models/common/api-response.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NatureService {
+  // esta ruta es la url del proyecto
+  private api = environment.apiUrl;
+
+  // inyectamos el servicio HttpClient para hacer peticiones HTTP
+  constructor(private http: HttpClient) {}
+
+  //obtiene todas naturalezas de la base de datos
+  getAll() {
+    return this.http.get<ApiResponse<Nature[]>>(`${this.api}/finance/natures`);
+  }
+
+}

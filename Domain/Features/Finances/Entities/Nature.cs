@@ -9,7 +9,7 @@ namespace Domain.Features.Finances.Entities
 {
     public class Nature : AuditableEntity
     {
-        public Guid NatureID => Id;
+        public Guid NatureId => Id;
         public String Name { get; private set; }
         public String Abbre { get; private set; }
 

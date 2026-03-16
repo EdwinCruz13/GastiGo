@@ -8,7 +8,7 @@ namespace Application.Features.Finances.DTOs
 {
     public class NatureDTO
     {
-        public Guid NatureID { get; set; }
+        public Guid NatureId { get; set; }
         public String Name { get; set; }
         public String Abbre { get; set; }
     }

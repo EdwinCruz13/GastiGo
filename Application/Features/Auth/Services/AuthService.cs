@@ -174,11 +174,11 @@ namespace Application.Features.Auth.Services
 
 
             //si el código ya fue utilizado, retorna error
-            if (record.TwoFactorStatusID == 2)
+            if (record.TwoFactorStatusId == 2)
                 throw new Exception("El código ya fue utilizado.");
 
             //si el código fue reemplazado por uno nuevo, retorna error
-            if (record.TwoFactorStatusID == 3)
+            if (record.TwoFactorStatusId == 3)
                 throw new Exception("Este código fue reemplazado por uno nuevo.");
 
             //si el código ha expirado, marca como expirado y retorna error
@@ -196,7 +196,7 @@ namespace Application.Features.Auth.Services
             record.MarkAsUsed();
             await _twoFactorRepository.SaveChangesAsync();
 
-            var user = await _userRepository.GetByIdAsync(record.UserID);
+            var user = await _userRepository.GetByIdAsync(record.UserId);
 
             return await GenerateTokensAsync(user);
         }
@@ -218,7 +218,7 @@ namespace Application.Features.Auth.Services
 
             // 2️ Buscar usuario asociado
             var user = await _userRepository
-                .GetByIdAsync(storedToken.UserID);
+                .GetByIdAsync(storedToken.UserId);
 
             if (user == null)
                 throw new Exception("Usuario no encontrado.");

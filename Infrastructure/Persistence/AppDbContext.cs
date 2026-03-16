@@ -4,6 +4,7 @@ using Domain.Features.Users.Entities;
 using Domain.Features.Finances.Entities;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 
 
@@ -43,6 +44,9 @@ namespace Infrastructure.Persistence
         {
         }
 
+
+        
+
         /// <summary>
         /// modela las entidades y relaciones, as como configura las tablas y restricciones
         /// </summary>
@@ -72,13 +76,13 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("UserID");
+                entity.Property(x => x.Id).HasColumnName("UserId");
                 entity.HasIndex(x => x.Email).IsUnique();
                 entity.Property(x => x.Email).IsRequired().HasMaxLength(150);
             });
 
-            //modelBuilder.Entity<User>().HasData(
-            //    new User("edwincruz130691@gmail.com", "Egeminis13", "edwincruz130691@gmail.com", "Edwin Cruz")
+            //modelbuilder.entity<user>().hasdata(
+            //    new user("edwincruz130691@gmail.com", "egeminis13", "edwincruz130691@gmail.com", "edwin cruz")
             //);
 
 
@@ -86,7 +90,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Nature>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("NatureID");
+                entity.Property(x => x.Id).HasColumnName("NatureId");
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Abbre).IsRequired().HasMaxLength(5);
             });
@@ -100,7 +104,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("BankID");
+                entity.Property(x => x.Id).HasColumnName("BankId");
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Abbre).IsRequired().HasMaxLength(10);
                 entity.Property(x => x.TransferFee).IsRequired();
@@ -115,7 +119,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Currency>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("CurrecyID");
+                entity.Property(x => x.Id).HasColumnName("CurrecyId");
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Code).IsRequired().HasMaxLength(3);
                 entity.Property(x => x.Symbol).IsRequired().HasMaxLength(3);
@@ -131,7 +135,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<TransactionType>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("TransactionTypeID");
+                entity.Property(x => x.Id).HasColumnName("TransactionTypeId");
                 entity.HasIndex(x => x.Code).IsUnique();
                 entity.Property(x => x.Name).IsRequired();
             });
@@ -148,7 +152,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<AccountType>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("AccountTypeID");
+                entity.Property(x => x.Id).HasColumnName("AccountTypeId");
                 entity.Property(x => x.Name).IsRequired().HasMaxLength(25);
                 entity.Property(x => x.Abbre).IsRequired().HasMaxLength(9);
             });
@@ -166,39 +170,39 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("CategoryID");
-                entity.HasIndex(x => x.UserID);
-                entity.HasIndex(x => x.ParentID);
+                entity.Property(x => x.Id).HasColumnName("CategoryId");
+                entity.HasIndex(x => x.UserId);
+                entity.HasIndex(x => x.ParentId);
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Description).HasMaxLength(150);
                 entity.HasOne(x => x.User)
                       .WithMany() // un usuario puede tener muchas categorías
-                      .HasForeignKey(x => x.UserID);
+                      .HasForeignKey(x => x.UserId);
                 entity.HasOne(x => x.Nature)
                       .WithMany() // una naturaleza puede tener muchas categorías
-                      .HasForeignKey(x => x.NatureID);
+                      .HasForeignKey(x => x.NatureId);
                 entity.HasOne(x => x.Parent) // relación consigo misma para categorías anidadas
                       .WithMany(x => x.Subcategories) // una categoría padre puede tener muchas categorías hijas
-                      .HasForeignKey(x => x.ParentID)
+                      .HasForeignKey(x => x.ParentId)
                       .OnDelete(DeleteBehavior.Restrict); // evitar eliminación en cascada para no borrar toda la jerarquía
             });
 
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("AccountID");
+                entity.Property(x => x.Id).HasColumnName("AccountId");
                 entity.HasOne(x => x.User)
                       .WithMany() // un usuario puede tener muchas cuentas
-                      .HasForeignKey(x => x.UserID);
+                      .HasForeignKey(x => x.UserId);
                 entity.HasOne(x => x.AccountType)
                       .WithMany() // un tipo de cuenta puede tener muchas cuentas
-                      .HasForeignKey(x => x.AccountTypeID);
+                      .HasForeignKey(x => x.AccountTypeId);
                 entity.HasOne(x => x.Currecy)
                       .WithMany() // una moneda puede tener muchas cuentas
-                      .HasForeignKey(x => x.CurrecyID);
+                      .HasForeignKey(x => x.CurrecyId);
                 entity.HasOne(x => x.Bank)
                       .WithMany() // un banco puede tener muchas cuentas
-                      .HasForeignKey(x => x.BankID);
+                      .HasForeignKey(x => x.BankId);
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Description).HasMaxLength(150);
                 entity.Property(x => x.Balance).IsRequired();
@@ -208,21 +212,21 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("TransactionID");
-                entity.HasIndex(x => new { x.UserID, x.TransactionDate });
+                entity.Property(x => x.Id).HasColumnName("TransactionId");
+                entity.HasIndex(x => new { x.UserId, x.TransactionDate });
                 entity.HasIndex(x => x.Reference);
                 entity.HasOne(x => x.User)
                       .WithMany() // un usuario puede tener muchas cuentas
-                      .HasForeignKey(x => x.UserID);
+                      .HasForeignKey(x => x.UserId);
                 entity.HasOne(x => x.TransactionType)
                       .WithMany() // un tipo de cuenta puede tener muchas cuentas
-                      .HasForeignKey(x => x.TransactionTypeID);
+                      .HasForeignKey(x => x.TransactionTypeId);
                 entity.HasOne(x => x.Category)
                         .WithMany() // una categoría
-                        .HasForeignKey(x => x.CategoryID);
+                        .HasForeignKey(x => x.CategoryId);
                 entity.HasOne(x => x.Account)
                         .WithMany() // una cuenta puede tener muchas transacciones
-                        .HasForeignKey(x => x.AccountID);
+                        .HasForeignKey(x => x.AccountId);
                 entity.Property(x => x.Description).HasMaxLength(500);
                 entity.Property(x => x.Amount).IsRequired();
                 entity.Property(x => x.TransactionDate).IsRequired();
@@ -239,7 +243,7 @@ namespace Infrastructure.Persistence
             //categorías de estado para los códigos 2FA
             modelBuilder.Entity<TwoFactorStatus>(entity =>
             {
-                entity.HasKey(x => x.TwoFactorStatusID);
+                entity.HasKey(x => x.TwoFactorStatusId);
                 entity.Property(x => x.Status)
                       .IsRequired()
                       .HasMaxLength(50);
@@ -256,14 +260,14 @@ namespace Infrastructure.Persistence
 
             modelBuilder.Entity<TwoFactorCode>(entity =>
             {
-                entity.Property(x => x.Id).HasColumnName("TwoFactorCodeID");
-                entity.HasIndex(x => new { x.UserID, x.Code });
+                entity.Property(x => x.Id).HasColumnName("TwoFactorCodeId");
+                entity.HasIndex(x => new { x.UserId, x.Code });
                 entity.HasOne(x => x.Status)
                       .WithMany()
-                      .HasForeignKey(x => x.TwoFactorStatusID);
+                      .HasForeignKey(x => x.TwoFactorStatusId);
                 entity.HasOne<User>()       // relación con User
                 .WithMany()                  // un usuario puede tener muchos códigos 2FA
-                .HasForeignKey(x => x.UserID)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -271,11 +275,11 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<RefreshToken>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("RefreshTokenID");
+                entity.Property(x => x.Id).HasColumnName("RefreshTokenId");
                 entity.HasIndex(x => x.Token).IsUnique();
                 entity.HasOne<User>()              // relación con User
                       .WithMany()                  // un usuario puede tener muchos refresh tokens
-                      .HasForeignKey(x => x.UserID)
+                      .HasForeignKey(x => x.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
         }

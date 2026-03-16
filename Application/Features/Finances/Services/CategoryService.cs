@@ -51,18 +51,18 @@ namespace Application.Features.Finances.Services
 
 
                 //ver si la naturaleza existe
-                var nature = await _natureRepository.GetNatureByIdAsync(category.NatureID);
+                var nature = await _natureRepository.GetNatureByIdAsync(category.NatureId);
                 if(nature == null)
                     throw new ArgumentException("Debe de ingresar una naturaleza valida");
 
                 //ver si el usuario existe
-                var user = await _userRepository.GetByIdAsync(category.UserID);
+                var user = await _userRepository.GetByIdAsync(category.UserId);
                 if (user == null)
                     throw new ArgumentException("Debe de ingresar un usuario valido");
 
                 //ver si la categoria padre existe
-                if(category.ParentID != null){
-                    var parentCategory = await _categoryRepository.GetByIdAsync(category.ParentID ?? Guid.Empty);
+                if(category.ParentId != null){
+                    var parentCategory = await _categoryRepository.GetByIdAsync(category.ParentId ?? Guid.Empty);
                     if (parentCategory == null)
                         throw new ArgumentException("Debe de ingresar una categoria padre valida");
                 }
@@ -70,7 +70,7 @@ namespace Application.Features.Finances.Services
 
 
                 //agregar una nueva categoria
-                var newCategory = new Category(category.UserID, category.NatureID, category.Name, category.Description, category.ParentID);
+                var newCategory = new Category(category.UserId, category.NatureId, category.Name, category.Description, category.ParentId);
                 await _categoryRepository.AddAsync(newCategory);
 
                 await _categoryRepository.SaveChangesAsync(); //guardar 
@@ -89,18 +89,32 @@ namespace Application.Features.Finances.Services
         /// <param name="category"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task UpdateCategoryAsync(CategoryDTO category)
+        public async Task UpdateCategoryAsync(Guid id, CategoryDTO category)
         {
+
+            //validar si la categoria existe
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            if (existingCategory == null)
+                throw new ArgumentException("La categoría no existe.");
+
             if (string.IsNullOrWhiteSpace(category.Name))
                 throw new ArgumentException("El nombre de la categoría no puede estar vacío.");
             if (string.IsNullOrEmpty(category.Description))
                 throw new ArgumentException("Debe de ingresar una descripcion");
-            
+            if (category.ParentId == id)
+                throw new ArgumentException("Una categoría no puede ser su propio padre");
 
-            var newCategory = new Category(category.UserID, category.NatureID, category.Name, category.Description, category.ParentID);
 
+            // actualizar propiedades
+            existingCategory.Update(
+                 category.UserId,
+                 category.Name,
+                 category.Description,
+                 category.NatureId,
+                 category.ParentId
+             );
 
-            await _categoryRepository.UpdateAsync(newCategory);
+             await _categoryRepository.SaveChangesAsync();
         }
 
         /// <summary>
@@ -115,25 +129,11 @@ namespace Application.Features.Finances.Services
 
             var categories = await _categoryRepository.GetByUserIdAsync(userId);
 
-            return categories.Select(c => c == null ? null : new CategoryResponseDTO
-            {
-                CategoryID = c.Id,
-                UserID = c.UserID,
-                ParentID = c.ParentID,
-                NatureID = c.NatureID,
-                Name = c.Name,
-                Description = c.Description,
-                Children = c.Subcategories.Select(s => new CategoryResponseDTO
-                {
-                    CategoryID = s.Id,
-                    UserID = s.UserID,
-                    ParentID = s.ParentID,
-                    NatureID = s.NatureID,
-                    Name = s.Name,
-                    Description = s.Description
-                }).ToList()
+            // Construir el árbol de categorías a partir de la lista obtenida
+            var tree = BuildTree(categories, null);
 
-            });
+            // Devolver el árbol de categorías
+            return tree;
         }
 
         /// <summary>
@@ -142,24 +142,50 @@ namespace Application.Features.Finances.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<CategoryDTO?> GetCategoryByIdAsync(Guid id)
+        public async Task<CategoryResponseDTO?> GetCategoryByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("El ID de la categoría debe ser un número positivo.");
             var category =  await _categoryRepository.GetByIdAsync(id);
 
 
-            return category == null ? null : new CategoryDTO
+            return category == null ? null : new CategoryResponseDTO
             {
-                CategoryID = category.Id,
-                UserID = category.UserID,
-                ParentID = category.ParentID,
-                NatureID = category.NatureID,
+                CategoryId = category.Id,
+                UserId = category.UserId,
+                ParentId = category.ParentId,
+                Nature = new NatureDTO { NatureId = category.Nature.Id, Name = category.Nature.Name, Abbre = category.Nature.Abbre },
                 Name = category.Name,
                 Description = category.Description
             };
 
 
+        }
+
+
+        /// <summary>
+        /// funcion recursiva para construir un árbol de categorías a partir de una lista de categorías,
+        /// </summary>
+        /// <param name="categories"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        private List<CategoryResponseDTO> BuildTree(List<Category> categories, Guid? parentId, int level = 0)
+        {
+            return categories
+                .Where(x => x.ParentId == parentId)
+                .Select(x => new CategoryResponseDTO
+                {
+                    CategoryId = x.Id,
+                    UserId = x.UserId,
+                    ParentId = x.ParentId,
+                    Nature = new NatureDTO { NatureId = x.Nature.Id, Name = x.Nature.Name, Abbre = x.Nature.Abbre },
+                    Name = x.Name,
+                    Description = x.Description,
+                    Level = level,
+                    Children = BuildTree(categories, x.Id, level + 1)
+                   
+                })
+                .ToList();
         }
     }
 }

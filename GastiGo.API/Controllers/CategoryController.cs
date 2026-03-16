@@ -41,6 +41,26 @@ namespace GastiGo.API.Controllers
         }
 
         /// <summary>
+        /// metodo que permite editar una categoría de finanzas existente, validando que el ID de la categoría sea válido y luego simula una operación asíncrona para actualizar la categoría en una base de datos. 
+        /// Si la categoría no se encuentra, 
+        /// se devuelve un mensaje de error con un código de estado 404 (Not Found).
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(Guid id, CategoryDTO response)
+        {
+            await _categoryService.UpdateCategoryAsync(id, response);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Categoria actualizada correctamente",
+                Data = null
+            });
+        }
+
+        /// <summary>
         /// obtener una categoría por su ID, si no se encuentra la categoría, se devuelve un mensaje de error con un código de estado 404 (Not Found).
         /// </summary>
         /// <param name="id"></param>

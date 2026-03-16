@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginPage } from '@features/auth/pages/login/login.page'
+import { RegisterPage } from '@features/auth/pages/register/register.page'
 import { authRedirectGuard } from '@core/guards/auth-redirect.guard';
 
 export const AUTH_ROUTE: Routes = [
   {
     path: 'signin',
-    component: LoginComponent,
+    component: LoginPage,
     canActivate: [authRedirectGuard]
   },
 
   {
     path: 'signup',
-    component: RegisterComponent
+    component: RegisterPage
   }
 
 ];
