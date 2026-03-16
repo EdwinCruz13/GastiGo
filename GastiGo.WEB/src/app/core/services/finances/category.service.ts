@@ -15,7 +15,7 @@ export class CategoryService {
 
   constructor(private http: HttpClient) {}
 
-  // obtiene el árbol de categorías para un usuario específico, utilizando su ID. 
+  // obtiene el árbol de categorías para un usuario específico, utilizando su ID.
   // Retorna un observable con la respuesta de la API que contiene un array de categorías.
   getTree(userId: string) {
     return this.http.get<ApiResponse<Category[]>>(`${this.api}/finance/categories?userId=${userId}`);
@@ -37,6 +37,15 @@ export class CategoryService {
     return this.http.put<ApiResponse<object>>(
       `${this.api}/finance/categories/${id}`,
       category
+    );
+  }
+
+  // elimina una categoría existente enviando su ID al endpoint de la API.
+  // Retorna un observable con la respuesta de la API que contiene un objeto vacío.
+  delete(id: string): Observable<ApiResponse<object>>
+  {
+    return this.http.delete<ApiResponse<object>>(
+      `${this.api}/finance/categories/${id}`
     );
   }
 

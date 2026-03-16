@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Finances.DTOs
 {
+    /// <summary>
+    /// clase que representa un DTO (Data Transfer Object) para la creación o actualización de una categoría en el contexto de finanzas.
+    /// </summary>
     public class CategoryDTO
     {
         //public Guid CategoryID { get; set; }
@@ -17,6 +20,20 @@ namespace Application.Features.Finances.DTOs
         
     }
 
+    /// <summary>
+    /// clase que representa un DTO (Data Transfer Object) para la baja de una categoría en el contexto de finanzas.
+    /// </summary>
+    public class CategoriaBajaDTO
+    {
+        public Guid CategoryId { get; set; }
+        public Guid UserId { get; set; }
+        public Boolean IsDeleted { get; set; }
+    }
+
+    /// <summary>
+    /// clase que representa un DTO (Data Transfer Object) para la respuesta de una categoría en el contexto de finanzas, 
+    /// incluyendo información sobre su jerarquía, naturaleza y detalles descriptivos.
+    /// </summary>
     public class CategoryResponseDTO
     {
         public Guid CategoryId { get; set; }
@@ -26,8 +43,7 @@ namespace Application.Features.Finances.DTOs
         public NatureDTO Nature { get; set; } = new();
         public string Name { get; set; }
         public string Description { get; set; }
-
         public int Level { get; set; }
-
+        public Boolean IsDeleted { get; set; }
     }
 }

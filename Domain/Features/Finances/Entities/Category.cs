@@ -26,6 +26,8 @@ namespace Domain.Features.Finances.Entities
 
         public ICollection<Category> Subcategories { get; private set; } = new List<Category>();
 
+        public Boolean IsDeleted { get; private set; } = false;
+
         private Category() { } // EF
 
 
@@ -44,6 +46,7 @@ namespace Domain.Features.Finances.Entities
             Name = name;
             Description = description;
             ParentId = parentId;
+            IsDeleted = false;
         }
 
         public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId)
@@ -52,6 +55,15 @@ namespace Domain.Features.Finances.Entities
             Description = description;
             NatureId = natureId;
             ParentId = parentId;
+        }
+
+        /// <summary>
+        /// marca la categoría como eliminada, lo que permite mantener un historial de categorías eliminadas 
+        /// sin perder la integridad de los datos relacionados con ellas.
+        /// </summary>
+        public void MarkAsDeleted()
+        {
+           IsDeleted = true;
         }
     }
 }

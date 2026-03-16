@@ -9,6 +9,7 @@ namespace Application.Features.Finances.Interfaces
         Task<List<Category>> GetByUserIdAsync(Guid userId);
         Task AddAsync(Category category);
         Task UpdateAsync(Category category);
+        Task<bool> HasChildrenAsync(Guid parentId);
         Task SaveChangesAsync();
     }
 }

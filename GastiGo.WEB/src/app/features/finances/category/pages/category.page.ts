@@ -29,14 +29,14 @@ import { AuthService } from '@core/services/auth/auth.service';
 })
 export class CategoryPage implements OnInit {
 
-  // Inyecta los servicios de categoría y naturaleza para interactuar con la API 
+  // Inyecta los servicios de categoría y naturaleza para interactuar con la API
   // y obtener datos relacionados con las categorías y naturalezas.
   private CategoriaServicio = inject(CategoryService);
   private NaturalezaServicio = inject(NatureService);
   private AuthServicio = inject(AuthService);
 
   // true si es nuevo, false si es edición
-  isNew = signal(true); // Variable para controlar si se está creando una nueva categoría o editando una existente. 
+  isNew = signal(true); // Variable para controlar si se está creando una nueva categoría o editando una existente.
 
   tree = signal<TreeNode<Category>[] | null>([]);
   currentNode = signal<TreeNode<Category> | null>(null);
@@ -46,7 +46,10 @@ export class CategoryPage implements OnInit {
   userID = signal<string>('');
 
   // Variables para controlar el estado del modal del formulario de categoría.
-  modalOpen = signal(false);
+  modalFormOpen = signal(false);
+
+  // Variable para controlar el estado del modal de confirmación de eliminación de categoría.
+  modalDeleteOpen = signal(false);
 
   // Variable para mostrar un mensaje de éxito después de guardar una categoría.
   modalMessage = signal(false);
@@ -60,7 +63,7 @@ export class CategoryPage implements OnInit {
   categoryForm = this.formBuilder.group({
     parentId: [null as string | null], //campo de ID de categoría padre sin validación
     parentName: [{ value: '', disabled: true }],
-    userId: [''], //campo de ID de usuario con un valor predeterminado
+    userId: [this.AuthServicio.userId()], //campo de ID de usuario sin validación, se establece con el ID del usuario autenticado
     natureId: [null as string | null, Validators.required], //campo de ID de naturaleza con validación de requerido
     name: ['', [Validators.required, Validators.nullValidator]], //campo de nombre con validación de requerido
     description: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]] //campo de descripción con validación de requerido y longitud mínima de 6 caracteres
@@ -70,22 +73,27 @@ export class CategoryPage implements OnInit {
   //#region eventos load
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // El método ngOnInit se ejecuta al inicializar el componente. 
-  // Aquí se establece el ID del usuario utilizando el servicio de 
-  // autenticación y se cargan 
-  // las categorías y naturalezas desde la API 
+  // El método ngOnInit se ejecuta al inicializar el componente.
+  // Aquí se establece el ID del usuario utilizando el servicio de
+  // autenticación y se cargan
+  // las categorías y naturalezas desde la API
   // para mostrar en la interfaz.
   ngOnInit() {
-    const uid = this.AuthServicio.userId() ?? '';
-    this.userID.set(uid);
-    this.categoryForm.patchValue({
-      userId: uid
-    });
 
+
+    this.CargarUsuario();
     this.CargarCategorias();
     this.CargarNaturalezas();
 
 
+  }
+
+
+  // Carga el ID del usuario desde el servicio de autenticación y lo almacena en una señal para su uso en la aplicación.
+  CargarUsuario(){
+    // Establece el ID del usuario utilizando el servicio de autenticación.
+    const uid = this.AuthServicio.userId() ?? '';
+    this.userID.set(uid);
   }
 
   // Carga las categorías desde el servicio y las mapea a una estructura de árbol para el componente TreeNodeComponent.
@@ -125,7 +133,7 @@ export class CategoryPage implements OnInit {
   addRootCategory() {
     this.isNew.set(true); // Indica que se está creando una nueva categoría raíz.
 
-    //modifica la propiedad parentId del formulario a null y parentName a "Categoría raíz", 
+    //modifica la propiedad parentId del formulario a null y parentName a "Categoría raíz",
     // indicando que se está creando una categoría raíz sin un padre específico.
     this.categoryForm.patchValue({
       parentId: null,
@@ -134,11 +142,11 @@ export class CategoryPage implements OnInit {
     this.categoryForm.controls.parentName.disable();
 
     //abre el modal
-    this.modalOpen.set(true);
+    this.modalFormOpen.set(true);
   }
 
   //anade un node a la categoria
-  addCategory(node: TreeNode<Category>) {
+  addNodeCategory(node: TreeNode<Category>) {
     this.isNew.set(true); // Indica que se está creando una nueva categoría hija.
     this.currentNode.set(node); // Establece el nodo actual para su edición.
     this.categoryForm.reset();
@@ -146,25 +154,25 @@ export class CategoryPage implements OnInit {
     // Modifica la propiedad parentID del formulario al ID del nodo seleccionado y parentName al nombre del nodo,
     this.categoryForm.patchValue({
       parentId: node.id as string,
-      parentName: node.label, 
+      parentName: node.label,
       userId: this.userID(),
       natureId: node.data?.nature.natureId,
     });
 
     this.categoryForm.controls.parentName.disable();
-    this.modalOpen.set(true);
+    this.modalFormOpen.set(true);
   }
 
   //edita la categoria
-  editCategory(node: TreeNode<Category>) {
+  editNodeCategory(node: TreeNode<Category>) {
     this.isNew.set(false); // Indica que se está editando una categoría existente.
     this.currentNode.set(node); // Establece el nodo actual para su edición.
 
     // Busca el nodo padre en el árbol utilizando el ID del padre almacenado en los datos del nodo actual.
     const parentNode = this.findNodeById(this.tree() ?? [], node.data?.parentId);
-    console.log("Nodo a editar:", node);
 
-
+    // Modifica los campos del formulario con los datos de la categoría seleccionada,
+    // incluyendo el nombre, descripción, naturaleza y el ID del padre.
     this.categoryForm.patchValue({
       name: node.data?.name,
       description: node.data?.description,
@@ -175,12 +183,13 @@ export class CategoryPage implements OnInit {
 
     this.categoryForm.updateValueAndValidity();
     this.categoryForm.controls.parentName.disable();
-    this.modalOpen.set(true);
+    this.modalFormOpen.set(true);
 
   }
 
   deleteCategory(node: TreeNode<Category>) {
-    console.log("Eliminar:", node.data);
+    this.currentNode.set(node); // Establece el nodo actual para su eliminación.
+    this.modalDeleteOpen.set(true); // Abre el modal de confirmación de eliminación.
   }
 
   //#endregion
@@ -212,25 +221,25 @@ export class CategoryPage implements OnInit {
   }
 
 
-  // Crea una nueva categoría utilizando los datos proporcionados y llama al servicio para guardarla. 
+  // Crea una nueva categoría utilizando los datos proporcionados y llama al servicio para guardarla.
   // Luego recarga el árbol de categorías y cierra el modal.
-  private saveCategory() {
+  saveCategory() {
     // Verifica si el formulario es válido antes de proceder con la creación de la categoría.
     if (!this.categoryForm.valid) {
       this.categoryForm.markAllAsTouched();
       this.apiErrors = ["Formulario no válido. Corrige los errores e inténtalo de nuevo."];
 
-      Object.keys(this.categoryForm.controls).forEach(key => {
-        const control = this.categoryForm.get(key);
-        console.log(key, control?.errors);
-      });
+      // Object.keys(this.categoryForm.controls).forEach(key => {
+      //   const control = this.categoryForm.get(key);
+      //   console.log(key, control?.errors);
+      // });
 
 
       return;
     }
 
     try {
-      // Crea un nuevo objeto de tipo CategoryRequestDTO 
+      // Crea un nuevo objeto de tipo CategoryRequestDTO
       // a partir de los valores del formulario.
       const newCategory = this.categoryForm.value as CategoryRequestDTO;
       console.log("Formulario a enviar:", newCategory);
@@ -241,8 +250,15 @@ export class CategoryPage implements OnInit {
           next: (response) => {
             this.CargarCategorias(); // Recargar el árbol después de crear la categoría
 
-            this.categoryForm.reset(); // Resetea el formulario para limpiar los campos
-            this.modalOpen.set(false); // Cerrar el modal
+            // Resetea el formulario para limpiar los campos y establecer el userId nuevamente
+            this.categoryForm.reset({
+              userId: this.userID()
+            });
+
+
+
+            // Cerrar el modal después de guardar la categoría
+            this.modalFormOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
             this.modalMessage.set(true);
@@ -255,7 +271,7 @@ export class CategoryPage implements OnInit {
   }
 
   //actualiza una categoría existente utilizando los datos proporcionados y llama al servicio para actualizarla.
-  private updateCategory() {
+  updateCategory() {
 
     console.log("Formulario a enviar:", this.categoryForm.value, this.currentNode()?.data?.categoryId!);
 
@@ -263,17 +279,17 @@ export class CategoryPage implements OnInit {
     if (!this.categoryForm.valid) {
       this.categoryForm.markAllAsTouched();
       this.apiErrors = ["Formulario no válido. Corrige los errores e inténtalo de nuevo."];
-      Object.keys(this.categoryForm.controls).forEach(key => {
-        const control = this.categoryForm.get(key);
-        console.log(key, control?.errors);
-      });
+      // Object.keys(this.categoryForm.controls).forEach(key => {
+      //   const control = this.categoryForm.get(key);
+      //   console.log(key, control?.errors);
+      // });
 
 
       return;
     }
 
     try {
-      // Crea un nuevo objeto de tipo CategoryRequestDTO 
+      // Crea un nuevo objeto de tipo CategoryRequestDTO
       // a partir de los valores del formulario.
       const updateCategory = this.categoryForm.value as CategoryRequestDTO;
 
@@ -283,8 +299,13 @@ export class CategoryPage implements OnInit {
           next: (response) => {
             this.CargarCategorias(); // Recargar el árbol después de actualizar la categoría
 
-            this.categoryForm.reset(); // Resetea el formulario para limpiar los campos
-            this.modalOpen.set(false); // Cerrar el modal
+            // Resetea el formulario para limpiar los campos y establecer el userId nuevamente
+            this.categoryForm.reset({
+              userId: this.userID()
+            });
+
+            // Cerrar el modal después de actualizar la categoría
+            this.modalFormOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
             this.modalMessage.set(true);
@@ -296,7 +317,23 @@ export class CategoryPage implements OnInit {
     }
   }
 
+  // Elimina una categoría existente utilizando su ID y llama al servicio para eliminarla.
+  deleteCategoryById() {
+    const id: string = this.currentNode()?.data?.categoryId!;
+    this.CategoriaServicio.delete(id)
+      .subscribe({
+        next: (response) => {
+          this.CargarCategorias(); // Recargar el árbol después de eliminar la categoría
 
+           // Cerrar el modal después de actualizar la categoría
+            this.modalDeleteOpen.set(false); // Cerrar el modal
+
+            // Mostrar mensaje de éxito
+            this.modalMessage.set(true);
+        },
+        error: (err) => { console.log(err); this.apiErrors = err.error.errors ?? ["Error desconocido"]; }
+      });
+  }
 
 
   // Convierte una lista de categorías en una estructura de árbol compatible con el componente TreeNodeComponent.

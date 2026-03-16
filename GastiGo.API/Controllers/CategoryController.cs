@@ -115,5 +115,23 @@ namespace GastiGo.API.Controllers
                 Data = item
             });
         }
+
+        /// <summary>
+        /// endpoint para eliminar una categoría de finanzas por su ID, 
+        /// validando que el ID sea válido y luego simula una operación asíncrona para eliminar la categoría de una base de datos.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _categoryService.DeleteCategoryAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Categoria eliminada correctamente",
+                Data = null
+            });
+        }
     }
 }

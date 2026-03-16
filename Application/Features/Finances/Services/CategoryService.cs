@@ -118,6 +118,33 @@ namespace Application.Features.Finances.Services
         }
 
         /// <summary>
+        /// da de baja una categoría, validando que la categoría exista 
+        /// no borra la categoría de la base de datos, sino que la marca como eliminada, lo que permite mantener un historial de categorías y evitar problemas de integridad referencial en caso de que otras entidades estén relacionadas con esa categoría.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task DeleteCategoryAsync(Guid id)
+        {
+            //validar si la categoria existe
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            if (existingCategory == null)
+                throw new ArgumentException("La categoría no existe.");
+
+            //ver si tiene subcategorias
+            var hasChildren = await _categoryRepository.HasChildrenAsync(id);
+
+            //si tiene subcategorias, no se puede eliminar
+            if (hasChildren)
+                throw new InvalidOperationException("Debe eliminar primero las subcategorías.");
+
+            //marcar como eliminada
+            existingCategory.MarkAsDeleted();
+            //guardar cambios
+            await _categoryRepository.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// busca las categorias de un usuario
         /// </summary>
         /// <param name="userId"></param>
@@ -156,7 +183,8 @@ namespace Application.Features.Finances.Services
                 ParentId = category.ParentId,
                 Nature = new NatureDTO { NatureId = category.Nature.Id, Name = category.Nature.Name, Abbre = category.Nature.Abbre },
                 Name = category.Name,
-                Description = category.Description
+                Description = category.Description,
+                IsDeleted = category.IsDeleted
             };
 
 
@@ -182,8 +210,9 @@ namespace Application.Features.Finances.Services
                     Name = x.Name,
                     Description = x.Description,
                     Level = level,
-                    Children = BuildTree(categories, x.Id, level + 1)
-                   
+                    Children = BuildTree(categories, x.Id, level + 1),
+                    IsDeleted = x.IsDeleted
+
                 })
                 .ToList();
         }

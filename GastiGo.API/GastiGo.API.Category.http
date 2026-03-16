@@ -5,9 +5,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
 
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Salario",
   "description": "Salario otorgado mensualmente"
 }
@@ -18,9 +18,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Inversión",
   "description": "Entrada por inversión"
 }
@@ -31,9 +31,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Discrecional",
   "description": "Otros tipos de entrada"
 }
@@ -47,9 +47,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Salario Básico",
   "description": "Salario básico mensual de ISSDHU"
 }
@@ -60,9 +60,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Salario Bruto",
   "description": "Salario bruto de ISSDHU"
 }
@@ -73,9 +73,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Salario Neto",
   "description": "Salario neto de ISSDHU despues de deducciones"
 }
@@ -87,9 +87,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Porcentaje por titulo",
   "description": "Porcentaje por titulo de posgrado 13%"
 }
@@ -100,9 +100,9 @@ Content-Type: application/json
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Viatico de alimentación",
   "description": "Viático de alimentación proporcionado como bono"
 }
@@ -114,9 +114,9 @@ Content-Type: application/json
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "5a538f8d-248a-422c-a329-536a99cb3de1",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "4d97e145-8267-4c93-b95a-50f3602427ba",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Antiguedad",
   "description": "Años de servicio en la compania desde agosto 2016"
 }
@@ -127,9 +127,9 @@ Content-Type: application/json
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e741f759-5b4b-4ca4-8ce3-920bfdf87f59",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "362175c2-2115-48c4-bf2f-779de40a4d3c",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Dividendos Invercasa",
   "description": "Dividendos proveniente de Invercasa 6% - 8%"
 }
@@ -140,9 +140,9 @@ Content-Type: application/json
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e741f759-5b4b-4ca4-8ce3-920bfdf87f59",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "362175c2-2115-48c4-bf2f-779de40a4d3c",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Dividendos Bancarios",
   "description": "Dividendos proveniente de BAC 2% anual"
 }
@@ -152,9 +152,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b974adba-3a0b-4d51-b0cf-7f59a20bbb96",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "362175c2-2115-48c4-bf2f-779de40a4d3c",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Viáticos",
   "description": "Viáticos de alimento y transporte"
 }
@@ -165,9 +165,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b974adba-3a0b-4d51-b0cf-7f59a20bbb96",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "362175c2-2115-48c4-bf2f-779de40a4d3c",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Regalos",
   "description": "Dinero extra por obsequios"
 }
@@ -178,9 +178,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b974adba-3a0b-4d51-b0cf-7f59a20bbb96",
-  "natureID": "846244f4-f71f-48ea-8c22-33c360b55650",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "362175c2-2115-48c4-bf2f-779de40a4d3c",
+  "natureID": "f1e9c692-e70c-4e5c-92a2-6908fe750f39",
   "name": "Freelance",
   "description": "Otros trabajos fuera de mi horario"
 }
@@ -192,9 +192,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
  
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Gastos Esenciales",
   "description": "Gastos esenciales para subsistir"
 }
@@ -203,9 +203,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Gastos Fijos",
   "description": "Gastos fijos que se debe de pagar"
 }
@@ -216,9 +216,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
   "parentID": null,
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Gastos Discrecional",
   "description": "Gastos no esenciales, facil de vivir si eso"
 }
@@ -228,9 +228,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Alimentación",
   "description": "Gasto para la comida del hogar"
 }
@@ -240,9 +240,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Servicio eléctrico",
   "description": "Pago de factura de luz"
 }
@@ -252,9 +252,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Servicio de internet",
   "description": "Pago de factura de internet"
 }
@@ -264,9 +264,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Servicio de internet telefono",
   "description": "Pago de internet telefono"
 }
@@ -277,9 +277,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Medicamentos",
   "description": "Compra de medicamentos"
 }
@@ -290,9 +290,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Pasaje de autobus",
   "description": "Pago de pasaje de bus, ida y vuelta"
 }
@@ -303,9 +303,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "b9686fdf-9c6e-4662-b5da-17e8b7b07406",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "83c16ada-244d-47f3-9b2c-1dc4edd8579e",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Mantenimiento",
   "description": "Pago de reparaciones del hogar"
 }
@@ -318,9 +318,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
  
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "d2794273-3284-4e48-9d74-3828a2ca6af7",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "2eba37bf-4bb9-4a19-998e-7aea9b3932bc",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Seguro INSS",
   "description": "Pago de seguro laboral 7%"
 }
@@ -330,9 +330,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "d2794273-3284-4e48-9d74-3828a2ca6af7",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "2eba37bf-4bb9-4a19-998e-7aea9b3932bc",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "IR",
   "description": "Pago de la mayor estafa del pais, IR"
 }
@@ -342,9 +342,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "d2794273-3284-4e48-9d74-3828a2ca6af7",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "2eba37bf-4bb9-4a19-998e-7aea9b3932bc",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Préstamos",
   "description": "Préstamos adquiridos en bancos"
 }
@@ -354,9 +354,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "d2794273-3284-4e48-9d74-3828a2ca6af7",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "2eba37bf-4bb9-4a19-998e-7aea9b3932bc",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Seguro de tarjeta de débito/crédito",
   "description": "Seguro de tarjetas bancarias"
 }
@@ -366,9 +366,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "d2794273-3284-4e48-9d74-3828a2ca6af7",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "2eba37bf-4bb9-4a19-998e-7aea9b3932bc",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Pago de lotes",
   "description": "Pago mensual para la adquisición de lotes"
 }
@@ -381,9 +381,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Taxi",
   "description": "Pago de taxi"
 }
@@ -393,9 +393,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Tarifa",
   "description": "Cualquier tipo de tarifa por transacción"
 }
@@ -405,9 +405,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Compras supermercado",
   "description": "Compra de supermercado para uso persona"
 }
@@ -417,9 +417,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Asistencia",
   "description": "Asistencia de tercero como plancha, lavado, etc"
 }
@@ -429,9 +429,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Salida al cine",
   "description": "Salida al cine, incluye palomitas y soda"
 }
@@ -441,9 +441,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Comida afuera",
   "description": "Comida en fritanga, restaurantes, hoteles"
 }
@@ -453,9 +453,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Snacks",
   "description": "Chiverias"
 }
@@ -465,9 +465,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Apuestas",
   "description": "Apuestar perdidas"
 }
@@ -478,9 +478,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Ropa",
   "description": "Compra de piezas ropa"
 }
@@ -490,9 +490,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Libros",
   "description": "Compra de Libros"
 }
@@ -503,9 +503,9 @@ POST {{GastiGo.API_HostAddress}}/api/finance/categories
 Content-Type: application/json
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Celebraciones",
   "description": "Participacion de celebraciones"
 }
@@ -519,9 +519,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Cosmetico y belleza",
   "description": "Productos de cosmetica y cuidado personal"
 }
@@ -532,9 +532,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Corte de pelo",
   "description": "Servicios de barberia o peluqueria"
 }
@@ -545,9 +545,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Viajes",
   "description": "Gastos relacionados con viajes y turismo"
 }
@@ -558,9 +558,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Videojuegos",
   "description": "Compra de videojuegos y servicios relacionados"
 }
@@ -571,9 +571,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Cursos",
   "description": "Cursos, capacitaciones y educacion"
 }
@@ -584,9 +584,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Muebles y Hogar",
   "description": "Compra de muebles y articulos para el hogar"
 }
@@ -597,9 +597,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Tecnologia",
   "description": "Compra de dispositivos y tecnologia"
 }
@@ -610,9 +610,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Zanganaderia",
   "description": "Servicios personales"
 }
@@ -623,9 +623,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Otros servicios",
   "description": "Otros servicios no clasificados"
 }
@@ -636,9 +636,9 @@ Content-Type: application/json
 
 {
   
-  "userID": "e35452d3-7ff1-4489-8b1d-912e7c6e78fc",
-  "parentID": "e89b4e5c-bc23-421e-9171-925c95342f20",
-  "natureID": "4edeb4ff-74c3-4abc-8008-660dfdd3e583",
+  "userID": "c502b17e-a322-4df7-ad25-75a11bc2ac2d",
+  "parentID": "aabd7486-6f93-43fe-b64d-23206b8af763",
+  "natureID": "129a7622-4437-42d1-8e16-0e9ce1a65e2e",
   "name": "Ayudas económicas",
   "description": "Actos de filantropia"
 }
