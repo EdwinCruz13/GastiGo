@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<List<Category>> GetByUserIdAsync(Guid userId)
         {
-            return await _context.Categories.Where(x => x.UserId == userId && x.IsDeleted == false).Include(n => n.Nature).ToListAsync();
+            return await _context.Categories.Where(x => x.UserId == userId).Include(n => n.Nature).ToListAsync();
         }
 
        
@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories.Finances
         public async Task<bool> HasChildrenAsync(Guid parentId)
         {
             return await _context.Categories
-                .AnyAsync(x => x.ParentId == parentId && x.IsDeleted);
+                .AnyAsync(x => x.ParentId == parentId && x.isActive);
         }
 
         public async Task SaveChangesAsync()

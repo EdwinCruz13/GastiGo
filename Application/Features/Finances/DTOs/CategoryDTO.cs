@@ -17,18 +17,11 @@ namespace Application.Features.Finances.DTOs
         public Guid NatureId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        
-    }
+        public Boolean isActive { get; set; }
 
-    /// <summary>
-    /// clase que representa un DTO (Data Transfer Object) para la baja de una categoría en el contexto de finanzas.
-    /// </summary>
-    public class CategoriaBajaDTO
-    {
-        public Guid CategoryId { get; set; }
-        public Guid UserId { get; set; }
-        public Boolean IsDeleted { get; set; }
-    }
+}
+
+
 
     /// <summary>
     /// clase que representa un DTO (Data Transfer Object) para la respuesta de una categoría en el contexto de finanzas, 
@@ -44,6 +37,6 @@ namespace Application.Features.Finances.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public int Level { get; set; }
-        public Boolean IsDeleted { get; set; }
+        public Boolean isActive { get; set; }
     }
 }

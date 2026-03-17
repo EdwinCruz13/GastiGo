@@ -26,7 +26,7 @@ namespace Domain.Features.Finances.Entities
 
         public ICollection<Category> Subcategories { get; private set; } = new List<Category>();
 
-        public Boolean IsDeleted { get; private set; } = false;
+        public Boolean isActive { get; private set; } = false;
 
         private Category() { } // EF
 
@@ -46,15 +46,16 @@ namespace Domain.Features.Finances.Entities
             Name = name;
             Description = description;
             ParentId = parentId;
-            IsDeleted = false;
+            isActive = true;
         }
 
-        public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId)
+        public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId, bool isActive)
         {
             Name = name;
             Description = description;
             NatureId = natureId;
             ParentId = parentId;
+            this.isActive = isActive;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Domain.Features.Finances.Entities
         /// </summary>
         public void MarkAsDeleted()
         {
-           IsDeleted = true;
+           isActive = false;
         }
     }
 }

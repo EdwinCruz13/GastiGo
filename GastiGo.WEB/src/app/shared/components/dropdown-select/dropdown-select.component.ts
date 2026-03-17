@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+
 @Component({
   selector: 'app-dropdown-select',
   templateUrl: './dropdown-select.component.html'
@@ -21,6 +22,13 @@ export class DropdownSelectComponent<T> {
   onChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.valueChange.emit(select.value);
+
+    
+    let value: any = select.value;
+    if (value === 'true') value = true;
+    if (value === 'false') value = false;
+
+    this.valueChange.emit(value);
 
   }
 

@@ -111,7 +111,8 @@ namespace Application.Features.Finances.Services
                  category.Name,
                  category.Description,
                  category.NatureId,
-                 category.ParentId
+                 category.ParentId,
+                 category.isActive
              );
 
              await _categoryRepository.SaveChangesAsync();
@@ -184,7 +185,7 @@ namespace Application.Features.Finances.Services
                 Nature = new NatureDTO { NatureId = category.Nature.Id, Name = category.Nature.Name, Abbre = category.Nature.Abbre },
                 Name = category.Name,
                 Description = category.Description,
-                IsDeleted = category.IsDeleted
+                isActive = category.isActive
             };
 
 
@@ -211,7 +212,7 @@ namespace Application.Features.Finances.Services
                     Description = x.Description,
                     Level = level,
                     Children = BuildTree(categories, x.Id, level + 1),
-                    IsDeleted = x.IsDeleted
+                    isActive = x.isActive
 
                 })
                 .ToList();

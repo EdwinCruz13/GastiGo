@@ -9,6 +9,7 @@ export interface Category {
   parentId?: string | null;
   level: number,
   children?: Category[];
+  isActive: boolean;
 }
 
 export interface CategoryRequestDTO {
@@ -17,4 +18,5 @@ export interface CategoryRequestDTO {
   name: string;
   description: string;
   natureId: string;
+  isActive: boolean;
 }

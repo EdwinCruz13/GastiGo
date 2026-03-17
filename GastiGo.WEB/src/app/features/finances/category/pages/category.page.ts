@@ -13,6 +13,7 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { DropdownSelectComponent } from '@shared/components/dropdown-select/dropdown-select.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@core/services/auth/auth.service';
+import { State } from '@core/models/common/state.model';
 
 @Component({
   selector: 'app-category-tree',
@@ -52,10 +53,14 @@ export class CategoryPage implements OnInit {
   modalDeleteOpen = signal(false);
 
   // Variable para mostrar un mensaje de éxito después de guardar una categoría.
-  modalMessage = signal(false);
+  modalAlert = signal(false);
+  modalMessageText = signal("¡Categoría guardada con éxito!");
 
   // Variable para almacenar los errores de la API y mostrarlos en la interfaz.
   apiErrors: string[] = [];
+
+  // Variable para almacenar el estado de activación de la categoría.
+  Estados = signal<State[]>([{ id: true, name: 'Activo' },{ id: false, name: 'Inactivo' }]);
 
 
   // Inyecta el servicio FormBuilder para crear el formulario de categoría con validaciones.
@@ -66,7 +71,8 @@ export class CategoryPage implements OnInit {
     userId: [this.AuthServicio.userId()], //campo de ID de usuario sin validación, se establece con el ID del usuario autenticado
     natureId: [null as string | null, Validators.required], //campo de ID de naturaleza con validación de requerido
     name: ['', [Validators.required, Validators.nullValidator]], //campo de nombre con validación de requerido
-    description: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]] //campo de descripción con validación de requerido y longitud mínima de 6 caracteres
+    description: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]], //campo de descripción con validación de requerido y longitud mínima de 6 caracteres
+    isActive: [null as boolean | null, Validators.required] //campo de activación con valor por defecto true
   });
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +121,7 @@ export class CategoryPage implements OnInit {
       .subscribe({
         next: (response) => {
           this.natures.set(response.data);
-          console.log("Naturalezas cargadas:", response.data);
+          //console.log("Naturalezas cargadas:", response.data);
 
         },
         error: (err) => console.log(err)
@@ -137,7 +143,8 @@ export class CategoryPage implements OnInit {
     // indicando que se está creando una categoría raíz sin un padre específico.
     this.categoryForm.patchValue({
       parentId: null,
-      parentName: 'Categoría raíz'
+      parentName: 'Categoría raíz',
+      isActive: true,
     });
     this.categoryForm.controls.parentName.disable();
 
@@ -157,6 +164,7 @@ export class CategoryPage implements OnInit {
       parentName: node.label,
       userId: this.userID(),
       natureId: node.data?.nature.natureId,
+      isActive: true
     });
 
     this.categoryForm.controls.parentName.disable();
@@ -177,6 +185,7 @@ export class CategoryPage implements OnInit {
       name: node.data?.name,
       description: node.data?.description,
       natureId: node.data?.nature.natureId,
+      isActive: node.data?.isActive ?? null,
       parentId: node.data?.parentId ?? null,
       parentName: parentNode?.label ?? ""
     });
@@ -202,6 +211,12 @@ export class CategoryPage implements OnInit {
   onCategoryChange(value: string) {
     this.categoryForm.patchValue({
       natureId: value
+    });
+  }
+
+  onStateChange(value: boolean) { 
+    this.categoryForm.patchValue({
+      isActive: value
     });
   }
   //#endregion
@@ -258,10 +273,11 @@ export class CategoryPage implements OnInit {
 
 
             // Cerrar el modal después de guardar la categoría
+            this.modalMessageText.set("¡Categoría creada con éxito!"); // Establece el mensaje de éxito para el modal
             this.modalFormOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
-            this.modalMessage.set(true);
+            this.modalAlert.set(true);
           },
           error: (err) => { console.log(err); this.apiErrors = err.error.errors ?? ["Error desconocido"]; }
         });
@@ -308,7 +324,8 @@ export class CategoryPage implements OnInit {
             this.modalFormOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
-            this.modalMessage.set(true);
+            this.modalMessageText.set("¡Categoría actualizada con éxito!"); // Establece el mensaje de éxito para el modal
+            this.modalAlert.set(true);
           },
           error: (err) => { console.log(err); this.apiErrors = err.error.errors ?? ["Error desconocido"]; }
         });
@@ -329,7 +346,8 @@ export class CategoryPage implements OnInit {
             this.modalDeleteOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
-            this.modalMessage.set(true);
+            this.modalMessageText.set("¡Categoría eliminada con éxito!"); // Establece el mensaje de éxito para el modal
+            this.modalAlert.set(true);
         },
         error: (err) => { console.log(err); this.apiErrors = err.error.errors ?? ["Error desconocido"]; }
       });

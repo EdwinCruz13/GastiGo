@@ -98,16 +98,16 @@ namespace GastiGo.API.Controllers
         public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
         {
             var item = await _categoryService.GetCategoriesByUserIdAsync(userId);
-            if (item == null || !item.Any())
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "No se encontraron categorías para el usuario especificado",
-                    Data = null,
-                    Errors = new List<string> { $"No se encontraron categorías para el usuario con ID {userId}." }
-                });
-            }
+            //if (item == null || !item.Any())
+            //{
+            //    return NotFound(new ApiResponse<object>
+            //    {
+            //        Success = false,
+            //        Message = "No se encontraron categorías para el usuario especificado",
+            //        Data = null,
+            //        Errors = new List<string> { $"No se encontraron categorías para el usuario con ID {userId}." }
+            //    });
+            //}
             return Ok(new ApiResponse<object>
             {
                 Success = true,
