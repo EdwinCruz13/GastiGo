@@ -1,6 +1,6 @@
 <div class="dropdown-wrapper">
     <select class="dropdown-select" [value]="selectedValue" (change)="onChange($event)">
-        <option value="0">{{placeholder}}</option>
+        <option value="00">{{placeholder}}</option>
         @for (item of items; track item) {
         <option [value]="item[valueField]">
             {{ item[labelField] }}

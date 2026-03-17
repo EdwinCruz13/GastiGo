@@ -19,14 +19,15 @@
 
     <nav class="menu">
       @for (item of menu.menuItems; track item.route) {
+
         <a
           class="menu-item"
           [routerLink]="item.route"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
+          [title]="item.label"
         >
           <span class="menu-icon"><i [class]="item.icon" ></i></span>
-
           @if (!layout.collapsed()) {
             <span class="menu-label">{{ item.label }}</span>
           }

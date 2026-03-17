@@ -26,6 +26,7 @@ export class TreeNodeComponent<T>  {
 
   // Alterna el estado de expansión del nodo para mostrar u ocultar sus hijos.
   selectNode(node: TreeNode) {
+    console.log('Selected node:', node);
     this.selectedNode.set(node);
     this.expanded.update(v => !v);
   }

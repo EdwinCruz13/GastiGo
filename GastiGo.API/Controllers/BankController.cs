@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,41 @@ namespace GastiGo.API.Controllers
         }
 
         /// <summary>
+        /// crea un nuevo banco
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Create(BankDTO response)
+        {
+            await _bankService.CreateBankAsync(response);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Banco creado correctamente",
+                Data = null
+            });
+        }
+
+        /// <summary>
+        /// actualiza el banco
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(Guid id, BankDTO response)
+        {
+            await _bankService.UpdateBankAsync(id, response);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Banco actualizado correctamente",
+                Data = null
+            });
+        }
+
+        /// <summary>
         /// obtiene todas las bnacos, si no se encuentran devuelve un mensaje de error,
         /// </summary>
         /// <returns></returns>
@@ -25,12 +61,14 @@ namespace GastiGo.API.Controllers
         {
             var banks = await _bankService.GetAllBanksAsync();
 
-            if (banks == null)
+            // Si no se encuentran bancos, devuelve un mensaje de error,
+            // pero no es un error del servidor, sino una respuesta válida indicando que no hay datos disponibles.
+            if (banks == null || !banks.Any())
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
-                    Message = "No existe bancos registrados",
+                    Message = "No existen bancos registrados",
                     Data = null,
                     Errors = new List<string> { "No se encontraron bancos en la base de datos." }
                 });
@@ -56,7 +94,7 @@ namespace GastiGo.API.Controllers
             var bank = await _bankService.GetBankByIdAsync(id);
             if (bank == null)
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Banco no encontrado",

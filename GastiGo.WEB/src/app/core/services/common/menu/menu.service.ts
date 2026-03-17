@@ -16,6 +16,7 @@ export class MenuService {
     { label: 'Cuentas',       icon: 'fa-solid fa-file-zipper', route: '/accounts' },
     { label: 'Transacciones', icon: 'fa-solid fa-money-bill-transfer', route: '/transactions' },
     { label: 'Categorías',    icon: 'fa-solid fa-layer-group', route: '/categories' },
+    { label: 'Bancos',        icon: 'fa-solid fa-university', route: '/banks' },
     { label: 'Configuración', icon: 'fa-solid fa-address-card', route: '/settings' }
   ];
 
@@ -45,6 +46,11 @@ export class MenuService {
 
     if (path.includes('/categories')) {
       this.pageTitle.set('Categorías');
+      return;
+    }
+
+    if (path.includes('/banks')) {
+      this.pageTitle.set('Bancos');
       return;
     }
 

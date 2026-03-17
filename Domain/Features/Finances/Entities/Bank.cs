@@ -1,6 +1,7 @@
 ﻿using Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,19 @@ namespace Domain.Features.Finances.Entities
             Name = name;
             Abbre = abbre;
             TransferFee = transferFee;
+        }
+
+        /// <summary>
+        /// actualiza el nombre, la abreviatura y la tarifa de transferencia del banco, lo que permite modificar la información del banco según sea necesario.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="abre"></param>
+        /// <param name="transferFee"></param>
+        public void Update(string name, string abre, double transferFee)
+        {
+            this.Name = name;
+            this.Abbre = abre;
+            this.TransferFee = transferFee;
         }
 
         /// <summary>

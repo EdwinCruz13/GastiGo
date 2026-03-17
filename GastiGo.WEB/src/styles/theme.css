@@ -5,7 +5,7 @@
   --sidebar-active: #d94b45;
   --header-bg: #ffffff;
   --header-border: #e5e7eb;
-  --content-bg: #f5f7fb;
+  --content-bg: #fff;
   --card-bg: #ffffff;
   --text-primary: #172033;
   --text-secondary: #6b7280;
@@ -13,6 +13,8 @@
   --brand-red: #d94b45;
   --brand-blue: #2575fc;
   --brand-blue-dark: #0f2b4c;
+
+  --border-color-table: #e5e7eb;
 
 
   --node-hover: #0f2b4c;
@@ -83,7 +85,8 @@
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.25);
   --shadow-dropdown: 0 14px 34px rgba(0, 0, 0, 0.35);
 
-  
+  --border-color-table: #dee2e9;
+
   --node-hover: #2a3441;
 
   --btn-primary-bg: #3b82f6;

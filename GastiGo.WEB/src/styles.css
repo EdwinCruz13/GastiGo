@@ -1,12 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
 @import './styles/theme.css';
 @import './styles/button.css';
 @import './styles/modal.css';
 @import './styles/form.css';
 @import './styles/dropdown.css';
+@import './styles/table.css';
 @import './styles/tree-node.css';
 
+
+
+
+
+body{
+  font-family: 'Inter', sans-serif, Arial;
+  background-color: #0f172a;
+  color: #e5e7eb;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 .container {
   padding: 16px;

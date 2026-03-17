@@ -25,10 +25,12 @@ import { State } from '@core/models/common/state.model';
     DropdownSelectComponent,
     ReactiveFormsModule
   ],
-  templateUrl: './category.page.html',
-  styleUrls: ['./category.page.css']
+  templateUrl: './category.page.html'
 })
 export class CategoryPage implements OnInit {
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region Declaración de Variables y servicios
+  ///////////////////////////////////////////////////////////////////////////////////////
 
   // Inyecta los servicios de categoría y naturaleza para interactuar con la API
   // y obtener datos relacionados con las categorías y naturalezas.
@@ -54,7 +56,7 @@ export class CategoryPage implements OnInit {
 
   // Variable para mostrar un mensaje de éxito después de guardar una categoría.
   modalAlert = signal(false);
-  modalMessageText = signal("¡Categoría guardada con éxito!");
+  modalMessageText = signal("");
 
   // Variable para almacenar los errores de la API y mostrarlos en la interfaz.
   apiErrors: string[] = [];
@@ -74,6 +76,10 @@ export class CategoryPage implements OnInit {
     description: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]], //campo de descripción con validación de requerido y longitud mínima de 6 caracteres
     isActive: [null as boolean | null, Validators.required] //campo de activación con valor por defecto true
   });
+
+
+  //#endregion
+
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
   //#region eventos load
@@ -141,6 +147,7 @@ export class CategoryPage implements OnInit {
 
     //modifica la propiedad parentId del formulario a null y parentName a "Categoría raíz",
     // indicando que se está creando una categoría raíz sin un padre específico.
+    this.categoryForm.reset();
     this.categoryForm.patchValue({
       parentId: null,
       parentName: 'Categoría raíz',
@@ -214,13 +221,16 @@ export class CategoryPage implements OnInit {
     });
   }
 
-  onStateChange(value: boolean) { 
+  onStateChange(value: boolean) {
     this.categoryForm.patchValue({
       isActive: value
     });
   }
   //#endregion
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region Operaciones de CRUD
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
   onSubmit() {
     // si es nuevo entonces guardar categoria
@@ -270,13 +280,11 @@ export class CategoryPage implements OnInit {
               userId: this.userID()
             });
 
-
-
-            // Cerrar el modal después de guardar la categoría
-            this.modalMessageText.set("¡Categoría creada con éxito!"); // Establece el mensaje de éxito para el modal
+            // Cerrar el modal después de crear la categoría
             this.modalFormOpen.set(false); // Cerrar el modal
 
             // Mostrar mensaje de éxito
+            this.modalMessageText.set("¡Categoría creada con éxito!"); // Establece el mensaje de éxito para el modal
             this.modalAlert.set(true);
           },
           error: (err) => { console.log(err); this.apiErrors = err.error.errors ?? ["Error desconocido"]; }
@@ -353,6 +361,11 @@ export class CategoryPage implements OnInit {
       });
   }
 
+  //#endregion
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region Utilidades
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Convierte una lista de categorías en una estructura de árbol compatible con el componente TreeNodeComponent.
   private mapCategoryToTree(categories: Category[]): TreeNode<Category>[] {
@@ -362,6 +375,7 @@ export class CategoryPage implements OnInit {
       label: cat.name,
       level: cat.level,
       type: cat.nature.abbre,
+      isActive: cat.isActive,
       data: cat,
       children: this.mapCategoryToTree(cat.children ?? [])
     }));
@@ -380,5 +394,7 @@ export class CategoryPage implements OnInit {
 
     return null;
   }
+
+  //#endregion
 
 }

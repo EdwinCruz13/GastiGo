@@ -11,21 +11,21 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
   // esta ruta es la url del proyecto
-  private api = environment.apiUrl;
+  private api = `${environment.apiUrl}/finance/categories`;
 
   constructor(private http: HttpClient) {}
 
   // obtiene el árbol de categorías para un usuario específico, utilizando su ID.
   // Retorna un observable con la respuesta de la API que contiene un array de categorías.
   getTree(userId: string) {
-    return this.http.get<ApiResponse<Category[]>>(`${this.api}/finance/categories?userId=${userId}`);
+    return this.http.get<ApiResponse<Category[]>>(`${this.api}?userId=${userId}`);
   }
 
   // crea una nueva categoría enviando los datos de la categoría al endpoint de la API.
   // Retorna un observable con la respuesta de la API que contiene la categoría creada.
   create(category: CategoryRequestDTO): Observable<ApiResponse<object>> {
     return this.http.post<ApiResponse<object>>(
-      `${this.api}/finance/categories`,
+      `${this.api}`,
       category
     );
   }
@@ -35,7 +35,7 @@ export class CategoryService {
   update(id: string, category: CategoryRequestDTO): Observable<ApiResponse<object>>
   {
     return this.http.put<ApiResponse<object>>(
-      `${this.api}/finance/categories/${id}`,
+      `${this.api}/${id}`,
       category
     );
   }
@@ -45,7 +45,7 @@ export class CategoryService {
   delete(id: string): Observable<ApiResponse<object>>
   {
     return this.http.delete<ApiResponse<object>>(
-      `${this.api}/finance/categories/${id}`
+      `${this.api}/${id}`
     );
   }
 

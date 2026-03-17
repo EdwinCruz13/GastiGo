@@ -1,0 +1,180 @@
+.table-container {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color-table);
+  box-shadow: 0px 0px 2px #000;
+}
+
+/* TOOLBAR */
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 280px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--input-placeholder);;
+  background: var(--bg-input);
+  color: var(--text-input);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--focus-border);
+  box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+/* TABLA */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+   box-sizing: border-box;
+}
+
+/* HEADER */
+.custom-table thead {
+  background: transparent;
+}
+
+.custom-table th {
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* BODY */
+.custom-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* FILAS */
+.custom-table tbody tr {
+  transition: all 0.2s ease;
+   box-sizing: border-box;
+}
+
+.custom-table tbody tr:hover {
+  background: var(--border-color);
+  cursor: pointer;
+}
+
+/* CELDAS LARGAS */
+.custom-table td {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: wrap;
+}
+
+/* ACCIONES */
+.custom-table .actions {
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+
+
+
+  color: var(--btn-secondary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.custom-table .actions i {
+  font-size: 14px;
+  color: inherit;
+
+}
+
+.custom-table .actions button {
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--btn-secondary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-table .actions button:hover {
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+.custom-table .actions .view-button { /* view */
+  color: #3b82f6;
+}
+
+.custom-table .actions .edit-button { /* edit */
+  color: #f59e0b;
+}
+
+.custom-table .actions .delete-button { /* delete */
+  color: #ef4444;
+}
+
+
+/* 📄 PAGINACIÓN */
+.table-container .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 14px;
+  gap: 10px;
+}
+
+.table-container .pagination button {
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  padding: 6px 12px;
+  color: var(--btn-secondary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+
+
+.table-container .pagination button:hover:not(:disabled) {
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+.table-container .pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.table-container .pagination span {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* 🧾 FILAS ALTERNAS */
+.custom-table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.app-shell.dark .custom-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+

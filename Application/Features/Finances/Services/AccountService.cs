@@ -53,7 +53,7 @@ namespace Application.Features.Finances.Services
                         Symbol = account.Currecy.Symbol,
                         Code = account.Currecy.Code
                     },
-                    Bank = new BankDTO
+                    Bank = new BankResponseDTO
                     {
                         BankId = account.Bank.BankId,
                         Name = account.Bank.Name,
@@ -114,7 +114,7 @@ namespace Application.Features.Finances.Services
                         Symbol = account.Currecy.Symbol,
                         Code = account.Currecy.Code
                     },
-                    Bank = new BankDTO
+                    Bank = new BankResponseDTO
                     {
                         BankId = account.Bank.BankId,
                         Name = account.Bank.Name,

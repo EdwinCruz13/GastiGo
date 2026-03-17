@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="toolbar-options">
+    <button class="btn btn-primary" (click)="addBank()">
+      <i class="fa-solid fa-plus"></i>
+      Nueva Banco
+    </button>
+  </div>
+
+  <app-table
+    [data]="banks()"
+    [actions]="['edit', 'delete']"
+    (edit)="editBank($event)"
+    (delete)="deleteBank($event)"
+  >
+  </app-table>
+</div>
+
+
+<app-modal [open]="modalFormOpen()" (close)="modalFormOpen.set(false)">
+
+  <div modal-header>
+    <span>{{ title() }}</span>
+    <button (click)="modalFormOpen.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div modal-body>
+    <form id="bankForm" class="form" [formGroup]="bankForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">
+          Nombre
+        </label>
+        <input type="text" class="form-input" placeholder="Nombre del banco" formControlName="name"
+          autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Abreviatura
+        </label>
+
+       <input type="text" class="form-input" placeholder="Abreviatura del banco" formControlName="abbre"
+          autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Tarifa de transferencia
+        </label>
+
+        <input type="number" class="form-input" placeholder="Tarifa de transferencia" formControlName="transferFee"
+          autocomplete="off" min="0.1" step="0.01">
+      </div>
+
+
+    </form>
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-secondary" (click)="modalFormOpen.set(false)">
+      Cancelar
+    </button>
+
+    <button type="submit" form="bankForm" class="btn btn-primary">
+      Guardar
+    </button>
+
+  </div>
+</app-modal>
+
+
+
+<!-- Modal para visualizar el mensaje -->
+<app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
+  <div modal-header>
+    <span>Mensaje</span>
+    <button (click)="modalAlert.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div modal-body>
+      {{modalMessageText()}}
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-danger" (click)="modalAlert.set(false)">
+      Cerrar
+    </button>
+  </div>
+</app-modal>

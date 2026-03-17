@@ -3,6 +3,7 @@ export interface TreeNode<T = any> {
   label: string;
   level: number;
   type: string;
+  isActive?: boolean;
   data?: T;
   children?: TreeNode<T>[];
 }

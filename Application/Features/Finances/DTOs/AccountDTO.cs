@@ -22,7 +22,7 @@ namespace Application.Features.Finances.DTOs
         public UserDTO User { get; set; } = default!;
         public AccountTypeDTO AccountType { get; set; } = default!;
         public CurrencyDTO Currecy { get; set; } = default!;
-        public BankDTO Bank { get; set; } = default!;
+        public BankResponseDTO Bank { get; set; } = default!;
 
         public String Name { get; set; }
         public String Description { get; set; }

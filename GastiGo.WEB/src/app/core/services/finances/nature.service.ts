@@ -4,6 +4,7 @@ import { Nature } from '@core/models/finances/nature.model';
 import { environment } from '@env/environment';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '@core/models/common/api-response.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class NatureService {
   constructor(private http: HttpClient) {}
 
   //obtiene todas naturalezas de la base de datos
-  getAll() {
+  getAll() : Observable<ApiResponse<Nature[]>> {
     return this.http.get<ApiResponse<Nature[]>>(`${this.api}/finance/natures`);
   }
 

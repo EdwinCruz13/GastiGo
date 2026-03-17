@@ -71,7 +71,7 @@ namespace GastiGo.API.Controllers
             var list = await _categoryService.GetCategoryByIdAsync(id);
             if (list == null)
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Categoria no encontrada",
@@ -98,16 +98,19 @@ namespace GastiGo.API.Controllers
         public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
         {
             var item = await _categoryService.GetCategoriesByUserIdAsync(userId);
-            //if (item == null || !item.Any())
-            //{
-            //    return NotFound(new ApiResponse<object>
-            //    {
-            //        Success = false,
-            //        Message = "No se encontraron categorías para el usuario especificado",
-            //        Data = null,
-            //        Errors = new List<string> { $"No se encontraron categorías para el usuario con ID {userId}." }
-            //    });
-            //}
+
+            // Si no se encuentran categorías para el usuario especificado, devuelve un mensaje de error,
+            // pero no es un error del servidor, sino una respuesta válida indicando que no hay datos disponibles para ese usuario.
+            if (item == null || !item.Any())
+            {
+                return Ok(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "No se encontraron categorías para el usuario especificado",
+                    Data = null,
+                    Errors = new List<string> { $"No se encontraron categorías para el usuario con ID {userId}." }
+                });
+            }
             return Ok(new ApiResponse<object>
             {
                 Success = true,

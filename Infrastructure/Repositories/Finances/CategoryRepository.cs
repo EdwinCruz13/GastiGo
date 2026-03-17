@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<List<Category>> GetByUserIdAsync(Guid userId)
         {
-            return await _context.Categories.Where(x => x.UserId == userId).Include(n => n.Nature).ToListAsync();
+            return await _context.Categories.Where(x => x.UserId == userId).Include(n => n.Nature).OrderByDescending(x => x.Nature.Name).ThenBy(x => x.CreatedAt).ToListAsync();
         }
 
        

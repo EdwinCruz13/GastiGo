@@ -3,6 +3,7 @@
 using Application.Features.Finances.Interfaces;
 using Domain.Features.Finances.Entities;
 using Infrastructure.Persistence;
+using Application.Features.Finances.DTOs;
 
 
 
@@ -21,6 +22,16 @@ namespace Infrastructure.Repositories.Finances
             _context = context;
         }
 
+        public async Task AddAsync(Bank bankCreateDTO)
+        {
+            await _context.Banks.AddAsync(bankCreateDTO);
+        }
+
+        public Task UpdateAsync(Bank bankUpdateDTO)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Bank?>> GetAllBanksAsync()
         {
             return await _context.Banks.ToListAsync();
@@ -30,5 +41,12 @@ namespace Infrastructure.Repositories.Finances
         {
             return await _context.Banks.FirstOrDefaultAsync(b => b.Id == id);
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        
     }
 }
