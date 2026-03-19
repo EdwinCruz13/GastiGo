@@ -14,8 +14,8 @@ namespace Domain.Features.Finances.Entities
         public Guid AccountTypeId { get; private set; }
         public AccountType AccountType { get; private set; } = default!;
 
-        public Guid CurrecyId { get; private set; }
-        public Currency Currecy { get; private set; } = default!;
+        public Guid CurrencyId { get; private set; }
+        public Currency Currency { get; private set; } = default!;
 
         public Guid BankId { get; private set; }
         public Bank Bank { get; private set; } = default!;
@@ -30,7 +30,7 @@ namespace Domain.Features.Finances.Entities
         {
             UserId = userId;
             AccountTypeId = accountTypeId;
-            CurrecyId = currecyId;
+            CurrencyId = currecyId;
             BankId = bankId;
             Name = name;
             Description = description;

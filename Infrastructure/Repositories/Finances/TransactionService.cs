@@ -36,7 +36,7 @@ namespace Infrastructure.Repositories.Finances
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
                 .Include(c => c.Category)
-                .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currecy).Include(a => a.Account.AccountType).Include(a => a.Account.User)
+                .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currency).Include(a => a.Account.AccountType).Include(a => a.Account.User)
                 .ToListAsync();
         }
 
@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories.Finances
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
                 .Include(c => c.Category)
-                .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currecy).Include(a => a.Account.AccountType).Include(a => a.Account.User)
+                .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currency).Include(a => a.Account.AccountType).Include(a => a.Account.User)
                 .FirstOrDefaultAsync();
         }
 

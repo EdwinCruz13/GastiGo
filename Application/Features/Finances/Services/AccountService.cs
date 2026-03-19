@@ -48,10 +48,10 @@ namespace Application.Features.Finances.Services
                     },
                     Currecy = new CurrencyDTO
                     {
-                        CurrencyId = account.CurrecyId,
-                        Name = account.Currecy.Name,
-                        Symbol = account.Currecy.Symbol,
-                        Code = account.Currecy.Code
+                        CurrencyId = account.CurrencyId,
+                        Name = account.Currency.Name,
+                        Symbol = account.Currency.Symbol,
+                        Code = account.Currency.Code
                     },
                     Bank = new BankResponseDTO
                     {
@@ -109,10 +109,10 @@ namespace Application.Features.Finances.Services
                     },
                     Currecy = new CurrencyDTO
                     {
-                        CurrencyId = account.CurrecyId,
-                        Name = account.Currecy.Name,
-                        Symbol = account.Currecy.Symbol,
-                        Code = account.Currecy.Code
+                        CurrencyId = account.CurrencyId,
+                        Name = account.Currency.Name,
+                        Symbol = account.Currency.Symbol,
+                        Code = account.Currency.Code
                     },
                     Bank = new BankResponseDTO
                     {

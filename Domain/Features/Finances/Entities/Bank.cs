@@ -14,14 +14,16 @@ namespace Domain.Features.Finances.Entities
         public String Name { get; private set; }
         public String Abbre { get; private set; }
         public double TransferFee { get; private set; }
+        public String ImgURL { get; set; }
 
         private Bank() { } // EF
 
-        public Bank(String name, String abbre, double transferFee)
+        public Bank(String name, String abbre, double transferFee, String ImgURL = "")
         {
             Name = name;
             Abbre = abbre;
             TransferFee = transferFee;
+            this.ImgURL = ImgURL;
         }
 
         /// <summary>
@@ -30,11 +32,12 @@ namespace Domain.Features.Finances.Entities
         /// <param name="name"></param>
         /// <param name="abre"></param>
         /// <param name="transferFee"></param>
-        public void Update(string name, string abre, double transferFee)
+        public void Update(string name, string abre, double transferFee, String ImgURL = "")
         {
             this.Name = name;
             this.Abbre = abre;
             this.TransferFee = transferFee;
+            this.ImgURL = ImgURL == "" ? this.ImgURL : ImgURL;   
         }
 
         /// <summary>

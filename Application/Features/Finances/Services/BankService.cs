@@ -42,7 +42,7 @@ namespace Application.Features.Finances.Services
 
 
             // crea un nuevo banco
-            var bank = new Bank(bankRequest.Name.ToUpper(), bankRequest.Abbre.ToUpper(), bankRequest.TransferFee);
+            var bank = new Bank(bankRequest.Name.ToUpper(), bankRequest.Abbre.ToUpper(), bankRequest.TransferFee, bankRequest.imgURL);
             await _bankRepository.AddAsync(bank);
             await _bankRepository.SaveChangesAsync();
 
@@ -74,7 +74,7 @@ namespace Application.Features.Finances.Services
 
 
             //actualizar el banco
-            existingBank.Update(bankRequest.Name.ToUpper(), bankRequest.Abbre.ToUpper(), bankRequest.TransferFee);
+            existingBank.Update(bankRequest.Name.ToUpper(), bankRequest.Abbre.ToUpper(), bankRequest.TransferFee, bankRequest.imgURL);
 
             await _bankRepository.SaveChangesAsync();
 
@@ -99,7 +99,8 @@ namespace Application.Features.Finances.Services
                 BankId = bank.Id,
                 Name = bank.Name,
                 Abbre = bank.Abbre,
-                TransferFee = bank.TransferFee
+                TransferFee = bank.TransferFee,
+                imgURL = bank.ImgURL
             };
         }
 
@@ -116,7 +117,8 @@ namespace Application.Features.Finances.Services
                 BankId = b.Id,
                 Name = b.Name,
                 Abbre = b.Abbre,
-                TransferFee = b.TransferFee
+                TransferFee = b.TransferFee,
+                imgURL = b.ImgURL
             });
         }
 

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class new_initial_again_4times3 : Migration
+    public partial class adding_bankIMGURL : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,6 +47,7 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Abbre = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     TransferFee = table.Column<double>(type: "double precision", nullable: false),
+                    ImgURL = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -120,7 +121,7 @@ namespace Infrastructure.Migrations
                 schema: "users",
                 columns: table => new
                 {
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Username = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
@@ -131,7 +132,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserID);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,7 +179,7 @@ namespace Infrastructure.Migrations
                         column: x => x.UserId,
                         principalSchema: "users",
                         principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -193,6 +194,7 @@ namespace Infrastructure.Migrations
                     NatureId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    isActive = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -217,7 +219,7 @@ namespace Infrastructure.Migrations
                         column: x => x.UserId,
                         principalSchema: "users",
                         principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -241,7 +243,7 @@ namespace Infrastructure.Migrations
                         column: x => x.UserId,
                         principalSchema: "users",
                         principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -272,7 +274,7 @@ namespace Infrastructure.Migrations
                         column: x => x.UserId,
                         principalSchema: "users",
                         principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -322,7 +324,7 @@ namespace Infrastructure.Migrations
                         column: x => x.UserId,
                         principalSchema: "users",
                         principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -332,20 +334,20 @@ namespace Infrastructure.Migrations
                 columns: new[] { "AccountTypeId", "Abbre", "CreatedAt", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0834d9ef-6110-4c43-ba8c-ec103a2e9ce3"), "TYPE-INVS", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(9071), "Investment" },
-                    { new Guid("34c3d543-472f-4a73-b09d-008200273875"), "TYPE-CASH", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(9067), "Cash" },
-                    { new Guid("98922c58-4aad-49cf-828a-65a7c8cf7793"), "TYPE-DEBT", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(9069), "Debit" },
-                    { new Guid("e849649c-a7c2-486f-a4a5-8bb80a71b76a"), "TYPE-SAVS", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(9070), "Savings" }
+                    { new Guid("3bec05ec-78ff-40f8-a2a6-4ac29343a89d"), "TYPE-CASH", new DateTime(2026, 3, 19, 15, 43, 39, 889, DateTimeKind.Utc).AddTicks(8), "Cash" },
+                    { new Guid("4212447d-201e-4f41-b3c7-1b9381f2adc4"), "TYPE-SAVS", new DateTime(2026, 3, 19, 15, 43, 39, 889, DateTimeKind.Utc).AddTicks(11), "Savings" },
+                    { new Guid("9fc537e9-e19a-4fbc-9bf6-8b352f6e422b"), "TYPE-DEBT", new DateTime(2026, 3, 19, 15, 43, 39, 889, DateTimeKind.Utc).AddTicks(10), "Debit" },
+                    { new Guid("d408c707-19da-49ae-be14-6adff41d86f7"), "TYPE-INVS", new DateTime(2026, 3, 19, 15, 43, 39, 889, DateTimeKind.Utc).AddTicks(12), "Investment" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "finances",
                 table: "Banks",
-                columns: new[] { "BankId", "Abbre", "CreatedAt", "Name", "TransferFee" },
+                columns: new[] { "BankId", "Abbre", "CreatedAt", "ImgURL", "Name", "TransferFee" },
                 values: new object[,]
                 {
-                    { new Guid("7561fa08-e54a-4952-9ee0-7b96b3b75ee8"), "BAC", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8117), "BANCO DE AMERICA", 2.0 },
-                    { new Guid("b25c6ee7-82c6-4760-966f-57347e01be7a"), "BANPRO", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8120), "BANCO DE LA PRODUCCION", 2.0 }
+                    { new Guid("047b6804-9ec6-4a89-aff8-89b5dfd6aee6"), "BAC", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9437), "", "BANCO DE AMERICA", 2.0 },
+                    { new Guid("9d69c4ce-92b9-4d89-95da-e7c0980429ec"), "BANPRO", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9441), "", "BANCO DE LA PRODUCCION", 2.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -354,9 +356,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "CurrecyId", "Code", "CreatedAt", "Name", "Symbol" },
                 values: new object[,]
                 {
-                    { new Guid("1282ae00-2377-4f67-8f9f-84bee5cb2ae9"), "EUR", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8451), "Euro", "€" },
-                    { new Guid("3ecd8337-c6db-4a97-a563-910b00918cbf"), "USD", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8449), "Dolar Estadounidense", "$" },
-                    { new Guid("f2f3e82e-3ce7-4109-a05d-527e0c5415c5"), "NIO", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8450), "Cordoba Nicaraguense", "C$" }
+                    { new Guid("22d4a305-7eff-443c-b489-04f3d91537c7"), "EUR", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9646), "Euro", "€" },
+                    { new Guid("85b72c97-1e67-4494-83b5-caa8865f0d98"), "NIO", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9645), "Cordoba Nicaraguense", "C$" },
+                    { new Guid("8e57c7e1-6994-4107-b468-7cf991f82248"), "USD", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9643), "Dolar Estadounidense", "$" }
                 });
 
             migrationBuilder.InsertData(
@@ -365,8 +367,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "NatureId", "Abbre", "CreatedAt", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("97fbdf6d-56e8-45c8-85b4-da1d59eabc63"), "E", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(7741), "Expenses" },
-                    { new Guid("b0affb6a-79e0-461e-b246-8f67b42b4c01"), "I", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(7738), "Income" }
+                    { new Guid("85183be1-d77e-4f0e-b1ad-1456a093c76b"), "I", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9210), "Income" },
+                    { new Guid("8e29b285-17dc-4c6a-8aeb-fd782fba09d3"), "E", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9212), "Expenses" }
                 });
 
             migrationBuilder.InsertData(
@@ -375,9 +377,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "TransactionTypeId", "Code", "CreatedAt", "CurrentValue", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("80579eda-41e0-45a9-a941-a25b843f057d"), "INC", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8788), 0, "Income" },
-                    { new Guid("df9dc503-6767-4a8d-b0d0-97a3c17f961e"), "TRF", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8812), 0, "Transfers" },
-                    { new Guid("f7d82c20-68bf-4cb1-9ac8-4ba07260c9d0"), "EXP", new DateTime(2026, 3, 16, 5, 29, 32, 80, DateTimeKind.Utc).AddTicks(8792), 0, "Expenses" }
+                    { new Guid("8eab2ce2-994f-41a7-825f-08821fa1429a"), "EXP", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9851), 0, "Expenses" },
+                    { new Guid("c20d8bc6-252f-4a2b-b145-01419ec5be12"), "TRF", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9852), 0, "Transfers" },
+                    { new Guid("f47d09d9-bfee-4b9b-a26b-0830a01a56c8"), "INC", new DateTime(2026, 3, 19, 15, 43, 39, 888, DateTimeKind.Utc).AddTicks(9849), 0, "Income" }
                 });
 
             migrationBuilder.InsertData(

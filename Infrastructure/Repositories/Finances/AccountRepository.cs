@@ -27,12 +27,12 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<Account?> GetAccountByIdAsync(Guid id)
         {
-            return await _context.Accounts.Where(a => a.Id == id).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currecy).FirstOrDefaultAsync();
+            return await _context.Accounts.Where(a => a.Id == id).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currency).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Account?>> GetAllAccountsByUserIDAsync(Guid UserID)
         {
-            return await _context.Accounts.Where(a => a.UserId == UserID).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currecy).ToListAsync();
+            return await _context.Accounts.Where(a => a.UserId == UserID).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currency).ToListAsync();
         }
 
         public async Task UpdateAsync(Account account)

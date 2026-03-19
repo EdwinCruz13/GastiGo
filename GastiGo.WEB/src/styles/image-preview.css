@@ -1,0 +1,13 @@
+.image-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-preview img {
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  padding: 6px;
+}

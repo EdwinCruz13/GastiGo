@@ -13,8 +13,9 @@ export class MenuService {
   pageTitle = signal('Dashboard');
   menuItems: MenuItem[] = [
     { label: 'Dashboard',     icon: 'fa-solid fa-gauge', route: '/dashboard' },
-    { label: 'Cuentas',       icon: 'fa-solid fa-file-zipper', route: '/accounts' },
     { label: 'Transacciones', icon: 'fa-solid fa-money-bill-transfer', route: '/transactions' },
+    { label: 'Cuentas',       icon: 'fa-solid fa-file-zipper', route: '/accounts' },
+    { label: 'Tipo de Cuentas',   icon: 'fa-solid fa-list', route: '/account-types' },
     { label: 'Categorías',    icon: 'fa-solid fa-layer-group', route: '/categories' },
     { label: 'Bancos',        icon: 'fa-solid fa-university', route: '/banks' },
     { label: 'Configuración', icon: 'fa-solid fa-address-card', route: '/settings' }

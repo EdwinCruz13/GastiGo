@@ -2,14 +2,14 @@ import { Bank, BankRequestDTO } from '@core/models/finances/bank.model';
 import { BankService } from './../../../../core/services/finances/bank.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 
-
-import { TableComponent } from '@shared/components/table/table.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CardComponent } from '@shared/components/card/card.component';
+import { ImagePreviewComponent } from '@shared/components/image-preview/image-preview.component';
 
 @Component({
   selector: 'app-bank.page',
-  imports: [ReactiveFormsModule, TableComponent, ModalComponent],
+  imports: [ReactiveFormsModule, ModalComponent, CardComponent, ImagePreviewComponent],
   templateUrl: './bank.page.html'
 })
 export class BankPage implements OnInit{
@@ -36,7 +36,8 @@ export class BankPage implements OnInit{
   bankForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.nullValidator]], //campo de nombre del banco con validación de requerido
     abbre: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]], //campo de descripción del banco con validación de requerido y longitud máxima de 120 caracteres
-    transferFee: [1, [Validators.required, Validators.nullValidator, Validators.min(0.1)]] //campo de tarifa de transferencia con validación de requerido y valor mínimo de 0
+    transferFee: [1, [Validators.required, Validators.nullValidator, Validators.min(0.1)]], //campo de tarifa de transferencia con validación de requerido y valor mínimo de 0
+    imgURL: [''] //campo opcional para la URL de la imagen del banco sin validaciones
   });
 
 
@@ -53,9 +54,19 @@ export class BankPage implements OnInit{
     this.BankServicio.getBanks()
       .subscribe({
         next: (response) => {
-          this.banks.set(response.data ?? []);
+         if (response.success) {
+            this.banks.set(response.data ?? []);
+          } else {
+            // Manejar el error
+            this.modalMessageText.set("No se pudieron cargar los bancos. Intente nuevamente más tarde.");
+            this.modalAlert.set(true);
+          }
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          // Manejar el error de la solicitud HTTP
+          this.modalMessageText.set("Ocurrió un error al cargar los bancos. Intente nuevamente más tarde.");
+          this.modalAlert.set(true);
+        }
 
       });
   }
@@ -76,6 +87,7 @@ export class BankPage implements OnInit{
       name: "",
       abbre: "",
       transferFee: 1,
+      imgURL: ""
     });
 
     //abre el modal
@@ -86,6 +98,7 @@ export class BankPage implements OnInit{
 
   editBank(bank: Bank) {
     this.selectedBank.set(bank);
+    console.log('Edit bank:', bank);
 
     // Establece el título del modal y la variable isNew para indicar que se está editando un banco existente.
     this.title.set("Editar banco");
@@ -97,6 +110,7 @@ export class BankPage implements OnInit{
       name: bank.name,
       abbre: bank.abbre,
       transferFee: bank.transferFee,
+      imgURL: bank.imgURL
     });
 
     //abre el modal
@@ -105,7 +119,6 @@ export class BankPage implements OnInit{
 
   deleteBank(bank: Bank) {
     console.log('Delete bank:', bank);
-    // Aquí puedes implementar la lógica para eliminar el banco
   }
   //#endregion
 

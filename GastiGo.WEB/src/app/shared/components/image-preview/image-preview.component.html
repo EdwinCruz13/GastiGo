@@ -1,0 +1,19 @@
+@if (src && isValidImage) {
+  <div class="image-preview">
+    <img
+      [src]="src"
+      [style.width.px]="width"
+      [style.height.px]="height"
+      (error)="onError()"
+    />
+  </div>
+}
+@else {
+  <div class="image-preview">
+    <img
+      [src]="fallback"
+      [style.width.px]="width"
+      [style.height.px]="height"
+    />
+  </div>
+}

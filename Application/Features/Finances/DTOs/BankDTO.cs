@@ -16,6 +16,7 @@ namespace Application.Features.Finances.DTOs
         public String Name { get; set; }
         public String Abbre { get; set; }
         public double TransferFee { get; set; }
+        public String imgURL { get; set; }
     }
 
     /// <summary>
@@ -27,5 +28,6 @@ namespace Application.Features.Finances.DTOs
         public String Name { get; set; }
         public String Abbre { get; set; }
         public double TransferFee { get; set; }
+        public String imgURL { get; set; }
     }
 }

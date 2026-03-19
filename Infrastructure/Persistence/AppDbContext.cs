@@ -119,7 +119,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Currency>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("CurrecyId");
+                entity.Property(x => x.Id).HasColumnName("CurrencyId");
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Code).IsRequired().HasMaxLength(3);
                 entity.Property(x => x.Symbol).IsRequired().HasMaxLength(3);
@@ -197,9 +197,9 @@ namespace Infrastructure.Persistence
                 entity.HasOne(x => x.AccountType)
                       .WithMany() // un tipo de cuenta puede tener muchas cuentas
                       .HasForeignKey(x => x.AccountTypeId);
-                entity.HasOne(x => x.Currecy)
+                entity.HasOne(x => x.Currency)
                       .WithMany() // una moneda puede tener muchas cuentas
-                      .HasForeignKey(x => x.CurrecyId);
+                      .HasForeignKey(x => x.CurrencyId);
                 entity.HasOne(x => x.Bank)
                       .WithMany() // un banco puede tener muchas cuentas
                       .HasForeignKey(x => x.BankId);

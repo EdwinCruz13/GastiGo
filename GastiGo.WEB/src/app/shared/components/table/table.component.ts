@@ -37,7 +37,7 @@ export class TableComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.actions);
+    //console.log(this.actions);
   }
 
   //FILTRO GLOBAL

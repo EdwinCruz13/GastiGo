@@ -1,0 +1,154 @@
+/* GRID para lista */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+
+}
+
+/* CARD */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--card-bg);
+    border: 1px solid #b8bcc3;
+  transition: all 0.2s ease;
+
+
+
+}
+
+.card-body {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Imagen */
+.card-image img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Contenido */
+.card-content {
+  flex: 1;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+
+
+/* Texto */
+.card-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+
+
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-badge {
+  display: inline-block;
+  font-size: 8px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+
+.card-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+
+   display: -webkit-box;
+  -webkit-line-clamp: 2; /* máximo 2 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+
+/* Acciones */
+.card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  gap: 8px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  bottom: 0;
+}
+
+
+.card-actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+}
+
+.card-actions button:hover {
+  background: var(--btn-secondary-hover-bg);
+  color: var(--text-primary);
+}
+
+.card-actions .view-button { /* view */
+  color: #3b82f6;
+}
+
+.card-actions .edit-button { /* edit */
+  color: #f59e0b;
+}
+
+.card-actions .delete-button { /* delete */
+  color: #ef4444;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 150px;
+  }
+}

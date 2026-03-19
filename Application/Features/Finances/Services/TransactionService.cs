@@ -110,10 +110,10 @@ namespace Application.Features.Finances.Services
                         },
                         Currecy = new CurrencyDTO
                         {
-                            CurrencyId = t.Account.Currecy.CurrencyId,
-                            Name = t.Account.Currecy.Name,
-                            Symbol = t.Account.Currecy.Symbol,
-                            Code = t.Account.Currecy.Code
+                            CurrencyId = t.Account.Currency.CurrencyId,
+                            Name = t.Account.Currency.Name,
+                            Symbol = t.Account.Currency.Symbol,
+                            Code = t.Account.Currency.Code
                         },
                         Bank = new BankResponseDTO
                         {
@@ -186,10 +186,10 @@ namespace Application.Features.Finances.Services
                         },
                         Currecy = new CurrencyDTO
                         {
-                            CurrencyId = t.Account.Currecy.CurrencyId,
-                            Name = t.Account.Currecy.Name,
-                            Symbol = t.Account.Currecy.Symbol,
-                            Code = t.Account.Currecy.Code
+                            CurrencyId = t.Account.Currency.CurrencyId,
+                            Name = t.Account.Currency.Name,
+                            Symbol = t.Account.Currency.Symbol,
+                            Code = t.Account.Currency.Code
                         },
                         Bank = new BankResponseDTO
                         {

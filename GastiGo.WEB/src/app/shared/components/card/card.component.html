@@ -1,0 +1,125 @@
+<!-- LISTA -->
+@if (isArray(data)) {
+  <div class="card-grid">
+    @for (item of data; track item) {
+      <div class="card">
+        <!-- FILA SUPERIOR -->
+        <div class="card-body">
+          @if (imageField && getValue(item, imageField)) {
+            <div class="card-image">
+              <img [src]="getValue(item, imageField)" />
+            </div>
+          }
+
+          <div class="card-content">
+            <div class="card-title">
+              <span>{{ getValue(item, titleField) }}</span>
+
+              @if (hasField(item, badgeField)) {
+                <span class="card-badge">
+                  {{ getValue(item, badgeField!) }}
+                </span>
+              }
+            </div>
+
+            <p class="card-description">
+              {{ getValue(item, descriptionField) }}
+            </p>
+
+            @if (hasField(item, metaField)) {
+              <span class="card-meta">
+                {{ getValue(item, metaField!) }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <!--FOOTER ABAJO -->
+        @if (actions.length > 0) {
+          <div class="card-footer">
+            <div class="card-actions">
+              @if (actions.includes('view')) {
+                <button class="actions view-button" (click)="onAction('view', item)">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              }
+
+              @if (actions.includes('edit')) {
+                <button class="actions edit-button" (click)="onAction('edit', item)">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              }
+
+              @if (actions.includes('delete')) {
+                <button class="actions delete-button" (click)="onAction('delete', item)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
+
+<!-- ITEM ÚNICO -->
+@else {
+  <div class="card">
+    <div class="card-body">
+      @if (imageField && getValue(data, imageField)) {
+        <div class="card-image">
+          <img [src]="getValue(data, imageField)" />
+        </div>
+      }
+
+      <div class="card-content">
+        <div class="card-header">
+          <div class="card-title">
+            <span>{{ getValue(data, titleField) }}</span>
+
+            @if (hasField(data, badgeField)) {
+              <span class="card-badge">
+                {{ getValue(data, badgeField!) }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <p class="card-description">
+          {{ getValue(data, descriptionField) }}
+        </p>
+
+        @if (hasField(data, metaField)) {
+          <span class="card-meta">
+            {{ getValue(data, metaField!) }}
+          </span>
+        }
+      </div>
+    </div>
+
+    @if (actions.length > 0) {
+      <div class="card-footer">
+        <div class="card-actions">
+          @if (actions.includes('view')) {
+            <button class="actions view-button" (click)="onAction('view', data)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          }
+
+          @if (actions.includes('edit')) {
+            <button class="actions edit-button" (click)="onAction('edit', data)">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          }
+
+          @if (actions.includes('delete')) {
+            <button class="actions delete-button" (click)="onAction('delete', data)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}
