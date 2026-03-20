@@ -10,41 +10,63 @@ import { CommonModule } from '@angular/common';
 })
 export class CardComponent<T = any> {
 
-  // ahora recibe item o lista
+  //data puede ser item o lista
   @Input({ required: true }) data!: T | T[];
 
-  // mapeo dinámico (tipo tabla)
-  @Input({ required: true }) titleField!: keyof T;
-  @Input({ required: true }) descriptionField!: keyof T;
-  @Input() imageField?: keyof T;
+  //campos dinámicos (soportan nested: "currency.name")
+  @Input({ required: true }) titleField!: string;
+  @Input({ required: true }) descriptionField!: string;
+  @Input() imageField?: string;
+  @Input() badgeField?: string;
+  @Input() metaField?: string;
 
-  // campos opcionales
-  @Input() badgeField?: keyof T;  // para mostrar un badge o etiqueta
-  @Input() metaField?: keyof T; // para mostrar información adicional en el pie de la tarjeta
-
-  // acciones
+  // acciones disponibles
   @Input() actions: ('view' | 'edit' | 'delete')[] = [];
 
+  // eventos
   @Output() view = new EventEmitter<T>();
   @Output() edit = new EventEmitter<T>();
   @Output() delete = new EventEmitter<T>();
 
-  // helper
+  // =========================
+  // HELPERS
+  // =========================
+
+  //saber si es array
   isArray(data: T | T[]): data is T[] {
     return Array.isArray(data);
   }
 
-  getValue(item: T, field: keyof T): any {
-    return item?.[field];
+  //obtener valores (soporta "currency.name")
+  getValue(item: any, field?: string): any {
+    if (!item || !field) return null;
+
+    return field.split('.').reduce((obj, key) => obj?.[key], item);
   }
 
+  //validar si existe el campo
+  hasField(item: any, field?: string): boolean {
+    const value = this.getValue(item, field);
+    return value !== null && value !== undefined && value !== '';
+  }
+
+  // acciones
   onAction(action: 'view' | 'edit' | 'delete', item: T) {
-    if (action === 'view') this.view.emit(item);
-    if (action === 'edit') this.edit.emit(item);
-    if (action === 'delete') this.delete.emit(item);
+    switch (action) {
+      case 'view':
+        this.view.emit(item);
+        break;
+      case 'edit':
+        this.edit.emit(item);
+        break;
+      case 'delete':
+        this.delete.emit(item);
+        break;
+    }
   }
 
-  hasField(item: T, field?: keyof T): boolean {
-    return !!field && !!item?.[field];
+  // ✔️ opcional (mejora rendimiento en listas grandes)
+  trackByFn(index: number, item: any): any {
+    return item?.id || item?.accountId || index;
   }
 }

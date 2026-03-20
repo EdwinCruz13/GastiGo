@@ -1,5 +1,6 @@
 ﻿using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Interfaces;
+using Domain.Features.Finances.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,14 +51,29 @@ namespace Application.Features.Finances.Services
         /// <returns></returns>
         public async Task<IEnumerable<CurrencyDTO?>> GetAllCurrenciesAsync()
         {
-           var currencies = await _currencyRepository.GetAllCurrenciesAsync();
-           return currencies.Select(c => c == null ? null : new CurrencyDTO
-           {
-               CurrencyId = c.Id,
-               Name = c.Name,
-               Code = c.Code,
-               Symbol = c.Symbol
-           });
+            var currencies = await _currencyRepository.GetAllCurrenciesAsync();
+
+            //verificar que tenga monedas registradas, si no tiene devuelve null, si tiene devuelve la lista de monedas encontradas
+            if (currencies != null || currencies.Any())
+            {
+                //ordenar por Symbol, primero las monedas con el símbolo "C$", luego las monedas con el símbolo "$",
+                //y finalmente las demás monedas, ordenadas alfabéticamente por su símbolo
+                currencies = currencies
+                            .OrderBy(m => m.Symbol == "C$" ? 0 :
+                                          m.Symbol == "$" ? 1 : 2)
+                            .ThenBy(m => m)
+                            .ToList();
+            }
+
+
+
+            return currencies.Select(c => c == null ? null : new CurrencyDTO
+            {
+                CurrencyId = c.Id,
+                Name = c.Name,
+                Code = c.Code,
+                Symbol = c.Symbol
+            });
         }
     }
 }

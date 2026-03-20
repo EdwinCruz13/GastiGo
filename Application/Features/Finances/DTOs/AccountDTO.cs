@@ -5,7 +5,7 @@ namespace Application.Features.Finances.DTOs
 {
     public class AccountDTO
     {
-        public Guid AccountId { get; set; }
+        //public Guid AccountId { get; set; }
         public Guid UserId { get; set; }
         public Guid AccountTypeId { get; set; }
         public Guid CurrencyId { get; set; }
@@ -21,7 +21,7 @@ namespace Application.Features.Finances.DTOs
         public Guid AccountId { get; set; }
         public UserDTO User { get; set; } = default!;
         public AccountTypeDTO AccountType { get; set; } = default!;
-        public CurrencyDTO Currecy { get; set; } = default!;
+        public CurrencyDTO Currency { get; set; } = default!;
         public BankResponseDTO Bank { get; set; } = default!;
 
         public String Name { get; set; }

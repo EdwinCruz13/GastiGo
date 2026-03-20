@@ -108,7 +108,7 @@ namespace Application.Features.Finances.Services
                             Name = t.Account.AccountType.Name,
                             Abbre = t.Account.AccountType.Abbre
                         },
-                        Currecy = new CurrencyDTO
+                        Currency = new CurrencyDTO
                         {
                             CurrencyId = t.Account.Currency.CurrencyId,
                             Name = t.Account.Currency.Name,
@@ -184,7 +184,7 @@ namespace Application.Features.Finances.Services
                             Name = t.Account.AccountType.Name,
                             Abbre = t.Account.AccountType.Abbre
                         },
-                        Currecy = new CurrencyDTO
+                        Currency = new CurrencyDTO
                         {
                             CurrencyId = t.Account.Currency.CurrencyId,
                             Name = t.Account.Currency.Name,

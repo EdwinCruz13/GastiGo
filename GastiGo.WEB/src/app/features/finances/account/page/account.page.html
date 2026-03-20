@@ -1,0 +1,142 @@
+<div class="container">
+  <div class="toolbar-options">
+    <button class="btn btn-primary" (click)="abrirModalNuevaCuenta()">
+      <i class="fa-solid fa-plus"></i>
+      Nueva cuenta
+    </button>
+  </div>
+
+  <app-card
+    [data]="cuentas()"
+    [actions]="['view']"
+    titleField="name"
+    descriptionField="description"
+    badgeField="currency.symbol"
+    metaField="accountType.name"
+
+    (view)="viewAccount($event)"
+  ></app-card>
+</div>
+
+<app-modal [open]="modalFormOpen()" (close)="modalFormOpen.set(false)">
+  <div modal-header>
+    <span>Nueva cuenta</span>
+    <button (click)="modalFormOpen.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div modal-body>
+    <form id="accountForm" class="form" [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label"> Nombre </label>
+        <input
+          type="text"
+          class="form-input"
+          placeholder="Nombre de la cuenta"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Descripción </label>
+
+        <textarea
+          class="form-input"
+          rows="3"
+          placeholder="Descripción"
+          formControlName="description"
+          autocomplete="off"
+        >
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Tipo Cuenta </label>
+
+        <app-dropdown-select
+          [items]="tipoCuentas()"
+          labelField="name"
+          valueField="accountTypeId"
+          placeholder="Seleccione el estado"
+          (valueChange)="onTypeAccountChange($event)"
+          [selectedValue]="accountForm.get('accountTypeId')?.value"
+        >
+        </app-dropdown-select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Banco </label>
+
+        <app-dropdown-select
+          [items]="bancos()"
+          labelField="name"
+          valueField="bankId"
+          placeholder="Seleccione el banco"
+          (valueChange)="onBankChange($event)"
+          [selectedValue]="accountForm.get('bankId')?.value"
+        >
+        </app-dropdown-select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Moneda </label>
+
+        <app-dropdown-select
+          [items]="monedas()"
+          labelField="name"
+          valueField="currencyId"
+          placeholder="Seleccione la moneda"
+          (valueChange)="onCurrencyChange($event)"
+          [selectedValue]="accountForm.get('currencyId')?.value"
+        >
+        </app-dropdown-select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Balance </label>
+        <input
+          type="number"
+          class="form-input"
+          placeholder="Balance de la cuenta"
+          formControlName="balance"
+          autocomplete="off"
+        />
+      </div>
+    </form>
+  </div>
+
+  <div modal-footer>
+    @if (apiErrors.length > 0) {
+      <div class="api-errors">
+        @for (error of apiErrors; track error) {
+          <div class="error-message">
+            {{ error }}
+          </div>
+        }
+      </div>
+    }
+
+    <button class="btn btn-secondary" (click)="modalFormOpen.set(false)">Cancelar</button>
+
+    <button type="submit" form="accountForm" class="btn btn-primary">Guardar</button>
+  </div>
+</app-modal>
+
+<app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
+  <div modal-header>
+    <span>Mensaje</span>
+    <button (click)="modalAlert.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div modal-body>
+    {{ modalMessageText() }}
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-danger" (click)="modalAlert.set(false)">Cerrar</button>
+  </div>
+</app-modal>

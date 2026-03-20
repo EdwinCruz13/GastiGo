@@ -1,5 +1,5 @@
 export interface AccountType {
-  accountTypeId: number;
+  accountTypeId: string;
   name: string;
   abbre: string;
 }

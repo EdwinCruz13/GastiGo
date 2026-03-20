@@ -48,7 +48,7 @@ namespace GastiGo.API.Controllers
             var list = await _accountService.GetAccountByIDAsync(id);
             if (list == null)
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "",
@@ -77,7 +77,7 @@ namespace GastiGo.API.Controllers
             var item = await _accountService.GetAllAccountsByUserIDAsync(userId);
             if (item == null || !item.Any())
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "No se encontraron cuentas para el usuario especificado",
