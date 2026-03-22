@@ -6,6 +6,10 @@
     </button>
   </div>
 
+  <!-- <app-data-list [data]="banks()" titleField="name" descriptionField="abbre" valueField="45" metaField="name"
+    valueField="45" progressValueField="45" progressMaxField="100" [actions]="['edit','delete']"
+    (edit)="editBank($event)" (delete)="deleteBank($event)"></app-data-list> -->
+
   <app-card
     [data]="banks()"
     [actions]="['view', 'edit', 'delete']"
@@ -17,13 +21,6 @@
     (delete)="deleteBank($event)"
   ></app-card>
 
-  <!-- <app-table
-    [data]="banks()"
-    [actions]="['edit', 'delete']"
-    (edit)="editBank($event)"
-    (delete)="deleteBank($event)"
-  >
-  </app-table> -->
 </div>
 
 <app-modal [open]="modalFormOpen()" (close)="modalFormOpen.set(false)">
@@ -38,59 +35,34 @@
     <form id="bankForm" class="form" [formGroup]="bankForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label class="form-label"> Nombre </label>
-        <input
-          type="text"
-          class="form-input"
-          placeholder="Nombre del banco"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <input type="text" class="form-input" placeholder="Nombre del banco" formControlName="name"
+          autocomplete="off" />
       </div>
 
       <div class="form-group">
         <label class="form-label"> Abreviatura </label>
 
-        <input
-          type="text"
-          class="form-input"
-          placeholder="Abreviatura del banco"
-          formControlName="abbre"
-          autocomplete="off"
-        />
+        <input type="text" class="form-input" placeholder="Abreviatura del banco" formControlName="abbre"
+          autocomplete="off" />
       </div>
 
       <div class="form-group">
         <label class="form-label"> Tarifa de transferencia </label>
 
-        <input
-          type="number"
-          class="form-input"
-          placeholder="Tarifa de transferencia"
-          formControlName="transferFee"
-          autocomplete="off"
-          min="0.1"
-          step="0.01"
-        />
+        <input type="number" class="form-input" placeholder="Tarifa de transferencia" formControlName="transferFee"
+          autocomplete="off" min="0.1" step="0.01" />
       </div>
 
       <div class="form-group">
         <label class="form-label"> Imagen </label>
-        <input
-          type="text"
-          class="form-input"
-          placeholder="URL de la imagen"
-          formControlName="imgURL"
-          autocomplete="off"
-        />
+        <input type="text" class="form-input" placeholder="URL de la imagen" formControlName="imgURL"
+          autocomplete="off" />
       </div>
 
       <div class="form-group">
         <label class="form-label"> Imagen </label>
-        <app-image-preview
-          [src]="bankForm.get('imgURL')?.value?.trim() || ''"
-          [width]="90"
-          [height]="90"
-        ></app-image-preview>
+        <app-image-preview [src]="bankForm.get('imgURL')?.value?.trim() || ''" [width]="90"
+          [height]="90"></app-image-preview>
       </div>
     </form>
   </div>

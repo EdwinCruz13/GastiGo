@@ -16,6 +16,7 @@ export class DropdownSelectComponent<T> {
   @Input() valueField!: keyof T;
   @Input() placeholder: string = 'Seleccione...';
   @Input() selectedValue: any;
+  @Input() disabled: boolean = false;
   @Output() valueChange = new EventEmitter<any>();
 
   // Maneja el cambio de selección en el dropdown

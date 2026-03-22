@@ -1,0 +1,88 @@
+@if (isArray(data)) {
+
+<div class="dl-wrapper">
+
+  <!-- HEADER -->
+  @if (headerTitle) {
+  <div class="dl-header-title">
+    {{ headerTitle }}
+  </div>
+  }
+
+  <div class="dl-container">
+
+    @for (item of data; track trackByFn($index, item)) {
+
+    <div class="dl-item">
+
+      <!-- ICONO -->
+      <div class="dl-avatar" [ngClass]="getValue(item, typeField)?.toLowerCase()">
+        {{ getValue(item, typeField) || '?' }}
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="dl-content">
+
+        <div class="dl-main">
+          <div class="dl-title">
+            {{ getValue(item, titleField) }}
+          </div>
+
+          @if (hasField(item, descriptionField)) {
+          <div class="dl-description">
+            {{ getValue(item, descriptionField) }}
+          </div>
+          }
+        </div>
+
+        <!-- DERECHA -->
+        <div class="dl-right">
+
+          @if (hasField(item, valueField)) {
+          <div class="dl-value" 
+            [ngClass]="{'value-expense': getValue(item, typeField) === 'E',
+                        'value-income': getValue(item, typeField) === 'I'
+                       }"
+            >
+            {{ getValue(item, symbolField) || '$' }}
+            {{ getValue(item, valueField) | number }}
+          </div>
+          }
+
+          <div class="dl-actions">
+
+            <div class="actions">
+              @if (actions.includes('view')) {
+              <button class="circle-btn view-button" (click)="onAction('view', item)">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              }
+
+              @if (actions.includes('edit')) {
+              <button class="circle-btn edit-button" (click)="onAction('edit', item)">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              }
+
+              @if (actions.includes('delete')) {
+              <button class="circle-btn delete-button" (click)="onAction('delete', item)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+              }
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    }
+
+  </div>
+
+</div>
+
+}

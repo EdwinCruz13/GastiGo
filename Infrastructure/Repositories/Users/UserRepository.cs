@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories.Users
             _context = context;
         }
 
-        public async Task<User?> GetByIdAsync(Guid id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }

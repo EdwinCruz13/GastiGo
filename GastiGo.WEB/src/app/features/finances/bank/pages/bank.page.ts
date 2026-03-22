@@ -1,11 +1,12 @@
 import { Bank, BankRequestDTO } from '@core/models/finances/bank.model';
-import { BankService } from './../../../../core/services/finances/bank.service';
+import { BankService } from '@core/services/finances/bank.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardComponent } from '@shared/components/card/card.component';
 import { ImagePreviewComponent } from '@shared/components/image-preview/image-preview.component';
+import { DataListComponent } from '@shared/components/datalist/datalist.component';
 
 @Component({
   selector: 'app-bank.page',

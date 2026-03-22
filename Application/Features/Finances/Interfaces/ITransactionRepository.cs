@@ -10,8 +10,8 @@ namespace Application.Features.Finances.Interfaces
     public interface ITransactionRepository
     {
         Task AddAsync(Transaction request);
-        Task<IEnumerable<Transaction?>> GetAllTransactionsByUserIDAsync(Guid UserID);
-        Task<Transaction?> GetByIDAsync(Guid id);
+        Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAsync(Guid UserID);
+        Task<Transaction?> GetTransactionByIDAsync(Guid id);
         Task SaveChangesAsync();
     }
 }

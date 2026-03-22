@@ -1,5 +1,5 @@
 <div class="dropdown-wrapper">
-    <select class="dropdown-select" [value]="selectedValue" (change)="onChange($event)">
+    <select class="dropdown-select" [value]="selectedValue" (change)="onChange($event)" [disabled]="disabled">
         <option value="00">{{placeholder}}</option>
         @for (item of items; track item) {
         <option [value]="item[valueField]">

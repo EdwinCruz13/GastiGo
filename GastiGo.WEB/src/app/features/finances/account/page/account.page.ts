@@ -47,6 +47,11 @@ export class AccountPage implements OnInit {
   modalAlert = signal(false);
   modalMessageText = signal("");
 
+  // Variable para controlar si el campo de banco está deshabilitado
+  isBankDisabled = signal(false);
+  isTypeAccountDisabled = signal(false);
+  iscurrencyDisabled = signal(false);
+
   // Variable para almacenar el formulario de cuenta.
   formBuilder = inject(FormBuilder);
   accountForm = this.formBuilder.group({
@@ -131,7 +136,6 @@ export class AccountPage implements OnInit {
       this.cuentasServicio.getAccounts(userId).subscribe({
         next: (response) => {
           if (response.success) {
-            console.log('Cuentas cargadas:', response.data);
             this.cuentas.set(response.data ?? []);
           } else {
             this.modalMessageText.set(response.message || 'Error al cargar las cuentas.');
@@ -155,6 +159,10 @@ export class AccountPage implements OnInit {
   //#region métodos para manejar eventos del card
 
   abrirModalNuevaCuenta() {
+    this.isBankDisabled.set(false);
+    this.isTypeAccountDisabled.set(false);
+    this.iscurrencyDisabled.set(false);
+
     this.accountForm.reset();
     this.accountForm.patchValue({
       accountTypeId: null as string | null,
@@ -166,6 +174,7 @@ export class AccountPage implements OnInit {
       balance: 0
     });
 
+    
 
     this.isNew.set(true);
     this.modalFormOpen.set(true);
@@ -179,11 +188,16 @@ export class AccountPage implements OnInit {
       accountTypeId: account.accountType.accountTypeId,
       userId: account.user.userId,
       currencyId: account.currency.currencyId,
-      bankId: account.bank.bankId,
+      bankId: account.bank?.bankId,
       name: account.name,
       description: account.description,
       balance: account.balance
     });
+
+    //desactivar los campos de tipo de cuenta, moneda y banco para evitar inconsistencias en la edición
+    this.isBankDisabled.set(true);
+    this.isTypeAccountDisabled.set(true);
+    this.iscurrencyDisabled.set(true);
 
     this.isNew.set(false);
     this.modalFormOpen.set(true);
@@ -197,11 +211,30 @@ export class AccountPage implements OnInit {
   onBankChange(value: string) {
    this.accountForm.patchValue({
       bankId: value
-    });
+  });
   }
 
   // Método para manejar el cambio de selección en el dropdown de tipo de cuenta
   onTypeAccountChange(value: string) {
+    //buscar el tipo de cuenta seleccionado
+    var selectedAccountType = this.tipoCuentas().find(at => at.accountTypeId === value);
+    // Si el tipo de cuenta es "Efectivo", establecer el banco como "Sin banco"
+    // y desactivar el campo de banco en el formulario
+    if(selectedAccountType?.abbre === "TYPE-CASH"){
+      this.accountForm.patchValue({
+          bankId: null
+      });
+      this.accountForm.get('bankId')?.disable();
+      this.isBankDisabled.set(true);
+    }
+    else {
+      //habilitar el campo del banco si el tipo de cuenta no es "Efectivo"
+      this.accountForm.get('bankId')?.enable();
+      this.isBankDisabled.set(false);
+    }
+
+
+    // Actualizar el valor del tipo de cuenta en el formulario
     this.accountForm.patchValue({
       accountTypeId: value
     });
@@ -240,6 +273,7 @@ export class AccountPage implements OnInit {
         if (response.success) {
           // Cerrar el modal y mostrar un mensaje de éxito
           this.modalFormOpen.set(false);
+          this.ngOnInit(); // Recargar las cuentas para mostrar la nueva cuenta en la lista
 
           this.modalMessageText.set('Cuenta creada exitosamente.');
           this.modalAlert.set(true);

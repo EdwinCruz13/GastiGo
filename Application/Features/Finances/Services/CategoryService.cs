@@ -56,13 +56,13 @@ namespace Application.Features.Finances.Services
                     throw new ArgumentException("Debe de ingresar una naturaleza valida");
 
                 //ver si el usuario existe
-                var user = await _userRepository.GetByIdAsync(category.UserId);
+                var user = await _userRepository.GetUserByIdAsync(category.UserId);
                 if (user == null)
                     throw new ArgumentException("Debe de ingresar un usuario valido");
 
                 //ver si la categoria padre existe
                 if(category.ParentId != null){
-                    var parentCategory = await _categoryRepository.GetByIdAsync(category.ParentId ?? Guid.Empty);
+                    var parentCategory = await _categoryRepository.GetCategoryByIdAsync(category.ParentId ?? Guid.Empty);
                     if (parentCategory == null)
                         throw new ArgumentException("Debe de ingresar una categoria padre valida");
                 }
@@ -93,7 +93,7 @@ namespace Application.Features.Finances.Services
         {
 
             //validar si la categoria existe
-            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            var existingCategory = await _categoryRepository.GetCategoryByIdAsync(id);
             if (existingCategory == null)
                 throw new ArgumentException("La categoría no existe.");
 
@@ -128,7 +128,7 @@ namespace Application.Features.Finances.Services
         public async Task DeleteCategoryAsync(Guid id)
         {
             //validar si la categoria existe
-            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            var existingCategory = await _categoryRepository.GetCategoryByIdAsync(id);
             if (existingCategory == null)
                 throw new ArgumentException("La categoría no existe.");
 
@@ -155,7 +155,7 @@ namespace Application.Features.Finances.Services
             if (userId == Guid.Empty)
                 throw new ArgumentException("El ID del usuario no puede ser vacío.");
 
-            var categories = await _categoryRepository.GetByUserIdAsync(userId);
+            var categories = await _categoryRepository.GetCategoryByUserIdAsync(userId);
 
             // Construir el árbol de categorías a partir de la lista obtenida
             var tree = BuildTree(categories, null);
@@ -174,7 +174,7 @@ namespace Application.Features.Finances.Services
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("El ID de la categoría debe ser un número positivo.");
-            var category =  await _categoryRepository.GetByIdAsync(id);
+            var category =  await _categoryRepository.GetCategoryByIdAsync(id);
 
 
             return category == null ? null : new CategoryResponseDTO

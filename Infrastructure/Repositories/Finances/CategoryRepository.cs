@@ -26,12 +26,12 @@ namespace Infrastructure.Repositories.Finances
             await _context.Categories.AddAsync(category);
         }
 
-        public async Task<Category?> GetByIdAsync(Guid id)
+        public async Task<Category?> GetCategoryByIdAsync(Guid id)
         {
             return await _context.Categories.Include(n => n.Nature).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Category>> GetByUserIdAsync(Guid userId)
+        public async Task<List<Category>> GetCategoryByUserIdAsync(Guid userId)
         {
             return await _context.Categories.Where(x => x.UserId == userId).Include(n => n.Nature).OrderByDescending(x => x.Nature.Name).ThenBy(x => x.CreatedAt).ToListAsync();
         }

@@ -1,0 +1,153 @@
+.dl-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.dl-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dl-header-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ITEM */
+.dl-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+
+  transition: all 0.2s ease;
+}
+
+.dl-item:hover {
+  background: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-border);
+}
+
+/* AVATAR (I / E) */
+.dl-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* income */
+.dl-avatar.i {
+  border-color: var(--btn-success-bg);
+  color: var(--btn-success-bg);
+}
+
+/* expense */
+.dl-avatar.e {
+  border-color: var(--btn-danger-bg);
+  color: var(--btn-danger-bg);
+}
+
+/* CONTENIDO */
+.dl-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.dl-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.dl-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dl-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* DERECHA */
+.dl-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.dl-right .actions{
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+}
+
+
+.dl-value {
+  font-weight: bold;
+}
+
+/* INGRESO */
+.value-income {
+  color: var(--btn-success-bg);
+}
+
+/* GASTO */
+.value-expense {
+  color: var(--btn-danger-bg);
+}
+
+
+/* BOTONES CIRCULARES */
+.dl-right .circle-btn {
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dl-right .circle-btn:hover {
+  transform: scale(1.1);
+}
+
+
+
+
+.dl-actions .view-button { /* view */
+  color: #3b82f6;
+}
+
+.dl-actions .edit-button { /* edit */
+  color: #f59e0b;
+}
+
+.dl-actions .delete-button { /* delete */
+  color: #ef4444;
+}

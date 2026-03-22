@@ -5,95 +5,92 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GastiGo.API.Controllers
 {
-    public class TransactionController : Controller
+    [ApiController]
+    [Route("api/finance/transactions")]
+    public class TransactionController : ControllerBase
     {
-        [ApiController]
-        [Route("api/finance/transactions")]
-        public class AccountController : ControllerBase
+        private readonly TransactionService _transactionService;
+
+        /// <summary>
+        /// injecta el servicio de cuentas para manejar las operaciones relacionadas con las cuentas financieras.
+        /// </summary>
+        /// <param name="accountService"></param>
+        public TransactionController(TransactionService transactionService)
         {
-            private readonly TransactionService _transactionService;
+            _transactionService = transactionService;
+        }
 
-            /// <summary>
-            /// injecta el servicio de cuentas para manejar las operaciones relacionadas con las cuentas financieras.
-            /// </summary>
-            /// <param name="accountService"></param>
-            public AccountController(TransactionService transactionService)
+        /// <summary>
+        /// crear una nueva transaccion de finanzas
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Create(TransactionDTO response)
+        {
+            await _transactionService.AddTransactionAsync(response);
+            return Ok(new ApiResponse<object>
             {
-                _transactionService = transactionService;
-            }
+                Success = true,
+                Message = "Transaccion creada correctamente",
+                Data = null
+            });
+        }
 
-            /// <summary>
-            /// crear una nueva transaccion de finanzas
-            /// </summary>
-            /// <param name="response"></param>
-            /// <returns></returns>
-            [HttpPost]
-            public async Task<IActionResult> Create(TransactionDTO response)
+        /// <summary>
+        /// busca una transaccion por id, si no se encuentra la transaccion, se devuelve un mensaje de error con un código de estado 404 (Not Found).
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetByID(Guid id)
+        {
+            var list = await _transactionService.GetTransactionByIDAsync(id);
+            if (list == null)
             {
-                await _transactionService.AddTransactionAsync(response);
-                return Ok(new ApiResponse<object>
+                return NotFound(new ApiResponse<object>
                 {
-                    Success = true,
-                    Message = "Transaccion creada correctamente",
-                    Data = null
-                });
-            }
-
-            /// <summary>
-            /// busca una transaccion por id, si no se encuentra la transaccion, se devuelve un mensaje de error con un código de estado 404 (Not Found).
-            /// </summary>
-            /// <param name="id"></param>
-            /// <returns></returns>
-            [HttpGet("{id:guid}")]
-            public async Task<IActionResult> GetByID(Guid id)
-            {
-                var list = await _transactionService.GetTransactionByIDAsync(id);
-                if (list == null)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "",
-                        Data = null,
-                        Errors = new List<string> { $"No se encontró ninguna transaccion con el ID {id}." }
-                    });
-                }
-
-
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
+                    Success = false,
                     Message = "",
-                    Data = list
+                    Data = null,
+                    Errors = new List<string> { $"No se encontró ninguna transaccion con el ID {id}." }
                 });
             }
 
-            /// <summary>
-            /// busca las transsacciones por usuario, si no se encuentra ninguna transaccion, se devuelve un mensaje de error con un código de estado 404 (Not Found).
-            /// </summary>
-            /// <param name="userId"></param>
-            /// <returns></returns>
-            [HttpGet]
-            public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
+
+            return Ok(new ApiResponse<object>
             {
-                var item = await _transactionService.GetAllTransactionsByUserIDAsync(userId);
-                if (item == null || !item.Any())
+                Success = true,
+                Message = "",
+                Data = list
+            });
+        }
+
+        /// <summary>
+        /// busca las transsacciones por usuario, si no se encuentra ninguna transaccion, se devuelve un mensaje de error con un código de estado 404 (Not Found).
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
+        {
+            var item = await _transactionService.GetAllTransactionsByUserIDAsync(userId);
+            if (item == null || !item.Any())
+            {
+                return NotFound(new ApiResponse<object>
                 {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "No se encontraron transacciones para el usuario especificado",
-                        Data = null,
-                        Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }
-                    });
-                }
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "",
-                    Data = item
+                    Success = false,
+                    Message = "No se encontraron transacciones para el usuario especificado",
+                    Data = null,
+                    Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }
                 });
             }
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "",
+                Data = item
+            });
         }
     }
 }

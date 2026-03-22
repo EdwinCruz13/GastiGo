@@ -9,7 +9,7 @@ export interface Account {
     accountType: AccountType;
     user: User;
     currency: Currency;
-    bank: Bank;
+    bank?: Bank;
     name: string;
     description: string;
     balance: number;

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="toolbar-options">
+    <button class="btn btn-primary" (click)="addTransaction()">
+      <i class="fa-solid fa-plus"></i>
+      Nueva Transacción
+    </button>
+  </div>
+
+  <app-data-list 
+    [data]="transactiones()" 
+    titleField="category.name" 
+    descriptionField="description" 
+    valueField="amount" 
+
+
+    headerTitle="Marzo 2026"
+    symbolField="account.currency.symbol"
+    typeField="category.nature.abbre"
+
+    [actions]="['view', 'edit', 'delete']"
+    (view)="viewTransaction($event)"
+    (edit)="editTransaction($event)" 
+    (delete)="deleteTransaction($event)">
+  </app-data-list>
+
+
+  <!--Modal de alerta-->
+  <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
+    <div modal-header>
+      <span>Mensaje</span>
+      <button (click)="modalAlert.set(false)" class="modal-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div modal-body>
+      {{ modalMessageText() }}
+    </div>
+
+    <div modal-footer>
+      <button class="btn btn-danger" (click)="modalAlert.set(false)">Cerrar</button>
+    </div>
+  </app-modal>
+</div>

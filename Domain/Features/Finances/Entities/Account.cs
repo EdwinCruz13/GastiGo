@@ -17,8 +17,8 @@ namespace Domain.Features.Finances.Entities
         public Guid CurrencyId { get; private set; }
         public Currency Currency { get; private set; } = default!;
 
-        public Guid BankId { get; private set; }
-        public Bank Bank { get; private set; } = default!;
+        public Guid? BankId { get; private set; }
+        public Bank? Bank { get; private set; } = default!;
 
         public String Name { get; set; }
         public String Description { get; set; }
@@ -26,7 +26,7 @@ namespace Domain.Features.Finances.Entities
 
         private Account() { } // EF
 
-        public Account(Guid userId, Guid accountTypeId, Guid currecyId, Guid bankId, string name, string description, double balance)
+        public Account(Guid userId, Guid accountTypeId, Guid currecyId, string name, string description, double balance, Guid? bankId)
         {
             UserId = userId;
             AccountTypeId = accountTypeId;

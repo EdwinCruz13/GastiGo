@@ -5,8 +5,8 @@ namespace Application.Features.Finances.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<Category?> GetByIdAsync(Guid id);
-        Task<List<Category>> GetByUserIdAsync(Guid userId);
+        Task<Category?> GetCategoryByIdAsync(Guid id);
+        Task<List<Category>> GetCategoryByUserIdAsync(Guid userId);
         Task AddAsync(Category category);
         Task UpdateAsync(Category category);
         Task<bool> HasChildrenAsync(Guid parentId);

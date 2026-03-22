@@ -1,6 +1,7 @@
 ﻿using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Interfaces;
 using Application.Features.Users.DTOs;
+using Application.Features.Users.Interfaces;
 using Domain.Features.Finances.Entities;
 using System.ComponentModel;
 
@@ -10,10 +11,18 @@ namespace Application.Features.Finances.Services
     public class AccountService
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IAccountTypeRepository _accountTypeRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICurrencyRepository _currencyRepository;
+        private readonly IBankRepository _bankRepository;
 
-        public AccountService(IAccountRepository accountRepository)
+        public AccountService(IAccountRepository accountRepository, IAccountTypeRepository accountType, IUserRepository userRepository, ICurrencyRepository currencyRepository, IBankRepository bankRepository)
         {
             _accountRepository = accountRepository;
+            _accountTypeRepository = accountType;
+            _userRepository = userRepository;
+            _currencyRepository = currencyRepository;
+            _bankRepository = bankRepository;
         }
 
         /// <summary>
@@ -53,7 +62,7 @@ namespace Application.Features.Finances.Services
                         Symbol = account.Currency.Symbol,
                         Code = account.Currency.Code
                     },
-                    Bank = new BankResponseDTO
+                    Bank = account.Bank == null ? null : new BankResponseDTO
                     {
                         BankId = account.Bank.BankId,
                         Name = account.Bank.Name,
@@ -114,7 +123,7 @@ namespace Application.Features.Finances.Services
                         Symbol = account.Currency.Symbol,
                         Code = account.Currency.Code
                     },
-                    Bank = new BankResponseDTO
+                    Bank = account.Bank == null ? null : new BankResponseDTO
                     {
                         BankId = account.Bank.BankId,
                         Name = account.Bank.Name,
@@ -142,6 +151,18 @@ namespace Application.Features.Finances.Services
         /// <returns></returns>
         public async Task CreateAccountAsync(AccountDTO account)
         {
+            //buscar el tipo de cuenta
+            var AccountType = _accountTypeRepository.GetAccountTypeByIdAsync(account.AccountTypeId).Result;
+
+            //buscar el usuario
+            var User = _userRepository.GetUserByIdAsync(account.UserId).Result;
+
+            //buscar la moneda
+            var Moneda = _currencyRepository.GetCurrencyByIdAsync(account.CurrencyId).Result;
+
+            //buscar el banco, si el tipo de cuenta no es efectivo
+            var Bank = account.BankId != null ? _bankRepository.GetBankByIdAsync(account.BankId.Value).Result : null;
+
             try
             {
                 if (string.IsNullOrWhiteSpace(account.Name))
@@ -153,18 +174,31 @@ namespace Application.Features.Finances.Services
                 if (account.Balance < 0)
                     throw new ArgumentException("El balance inicial no puede ser negativo.");
 
-                if (account.UserId == null)
+
+                if (User == null)
                     throw new ArgumentException("Debe de ingresar un usuario valido");
 
-                if (account.AccountTypeId == null)
-                    throw new ArgumentException("Debe de ingresar un tipo de cuenta valido");
+                if (AccountType == null)
+                    throw new ArgumentException("El tipo de cuenta no existe");
 
-                if (account.BankId == null)
-                    throw new ArgumentException("Debe de ingresar el tipo de banco");
+                if (Moneda == null)
+                    throw new ArgumentException("El tipo de moneda no existe");
+
+
+                //validar si es efectivo, si es asi, el bankId debe ser null, si no es efectivo, el bankId no puede ser null
+                if (AccountType.Abbre == "TYPE-CASH") { 
+                    account.BankId = null;
+                }
+                if (AccountType.Abbre != "TYPE-CASH")
+                {
+                    if (Bank == null)
+                        throw new ArgumentException("El tipo de banco no existe");
+                }
+                
 
 
                 //crear la nueva cuenta
-                var Account = new Account(account.UserId, account.AccountTypeId, account.CurrencyId, account.BankId, account.Name, account.Description, account.Balance);
+                var Account = new Account(account.UserId, account.AccountTypeId, account.CurrencyId, account.Name, account.Description, account.Balance, account.BankId);
                 await _accountRepository.AddAsync(Account);
                 await _accountRepository.SaveChangesAsync();
             }
@@ -201,7 +235,7 @@ namespace Application.Features.Finances.Services
 
 
                 //actualiza la cuenta contable
-                var newAccount = new Account(account.UserId, account.AccountTypeId, account.CurrencyId, account.BankId, account.Name, account.Description, account.Balance);
+                var newAccount = new Account(account.UserId, account.AccountTypeId, account.CurrencyId,  account.Name, account.Description, account.Balance, account.BankId);
                 await _accountRepository.UpdateAsync(newAccount);
 
             }

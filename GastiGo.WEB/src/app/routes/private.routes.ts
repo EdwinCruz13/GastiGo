@@ -35,6 +35,11 @@ export const PRIVATE_ROUTES: Routes = [
       {
         path: 'accounts',
         loadChildren: () => import('@features/finances/account/routes/account.routes').then(m => m.ACCOUNT_ROUTE)
+      },
+
+      {
+        path: 'transactions',
+        loadChildren: () => import('@features/finances/transaction/routes/transaction.routes').then(m => m.TRANSACTION_ROUTE)
       }
     ]
   }

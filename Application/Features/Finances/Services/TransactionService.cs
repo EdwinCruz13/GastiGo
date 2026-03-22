@@ -1,27 +1,31 @@
 ﻿using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Interfaces;
 using Application.Features.Users.DTOs;
+using Application.Features.Users.Interfaces;
 using Domain.Features.Finances.Entities;
-using Domain.Features.Users.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Finances.Services
 {
     public class TransactionService
     {
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ITransactionTypeRepository _transactionTypeRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IAccountRepository _accountRepository;
 
         /// <summary>
         /// inyecta servicios de transacciones
         /// </summary>
         /// <param name="transactionRepository"></param>
-        public TransactionService(ITransactionRepository transactionRepository)
+        public TransactionService(ITransactionRepository transactionRepository, IUserRepository userRepository, ITransactionTypeRepository transactionTypeRepository,
+            ICategoryRepository categoryRepository, IAccountRepository accountRepository)
         {
             _transactionRepository = transactionRepository;
+            _userRepository = userRepository;
+            _transactionTypeRepository = transactionTypeRepository;
+            _categoryRepository = categoryRepository;
+            _accountRepository = accountRepository;
         }
 
         /// <summary>
@@ -34,6 +38,27 @@ namespace Application.Features.Finances.Services
         {
             try
             {
+                //validar que el usuario exista
+                var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
+                var transactionType = await _transactionTypeRepository.GetTransactionTypeByIdAsync(transaction.TransactionTypeId);
+                var category = await _categoryRepository.GetCategoryByIdAsync(transaction.CategoryId);
+                var account = await _accountRepository.GetAccountByIdAsync(transaction.AccountId);
+
+                if (user == null)
+                    throw new Exception($"No se encontró ningún usuario con el ID {transaction.UserId}.");
+
+                if (transactionType == null)
+                    throw new Exception($"No se encontró ningún tipo de transacción con el ID {transaction.TransactionTypeId}.");
+
+                if (category == null)
+                    throw new Exception($"No se encontró ninguna categoría con el ID {transaction.CategoryId}.");
+
+                if (account == null)
+                    throw new Exception($"No se encontró ninguna cuenta con el ID {transaction.AccountId}.");
+
+
+                //si todo bien, guardamos la transacción
+
                 var transactionEntity = new Transaction(
                 transaction.UserId,
                 transaction.TransactionTypeId,
@@ -69,7 +94,14 @@ namespace Application.Features.Finances.Services
         {
             try
             {
-                var transaction = await _transactionRepository.GetAllTransactionsByUserIDAsync(UserID);
+                //validar que el usuario exista
+                var user = await _userRepository.GetUserByIdAsync(UserID);
+
+                if (user == null)
+                   throw new ArgumentException($"No se encontró ningún usuario con el ID {UserID}.");
+
+
+                var transaction = await _transactionRepository.GetTransactionsByUserIDAsync(UserID);
                 return transaction.Select(t => t == null ? null : new TransactionResponseDTO
                 {
                     TransactionID = t.TransactionId,
@@ -145,7 +177,7 @@ namespace Application.Features.Finances.Services
         {
             try
             {
-                var t = await _transactionRepository.GetByIDAsync(Id);
+                var t = await _transactionRepository.GetTransactionByIDAsync(Id);
                 return t == null ? null : new TransactionResponseDTO
                 {
                     TransactionID = t.TransactionId,

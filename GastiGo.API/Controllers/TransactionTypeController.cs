@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GastiGo.API.Controllers
 {
     [ApiController]
-    [Route("api/finance/transactionypes")]
+    [Route("api/finance/transactiontypes")]
     public class TransactionTypeController : ControllerBase
     {
         private readonly AccountTypeService _accountTypeService;
@@ -31,7 +31,7 @@ namespace GastiGo.API.Controllers
             var list = await _accountTypeService.GetAllAccountTypesAsync();
             if (list == null)
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "No existe tipos de transacciones registradas",
@@ -59,7 +59,7 @@ namespace GastiGo.API.Controllers
             var item = await _accountTypeService.GetAccountTypeByIdAsync(id);
             if (item == null)
             {
-                return NotFound(new ApiResponse<object>
+                return Ok(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "No existe tipo de transacción con el id proporcionado",

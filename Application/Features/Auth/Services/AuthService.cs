@@ -196,7 +196,7 @@ namespace Application.Features.Auth.Services
             record.MarkAsUsed();
             await _twoFactorRepository.SaveChangesAsync();
 
-            var user = await _userRepository.GetByIdAsync(record.UserId);
+            var user = await _userRepository.GetUserByIdAsync(record.UserId);
 
             return await GenerateTokensAsync(user);
         }
@@ -218,7 +218,7 @@ namespace Application.Features.Auth.Services
 
             // 2️ Buscar usuario asociado
             var user = await _userRepository
-                .GetByIdAsync(storedToken.UserId);
+                .GetUserByIdAsync(storedToken.UserId);
 
             if (user == null)
                 throw new Exception("Usuario no encontrado.");

@@ -30,22 +30,22 @@ namespace Infrastructure.Repositories.Finances
             await _context.Transactions.AddAsync(request);
         }
 
-        public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserIDAsync(Guid UserID)
+        public async Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAsync(Guid UserID)
         {
             return await _context.Transactions.Where(u => u.UserId == UserID)
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
-                .Include(c => c.Category)
+                .Include(c => c.Category).Include(n => n.Category.Nature)
                 .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currency).Include(a => a.Account.AccountType).Include(a => a.Account.User)
                 .ToListAsync();
         }
 
-        public async Task<Transaction?> GetByIDAsync(Guid id)
+        public async Task<Transaction?> GetTransactionByIDAsync(Guid id)
         {
             return await _context.Transactions.Where(u => u.Id == id)
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
-                .Include(c => c.Category)
+                .Include(c => c.Category).Include(n => n.Category.Nature)
                 .Include(a => a.Account).Include(a => a.Account.Bank).Include(a => a.Account.Currency).Include(a => a.Account.AccountType).Include(a => a.Account.User)
                 .FirstOrDefaultAsync();
         }
