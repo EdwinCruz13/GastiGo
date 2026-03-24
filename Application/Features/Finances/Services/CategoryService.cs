@@ -5,6 +5,7 @@ using Domain.Features.Finances.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -150,12 +151,27 @@ namespace Application.Features.Finances.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<CategoryResponseDTO?>> GetCategoriesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<CategoryResponseDTO?>> GetCategoriesByUserIdAsync(Guid userId, bool flagTree = true)
         {
             if (userId == Guid.Empty)
                 throw new ArgumentException("El ID del usuario no puede ser vacío.");
 
             var categories = await _categoryRepository.GetCategoryByUserIdAsync(userId);
+
+            //si no se requiere el arbol de categorias, se devuelve la lista sin construir el árbol
+            if (flagTree == false)
+            {
+                return categories.Select(x => new CategoryResponseDTO
+                {
+                    CategoryId = x.Id,
+                    UserId = x.UserId,
+                    ParentId = x.ParentId,
+                    Nature = new NatureDTO { NatureId = x.Nature.Id, Name = x.Nature.Name, Abbre = x.Nature.Abbre },
+                    Name = x.Name,
+                    Description = x.Description,
+                    isActive = x.isActive
+                }).ToList();
+            }
 
             // Construir el árbol de categorías a partir de la lista obtenida
             var tree = BuildTree(categories, null);
@@ -163,6 +179,7 @@ namespace Application.Features.Finances.Services
             // Devolver el árbol de categorías
             return tree;
         }
+
 
         /// <summary>
         /// detalla la informacion de una categoria

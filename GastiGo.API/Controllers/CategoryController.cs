@@ -95,9 +95,9 @@ namespace GastiGo.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetByUserID([FromQuery] Guid userId)
+        public async Task<IActionResult> GetByUserID([FromQuery] Guid userId, [FromQuery] Boolean flagTree)
         {
-            var item = await _categoryService.GetCategoriesByUserIdAsync(userId);
+            var item = await _categoryService.GetCategoriesByUserIdAsync(userId, flagTree);
 
             // Si no se encuentran categorías para el usuario especificado, devuelve un mensaje de error,
             // pero no es un error del servidor, sino una respuesta válida indicando que no hay datos disponibles para ese usuario.

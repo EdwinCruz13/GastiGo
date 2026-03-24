@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260323163504_adding changes on transactions2")]
+    partial class addingchangesontransactions2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,30 +205,30 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("78840d62-d873-45e6-8dda-87c7abc4ef0f"),
+                            Id = new Guid("e2657d89-16e0-47c5-bc20-3f8359235cce"),
                             Abbre = "TYPE-CASH",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7868),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1670),
                             Name = "Cash"
                         },
                         new
                         {
-                            Id = new Guid("30e5e5d8-3d2f-40d2-b9cd-09c80faa58b9"),
+                            Id = new Guid("e3c53cbc-7964-42f7-a723-b9578cc5452d"),
                             Abbre = "TYPE-DEBT",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7869),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1672),
                             Name = "Debit"
                         },
                         new
                         {
-                            Id = new Guid("0dac5a67-eb2a-4d00-ae4e-0a3c3b30fcb7"),
+                            Id = new Guid("0a343c59-028f-42d0-a4ac-81b37c842e59"),
                             Abbre = "TYPE-SAVS",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7870),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1673),
                             Name = "Savings"
                         },
                         new
                         {
-                            Id = new Guid("14bc5ea5-3bc9-438b-9c24-9bea3261037b"),
+                            Id = new Guid("78958946-a433-4c31-9c91-aa6d92e3fd9f"),
                             Abbre = "TYPE-INVS",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7871),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1673),
                             Name = "Investment"
                         });
                 });
@@ -263,18 +266,18 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("01fa5b19-5628-4d1f-a162-bf52b333db48"),
+                            Id = new Guid("1d5c8594-4411-4f41-a2a2-620b1c89ebbd"),
                             Abbre = "BAC",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7381),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(826),
                             ImgURL = "",
                             Name = "BANCO DE AMERICA",
                             TransferFee = 2.0
                         },
                         new
                         {
-                            Id = new Guid("6b551ad0-dd1b-40ba-8c2c-d27777c6e9c7"),
+                            Id = new Guid("890242d7-387e-4b2e-b1ac-c552f8f9248b"),
                             Abbre = "BANPRO",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7385),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(829),
                             ImgURL = "",
                             Name = "BANCO DE LA PRODUCCION",
                             TransferFee = 2.0
@@ -354,25 +357,25 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4cd4ccbd-6cfa-46a7-9c6b-251d1f4af205"),
+                            Id = new Guid("9edd3da8-0623-4d98-b9ce-53e50752cd51"),
                             Code = "USD",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7555),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1115),
                             Name = "Dolar Estadounidense",
                             Symbol = "$"
                         },
                         new
                         {
-                            Id = new Guid("cffed31c-49e9-43e8-8950-79edb28f98af"),
+                            Id = new Guid("38c4f66d-a683-469e-96a5-d42f21aeb1d0"),
                             Code = "NIO",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7557),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1117),
                             Name = "Cordoba Nicaraguense",
                             Symbol = "C$"
                         },
                         new
                         {
-                            Id = new Guid("eae56944-7d72-4fc1-ae52-643168c5d5d5"),
+                            Id = new Guid("df46f462-5e6b-4474-9ea9-3db2043792af"),
                             Code = "EUR",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7558),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1118),
                             Name = "Euro",
                             Symbol = "€"
                         });
@@ -404,16 +407,16 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7d46458b-bb95-4621-a83e-665e313f70d4"),
+                            Id = new Guid("d3a0b213-f1dd-42bb-9a78-819acd9eb697"),
                             Abbre = "I",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7124),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(385),
                             Name = "Income"
                         },
                         new
                         {
-                            Id = new Guid("084acca9-427a-465f-acb5-bc1c41754545"),
+                            Id = new Guid("4ec416c4-0a67-4ae3-9cbe-be84e1820cc0"),
                             Abbre = "E",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7133),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(388),
                             Name = "Expenses"
                         });
                 });
@@ -532,25 +535,25 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("25cbd561-ab61-4409-9504-73f4c2fe63b6"),
+                            Id = new Guid("83a2c6f8-e054-4b13-8493-85af56560405"),
                             Code = "INC",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7716),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1496),
                             CurrentValue = 0,
                             Name = "Income"
                         },
                         new
                         {
-                            Id = new Guid("a43e4309-1013-4e0d-8df6-ee6a6875e811"),
+                            Id = new Guid("71b32477-3cc6-495f-bc3e-f872a15fb22a"),
                             Code = "EXP",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7719),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1501),
                             CurrentValue = 0,
                             Name = "Expenses"
                         },
                         new
                         {
-                            Id = new Guid("4db8084d-4a07-4576-85f9-e5773b4d44ac"),
+                            Id = new Guid("ea89fc8e-e1d9-4a64-bf5d-cb9040a110cd"),
                             Code = "TRF",
-                            CreatedAt = new DateTime(2026, 3, 24, 22, 7, 16, 858, DateTimeKind.Utc).AddTicks(7722),
+                            CreatedAt = new DateTime(2026, 3, 23, 16, 35, 4, 216, DateTimeKind.Utc).AddTicks(1502),
                             CurrentValue = 0,
                             Name = "Transfers"
                         });
@@ -718,7 +721,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Features.Finances.Entities.Transaction", "Transaction")
-                        .WithMany("Details")
+                        .WithMany()
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -731,11 +734,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Features.Finances.Entities.Category", b =>
                 {
                     b.Navigation("Subcategories");
-                });
-
-            modelBuilder.Entity("Domain.Features.Finances.Entities.Transaction", b =>
-                {
-                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

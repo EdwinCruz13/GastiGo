@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { ApiResponse } from '@core/models/common/api-response.model';
-import { Transaction } from '@core/models/finances/transaction.model';
+import { Transaction, TransactionRequestDTO } from '@core/models/finances/transaction.model';
 
 /**
  * Servicio para manejar las transacciones existentes
@@ -20,6 +20,11 @@ export class TransactionService {
 
   // Inyectar HttpClient para realizar solicitudes HTTP
   constructor(private http: HttpClient) { }
+
+  // Método para crear una nueva transacción
+  createTransaction(transactionRequest: TransactionRequestDTO): Observable<ApiResponse<Transaction>> {
+    return this.http.post<ApiResponse<Transaction>>(this.apiUrl, transactionRequest);
+  }
 
   // Método para obtener el listado de transacciones existentes
   getTransactions(userID: string): Observable<ApiResponse<Transaction[]>> {

@@ -174,7 +174,7 @@ export class AccountPage implements OnInit {
       balance: 0
     });
 
-    
+
 
     this.isNew.set(true);
     this.modalFormOpen.set(true);
@@ -209,9 +209,9 @@ export class AccountPage implements OnInit {
 
   // Método para manejar el cambio de selección en el dropdown de banco
   onBankChange(value: string) {
-   this.accountForm.patchValue({
+    this.accountForm.patchValue({
       bankId: value
-  });
+    });
   }
 
   // Método para manejar el cambio de selección en el dropdown de tipo de cuenta

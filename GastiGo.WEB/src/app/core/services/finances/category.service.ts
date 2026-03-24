@@ -18,7 +18,11 @@ export class CategoryService {
   // obtiene el árbol de categorías para un usuario específico, utilizando su ID.
   // Retorna un observable con la respuesta de la API que contiene un array de categorías.
   getTree(userId: string) {
-    return this.http.get<ApiResponse<Category[]>>(`${this.api}?userId=${userId}`);
+    return this.http.get<ApiResponse<Category[]>>(`${this.api}?userId=${userId}&flagTree=true`);
+  }
+
+  getCategories(userId: string) {
+    return this.http.get<ApiResponse<Category[]>>(`${this.api}?userId=${userId}&flagTree=false`);
   }
 
   // crea una nueva categoría enviando los datos de la categoría al endpoint de la API.

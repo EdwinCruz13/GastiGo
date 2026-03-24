@@ -1,28 +1,43 @@
 <div class="container">
   <div class="toolbar-options">
-    <button class="btn btn-primary" (click)="addTransaction()">
+    <button class="btn btn-primary" (click)="addTransaction('IN')">
       <i class="fa-solid fa-plus"></i>
-      Nueva Transacción
+      Ingresar Ingreso
     </button>
+
+    <button class="btn btn-danger" (click)="addTransaction('OUT')">
+      <i class="fa-solid fa-minus"></i>
+      Ingresar Gasto
+    </button>
+
+     <button class="btn btn-success" (click)="addTransaction('TRANSFER')">
+      <i class="fa-solid fa-arrow-right-arrow-left"></i>
+      Hacer Transferencia
+    </button>
+
+    @if (showEntryForm()) {
+      <app-entry-form [EntryType]="tipoMov()" (close)="closeEntryForm()" (result)="closeEntryFormByResult(false)"> </app-entry-form>
+    }
+
+    @if (showTransferForm()) {
+      <app-transfer-form [EntryType]="'TRANSFER'" (close)="showTransferForm.set(false)"> </app-transfer-form>
+    }
   </div>
 
-  <app-data-list 
-    [data]="transactiones()" 
-    titleField="category.name" 
-    descriptionField="description" 
-    valueField="amount" 
-
-
+  <app-data-list
+    [data]="transactiones()"
+    titleField="category.name"
+    descriptionField="description"
+    valueField="amount"
     headerTitle="Marzo 2026"
     symbolField="account.currency.symbol"
     typeField="category.nature.abbre"
-
     [actions]="['view', 'edit', 'delete']"
     (view)="viewTransaction($event)"
-    (edit)="editTransaction($event)" 
-    (delete)="deleteTransaction($event)">
+    (edit)="editTransaction($event)"
+    (delete)="deleteTransaction($event)"
+  >
   </app-data-list>
-
 
   <!--Modal de alerta-->
   <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">

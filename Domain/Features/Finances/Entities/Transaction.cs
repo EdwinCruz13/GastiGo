@@ -22,29 +22,25 @@ namespace Domain.Features.Finances.Entities
         public Guid CategoryId { get; private set; } 
         public Category Category { get; private set; } = default!;
 
-        public Guid AccountId { get; private set; } 
-        public Account Account { get; private set; } = default!;
-
-        public double Amount { get; private set; }
         public String Description { get; set; }
         public Guid? TransferGroupID { get; private set; } = null;
         public DateTime TransactionDate { get; private set; }
 
         public String Reference { get; private set; }
 
+        public ICollection<TransactionDetail> Details { get; private set; } = new List<TransactionDetail>();
+
 
         private Transaction() { } // EF
 
 
-        public Transaction(Guid userId, Guid transactionTypeId, Guid categoryId, Guid accountId, double amount, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
+        public Transaction(Guid userId, Guid transactionTypeId, Guid categoryId, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
         {
             UserId = userId;
             TransactionTypeId = transactionTypeId;
             CategoryId = categoryId;
-            AccountId = accountId;
-            Amount = amount;
             Description = description;
-            TransactionDate = DateTime.UtcNow;  //transactionDate ?? DateTime.UtcNow; //por si es nulo, se asigna la fecha actual
+            TransactionDate = DateTime.UtcNow;  //transactionDate ?? 
             TransferGroupID = transferGroupId;
             Reference = reference;
         }

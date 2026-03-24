@@ -1,29 +1,29 @@
+import { TransactionDetail } from './transactionDetail.model';
 import { User } from "../users/user.model";
 import { Account } from "./account.model";
 import { Category } from "./category.model";
 import { TransactionType } from "./transactionType.model";
 
 export interface Transaction{
+    transactionId: string;
     user: User;
     transactionType: TransactionType;
     category: Category;
-    account: Account;
-    amount: number;
     description: string;
     transactionDate: Date;
-    reference: string;
+    reference?: string;
     transferGroupId?: string;
+    transactionDetail: TransactionDetail[];
 }
 
 export interface TransactionRequestDTO{
-    transactionId: string;
     userId: string;
     transactionTypeId: string;
     categoryId: string;
-    accountId: string;
-    amount: number;
     description: string;
-    transactionDate: Date;
-    reference: string;
-    transferGroupId?: string;
+
+    fromAccountId?: string;
+    toAccountId?: string;
+    amount: number;
+    entryType: 'IN' | 'OUT' | 'TRANSFER';
 }

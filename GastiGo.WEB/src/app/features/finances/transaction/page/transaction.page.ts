@@ -1,3 +1,4 @@
+import { FormBuilder, Validators } from '@angular/forms';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -8,15 +9,18 @@ import { TransactionType } from '@core/models/finances/transactionType.model';
 import { Transaction } from '@core/models/finances/transaction.model';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { AuthService } from '@core/services/auth/auth.service';
+import { EntryFormComponent } from '../components/entry-form/entry-form.component';
+import { TransferFormComponent } from '../components/transfer-form/transfer-form.component';
 
 
 
 @Component({
   selector: 'app-transaction.page',
-  imports: [CommonModule, ModalComponent ,DataListComponent],
+  standalone: true,
+  imports: [CommonModule, ModalComponent, DataListComponent, EntryFormComponent, TransferFormComponent],
   templateUrl: './transaction.page.html'
 })
-export class TransactionPage implements OnInit { 
+export class TransactionPage implements OnInit {
   private transaccionesServicio = inject(TransactionService);
   private tiposTransaccionesServicio = inject(TransactionTypeService);
   private AuthServicio = inject(AuthService);
@@ -28,9 +32,17 @@ export class TransactionPage implements OnInit {
   // variable para obtener el usuario logueado
   userID = signal<string>('');
 
+  showEntryForm = signal(false);
+  showTransferForm = signal(false);
+  tipoMov = signal<'IN' | 'OUT' | 'TRANSFER'>('IN');
+
+
 
   modalAlert = signal(false);
   modalMessageText = signal("");
+
+
+
 
   //#region cargar datos
 
@@ -50,7 +62,7 @@ export class TransactionPage implements OnInit {
       if (response.success) {
         this.transactiones.set(response.data ?? []);
       } else {
-        this.modalMessageText.set('Error al cargar las transacciones.');
+        this.modalMessageText.set('No se encontraron transacciones para este usuario.');
         this.modalAlert.set(true);
       }
     });
@@ -76,10 +88,28 @@ export class TransactionPage implements OnInit {
 
   //metodo para agregar una nueva transacción
   //abre el modal con el formulario para agregar una nueva transacción
-  addTransaction() {
-    // Lógica para agregar una nueva transacción
-    this.modalMessageText.set('Funcionalidad para agregar una nueva transacción aún no implementada.');  
+  closeEntryForm() {
+    this.showEntryForm.set(false);
   }
+
+  closeEntryFormByResult(result: boolean) {
+    this.showEntryForm.set(false);
+    this.ngOnInit(); // Recargar las transacciones para
+  }
+
+  addTransaction(type: 'IN' | 'OUT' | 'TRANSFER' = 'IN') {
+    this.tipoMov.set(type);
+    //si el tipo de transacción es transferencia, abrir el formulario para agregar una nueva transferencia
+    if(type === 'TRANSFER'){
+      this.showTransferForm.set(true);
+    }
+    else {
+      //abrir el formulario para agregar una nueva transacción de ingreso o gasto
+      this.showEntryForm.set(true);
+    }
+
+  }
+
 
   viewTransaction(transaction: Transaction){
 

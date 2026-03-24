@@ -3,6 +3,7 @@ using Application.Features.Finances.Interfaces;
 using Application.Features.Users.DTOs;
 using Application.Features.Users.Interfaces;
 using Domain.Features.Finances.Entities;
+using Domain.Features.Finances.ValueObject;
 
 namespace Application.Features.Finances.Services
 {
@@ -42,7 +43,10 @@ namespace Application.Features.Finances.Services
                 var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
                 var transactionType = await _transactionTypeRepository.GetTransactionTypeByIdAsync(transaction.TransactionTypeId);
                 var category = await _categoryRepository.GetCategoryByIdAsync(transaction.CategoryId);
-                var account = await _accountRepository.GetAccountByIdAsync(transaction.AccountId);
+
+                Account? fromAccount = null;
+                Account? toAccount = null;
+
 
                 if (user == null)
                     throw new Exception($"No se encontró ningún usuario con el ID {transaction.UserId}.");
@@ -53,24 +57,127 @@ namespace Application.Features.Finances.Services
                 if (category == null)
                     throw new Exception($"No se encontró ninguna categoría con el ID {transaction.CategoryId}.");
 
-                if (account == null)
-                    throw new Exception($"No se encontró ninguna cuenta con el ID {transaction.AccountId}.");
 
 
-                //si todo bien, guardamos la transacción
+                //creamos la referencia usando el valueobject de referencia
+                var sequence = transactionType.Next();
+                var reference = TransactionReference.Create(transactionType.Code, sequence).ToString();
 
+
+
+                //creamos el grupo de transferencia si es necesario
+                Guid? transferGroupId = null;
+
+                //si el tipo de transacción es una transferencia, generamos un nuevo GUID para el grupo de transferencia
+                if (transactionType.Code == "TRF")
+                    transferGroupId = Guid.NewGuid();
+
+
+                //crear la trnansacción
                 var transactionEntity = new Transaction(
-                transaction.UserId,
-                transaction.TransactionTypeId,
-                transaction.CategoryId,
-                transaction.AccountId,
-                transaction.Amount,
-                transaction.Description,
-                transaction.TransactionDate,
-                transaction.Reference,
-                transaction.TransferGroupId
-            );
+                    transaction.UserId,
+                    transaction.TransactionTypeId,
+                    transaction.CategoryId,
+                    transaction.Description,
+                    DateTime.UtcNow,
+                    reference,
+                    transferGroupId
+                );
 
+                //creamos el detalle de la transacción
+                var details = new List<TransactionDetail>();
+
+
+                //obtener la informacion de las cuentas origne y destino
+                if(transaction.FromAccountId != null)
+                    fromAccount = await _accountRepository.GetAccountByIdAsync(transaction.FromAccountId.Value);
+
+                if (transaction.ToAccountId != null)
+                    toAccount = await _accountRepository.GetAccountByIdAsync(transaction.ToAccountId.Value);
+
+
+                //creamos el detalle de la transacción segun el tipo de transacción
+
+                //si es un ingreso, el monto se registra en la cuenta de destino
+                if (transactionType.Code == "INC")
+                {
+                    if (transaction.ToAccountId == null)
+                        throw new Exception("Cuenta destino es requerida.");
+
+                    details.Add(new TransactionDetail(
+                        transactionEntity.TransactionId,
+                        transaction.ToAccountId.Value,
+                        transaction.Amount,
+                        "IN"
+                    ));
+                }
+
+                //si es gasto, el monto se registra en la cuenta de origen
+                if (transactionType.Code == "EXP")
+                {
+                    if (transaction.FromAccountId == null)
+                        throw new Exception("Cuenta origen es requerida.");
+
+                    details.Add(new TransactionDetail(
+                        transactionEntity.TransactionId,
+                        transaction.FromAccountId.Value,
+                        transaction.Amount,
+                        "OUT"
+                    ));
+                }
+
+                //si es transferencia, el monto se registra tanto en la cuenta de origen como en la cuenta de destino
+                //se debe de registrar la comision como gasto adicional en la cuenta origne
+                if (transactionType.Code == "TRF")
+                {
+                    if (transaction.FromAccountId == null)
+                        throw new Exception("Cuenta origen es requerida.");
+
+                    if (transaction.FromAccountId == null || transaction.ToAccountId == null)
+                        throw new Exception("Cuentas origen y destino requeridas.");
+
+                    if (transaction.FromAccountId == transaction.ToAccountId)
+                        throw new Exception("No puedes transferir a la misma cuenta.");
+
+                    // salida
+                    details.Add(new TransactionDetail(
+                        transactionEntity.TransactionId,
+                        transaction.FromAccountId.Value,
+                        transaction.Amount,
+                        "OUT"
+                    ));
+
+                    // entrada
+                    details.Add(new TransactionDetail(
+                        transactionEntity.TransactionId,
+                        transaction.ToAccountId.Value,
+                        transaction.Amount,
+                        "IN"
+                    ));
+
+                    // comisión
+                    if (fromAccount?.Bank != null && fromAccount?.Bank.TransferFee > 0)
+                    {
+                        details.Add(new TransactionDetail(
+                            transactionEntity.TransactionId,
+                            transaction.FromAccountId.Value,
+                            fromAccount.Bank.TransferFee * transaction.Amount,
+                            "OUT"
+                        ));
+                    }
+
+
+                }
+
+                //asignar los detalles a la transacción
+                foreach (var detail in details)
+                {
+                    transactionEntity.Details.Add(detail);
+                }
+
+
+
+                //guardar la transacción en el repositorio
                 await _transactionRepository.AddAsync(transactionEntity);
                 await _transactionRepository.SaveChangesAsync();
             }
@@ -104,8 +211,8 @@ namespace Application.Features.Finances.Services
                 var transaction = await _transactionRepository.GetTransactionsByUserIDAsync(UserID);
                 return transaction.Select(t => t == null ? null : new TransactionResponseDTO
                 {
-                    TransactionID = t.TransactionId,
-                    Amount = t.Amount,
+                    TransactionId = t.TransactionId,
+                    
                     Description = t.Description,
                     TransactionDate = t.TransactionDate,
                     Reference = t.Reference,
@@ -129,33 +236,7 @@ namespace Application.Features.Finances.Services
                         Description = t.Category.Description,
                         Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
                     },
-                    Account = new AccountResponseDTO
-                    {
-                        AccountId = t.Account.AccountId,
-                        Name = t.Account.Name,
-                        Description = t.Account.Description,
-                        AccountType = new AccountTypeDTO
-                        {
-                            AccountTypeId = t.Account.AccountType.AccountTypeId,
-                            Name = t.Account.AccountType.Name,
-                            Abbre = t.Account.AccountType.Abbre
-                        },
-                        Currency = new CurrencyDTO
-                        {
-                            CurrencyId = t.Account.Currency.CurrencyId,
-                            Name = t.Account.Currency.Name,
-                            Symbol = t.Account.Currency.Symbol,
-                            Code = t.Account.Currency.Code
-                        },
-                        Bank = new BankResponseDTO
-                        {
-                            BankId = t.Account.Bank.BankId,
-                            Name = t.Account.Bank.Name,
-                            Abbre = t.Account.Bank.Abbre,
-                            TransferFee = t.Account.Bank.TransferFee
-                        },
-                        Balance = t.Account.Balance
-                    },
+                    
                 });
             }
             catch (Exception ex)
@@ -180,8 +261,7 @@ namespace Application.Features.Finances.Services
                 var t = await _transactionRepository.GetTransactionByIDAsync(Id);
                 return t == null ? null : new TransactionResponseDTO
                 {
-                    TransactionID = t.TransactionId,
-                    Amount = t.Amount,
+                    TransactionId = t.TransactionId,
                     Description = t.Description,
                     TransactionDate = t.TransactionDate,
                     Reference = t.Reference,
@@ -205,33 +285,7 @@ namespace Application.Features.Finances.Services
                         Description = t.Category.Description,
                         Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
                     },
-                    Account = new AccountResponseDTO
-                    {
-                        AccountId = t.Account.AccountId,
-                        Name = t.Account.Name,
-                        Description = t.Account.Description,
-                        AccountType = new AccountTypeDTO
-                        {
-                            AccountTypeId = t.Account.AccountType.AccountTypeId,
-                            Name = t.Account.AccountType.Name,
-                            Abbre = t.Account.AccountType.Abbre
-                        },
-                        Currency = new CurrencyDTO
-                        {
-                            CurrencyId = t.Account.Currency.CurrencyId,
-                            Name = t.Account.Currency.Name,
-                            Symbol = t.Account.Currency.Symbol,
-                            Code = t.Account.Currency.Code
-                        },
-                        Bank = new BankResponseDTO
-                        {
-                            BankId = t.Account.Bank.BankId,
-                            Name = t.Account.Bank.Name,
-                            Abbre = t.Account.Bank.Abbre,
-                            TransferFee = t.Account.Bank.TransferFee
-                        },
-                        Balance = t.Account.Balance
-                    },
+                   
                 };
             }
             catch (Exception ex)

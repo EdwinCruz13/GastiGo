@@ -1,0 +1,111 @@
+<app-modal [open]="true" (close)="close.emit()">
+  <div modal-header>
+    <span>Nueva categoría</span>
+    <button (click)="close.emit()" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div modal-body>
+    <form id="transactionForm" class="form" [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label"> Seleccione la cuenta de origen </label>
+        <app-dropdown-select
+          [items]="cuentas()"
+          labelField="name"
+          valueField="accountId"
+          placeholder="Seleccione la cuenta origen"
+          (valueChange)="onAccountChangeOrigin($event)"
+          [selectedValue]="transactionForm.get('cuentaOrigenId')?.value"
+        >
+        </app-dropdown-select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Seleccione la cuenta de destino </label>
+        <app-dropdown-select
+          [items]="cuentas()"
+          labelField="name"
+          valueField="accountId"
+          placeholder="Seleccione la cuenta destino"
+          (valueChange)="onAccountChangeDestination($event)"
+          [selectedValue]="transactionForm.get('cuentaDestinoId')?.value"
+        >
+        </app-dropdown-select>
+      </div>
+
+
+      <div class="form-group">
+        <label class="form-label"> Descripción </label>
+
+        <textarea
+          class="form-input"
+          rows="3"
+          placeholder="Descripción"
+          formControlName="description"
+          autocomplete="off"
+        >
+        </textarea>
+      </div>
+
+       <div class="form-group">
+        <label class="form-label"> Monto </label>
+
+        <input
+          type="number"
+          class="form-input"
+          placeholder="Monto"
+          formControlName="amount"
+          autocomplete="off"
+        />
+      </div>
+
+
+       <div class="form-group">
+        <label class="form-label">
+          Descripción
+        </label>
+
+        <textarea class="form-input" rows="3" placeholder="Descripción" formControlName="description"
+          autocomplete="off">
+        </textarea>
+      </div>
+
+
+    </form>
+  </div>
+
+  <div modal-footer>
+    @if (apiErrors.length > 0) {
+      <div class="api-errors">
+        @for (error of apiErrors; track error) {
+          <div class="error-message">
+            {{ error }}
+          </div>
+        }
+      </div>
+    }
+
+    <button class="btn btn-secondary" (click)="close.emit()">Cancelar</button>
+
+    <button type="submit" form="transactionForm" class="btn btn-primary">Guardar</button>
+  </div>
+</app-modal>
+
+<!--Modal de alerta-->
+<app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
+  <div modal-header>
+    <span>Mensaje</span>
+    <button (click)="modalAlert.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div modal-body>
+    {{ modalMessageText() }}
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-danger" (click)="modalAlert.set(false)">Cerrar</button>
+  </div>
+</app-modal>

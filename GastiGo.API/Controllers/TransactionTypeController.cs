@@ -8,15 +8,15 @@ namespace GastiGo.API.Controllers
     [Route("api/finance/transactiontypes")]
     public class TransactionTypeController : ControllerBase
     {
-        private readonly AccountTypeService _accountTypeService;
+        private readonly TransactionTypeService _transactioTypeService;
 
         /// <summary>
         /// inyecta el servicio a consumir
         /// </summary>
         /// <param name="accountTypeService"></param>
-        public TransactionTypeController(AccountTypeService accountTypeService)
+        public TransactionTypeController(TransactionTypeService transactioTypeService)
         {
-            _accountTypeService = accountTypeService;
+            _transactioTypeService = transactioTypeService;
         }
 
 
@@ -28,7 +28,7 @@ namespace GastiGo.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var list = await _accountTypeService.GetAllAccountTypesAsync();
+            var list = await _transactioTypeService.GetAllTransactionTypesAsync();
             if (list == null)
             {
                 return Ok(new ApiResponse<object>
@@ -56,7 +56,7 @@ namespace GastiGo.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var item = await _accountTypeService.GetAccountTypeByIdAsync(id);
+            var item = await _transactioTypeService.GetTransactionTypeByIdAsync(id);
             if (item == null)
             {
                 return Ok(new ApiResponse<object>
