@@ -1,5 +1,6 @@
 ﻿using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Interfaces;
+using Application.Features.Public.Interfaces;
 using Application.Features.Users.DTOs;
 using Application.Features.Users.Interfaces;
 using Domain.Features.Finances.Entities;
@@ -14,19 +15,21 @@ namespace Application.Features.Finances.Services
         private readonly ITransactionTypeRepository _transactionTypeRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly IIncomeTaxRepository _incomeTaxRepository;
 
         /// <summary>
         /// inyecta servicios de transacciones
         /// </summary>
         /// <param name="transactionRepository"></param>
         public TransactionService(ITransactionRepository transactionRepository, IUserRepository userRepository, ITransactionTypeRepository transactionTypeRepository,
-            ICategoryRepository categoryRepository, IAccountRepository accountRepository)
+            ICategoryRepository categoryRepository, IAccountRepository accountRepository, IIncomeTaxRepository taxRepository)
         {
             _transactionRepository = transactionRepository;
             _userRepository = userRepository;
             _transactionTypeRepository = transactionTypeRepository;
             _categoryRepository = categoryRepository;
             _accountRepository = accountRepository;
+            _incomeTaxRepository = taxRepository;
         }
 
         /// <summary>

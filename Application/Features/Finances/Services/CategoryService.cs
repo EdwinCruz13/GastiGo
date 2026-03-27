@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,6 @@ namespace Application.Features.Finances.Services
             _categoryRepository = categoryRepository;
             _natureRepository = natureRepository;
             _userRepository = userRepository;
-
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Application.Features.Finances.Services
 
                 //ver si la naturaleza existe
                 var nature = await _natureRepository.GetNatureByIdAsync(category.NatureId);
-                if(nature == null)
+                if (nature == null)
                     throw new ArgumentException("Debe de ingresar una naturaleza valida");
 
                 //ver si el usuario existe
@@ -62,7 +62,8 @@ namespace Application.Features.Finances.Services
                     throw new ArgumentException("Debe de ingresar un usuario valido");
 
                 //ver si la categoria padre existe
-                if(category.ParentId != null){
+                if (category.ParentId != null)
+                {
                     var parentCategory = await _categoryRepository.GetCategoryByIdAsync(category.ParentId ?? Guid.Empty);
                     if (parentCategory == null)
                         throw new ArgumentException("Debe de ingresar una categoria padre valida");
@@ -71,9 +72,22 @@ namespace Application.Features.Finances.Services
 
 
                 //agregar una nueva categoria
-                var newCategory = new Category(category.UserId, category.NatureId, category.Name, category.Description, category.ParentId);
-                await _categoryRepository.AddAsync(newCategory);
+                var newCategory = new Category(category.UserId, category.NatureId, category.Name, category.Description, category.ParentId, category.isSalary);
+                var categoryParamsList = new List<CategoryParams>();
 
+
+                //aplicar parametros a la categoria
+                if (category.ApplySalary)
+                    categoryParamsList.Add(new CategoryParams(newCategory.Id, category.ApplySalary, category.ApplyPercentage, category.ApplyAmount, category.Value));
+
+
+                //si hay parametros para aplicar, se agregan a la categoria
+                foreach (var param in categoryParamsList)
+                    newCategory.Params.Add(param);
+
+
+
+                await _categoryRepository.AddAsync(newCategory);
                 await _categoryRepository.SaveChangesAsync(); //guardar 
             }
             catch (Exception ex)
@@ -113,10 +127,11 @@ namespace Application.Features.Finances.Services
                  category.Description,
                  category.NatureId,
                  category.ParentId,
-                 category.isActive
+                 category.isActive,
+                 category.isSalary
              );
 
-             await _categoryRepository.SaveChangesAsync();
+            await _categoryRepository.SaveChangesAsync();
         }
 
         /// <summary>
@@ -169,7 +184,13 @@ namespace Application.Features.Finances.Services
                     Nature = new NatureDTO { NatureId = x.Nature.Id, Name = x.Nature.Name, Abbre = x.Nature.Abbre },
                     Name = x.Name,
                     Description = x.Description,
-                    isActive = x.isActive
+                    isActive = x.isActive,
+                    isSalary = x.isSalary,
+
+                    ApplySalary = x.Params.Any(p => p.ApplySalary) ? x.Params.FirstOrDefault(p => p.ApplySalary)?.ApplySalary ?? false : false,
+                    ApplyPercentage = x.Params.Any(p => p.ApplyPercentage) ? x.Params.FirstOrDefault(p => p.ApplyPercentage)?.ApplyPercentage ?? false : false,
+                    ApplyAmount = x.Params.Any(p => p.ApplyAmount) ? x.Params.FirstOrDefault(p => p.ApplyAmount)?.ApplyAmount ?? false : false,
+                    Value = x.Params.Any(p => p.ApplyAmount || p.ApplyPercentage || p.ApplySalary) ? x.Params.FirstOrDefault(p => p.ApplyAmount || p.ApplyPercentage || p.ApplySalary)?.Value ?? 0 : 0
                 }).ToList();
             }
 
@@ -191,7 +212,7 @@ namespace Application.Features.Finances.Services
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("El ID de la categoría debe ser un número positivo.");
-            var category =  await _categoryRepository.GetCategoryByIdAsync(id);
+            var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
 
             return category == null ? null : new CategoryResponseDTO
@@ -202,7 +223,8 @@ namespace Application.Features.Finances.Services
                 Nature = new NatureDTO { NatureId = category.Nature.Id, Name = category.Nature.Name, Abbre = category.Nature.Abbre },
                 Name = category.Name,
                 Description = category.Description,
-                isActive = category.isActive
+                isActive = category.isActive,
+                isSalary = category.isSalary
             };
 
 
@@ -229,7 +251,13 @@ namespace Application.Features.Finances.Services
                     Description = x.Description,
                     Level = level,
                     Children = BuildTree(categories, x.Id, level + 1),
-                    isActive = x.isActive
+                    isActive = x.isActive,
+                    isSalary = x.isSalary,
+
+                    ApplySalary = x.Params.Any(p => p.ApplySalary) ? x.Params.FirstOrDefault(p => p.ApplySalary)?.ApplySalary ?? false : false,
+                    ApplyPercentage = x.Params.Any(p => p.ApplyPercentage) ? x.Params.FirstOrDefault(p => p.ApplyPercentage)?.ApplyPercentage ?? false : false,
+                    ApplyAmount = x.Params.Any(p => p.ApplyAmount) ? x.Params.FirstOrDefault(p => p.ApplyAmount)?.ApplyAmount ?? false : false,
+                    Value = x.Params.Any(p => p.ApplyAmount || p.ApplyPercentage || p.ApplySalary) ? x.Params.FirstOrDefault(p => p.ApplyAmount || p.ApplyPercentage || p.ApplySalary)?.Value ?? 0 : 0
 
                 })
                 .ToList();

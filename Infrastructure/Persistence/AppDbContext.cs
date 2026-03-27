@@ -2,6 +2,7 @@
 using Domain.Features.Auth.Entities;
 using Domain.Features.Users.Entities;
 using Domain.Features.Finances.Entities;
+using Domain.Features.Public.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -39,6 +40,8 @@ namespace Infrastructure.Persistence
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
 
+        public DbSet<IncomeTax> IncomeTaxes => Set<IncomeTax>();
+
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -56,6 +59,8 @@ namespace Infrastructure.Persistence
 
             modelBuilder.HasDefaultSchema("public");
 
+            modelBuilder.Entity<IncomeTax>().ToTable("IncomeTax", "public");
+
             modelBuilder.Entity<User>().ToTable("Users", "users");
             modelBuilder.Entity<TwoFactorCode>().ToTable("TwoFactorCodes", "auth");
             modelBuilder.Entity<TwoFactorStatus>().ToTable("TwoFactorStatus", "auth");
@@ -67,12 +72,23 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<AccountType>().ToTable("AccountTypes", "finances");
             modelBuilder.Entity<Account>().ToTable("Accounts", "finances");
             modelBuilder.Entity<Category>().ToTable("Categories", "finances");
+            modelBuilder.Entity<CategoryParams>().ToTable("CategoryParams", "finances");
 
             modelBuilder.Entity<TransactionType>().ToTable("TransactionTypes", "finances");
             modelBuilder.Entity<Transaction>().ToTable("Transactions", "finances");
             modelBuilder.Entity<TransactionDetail>().ToTable("TransactionDetails", "finances");
 
 
+
+            modelBuilder.Entity<IncomeTax>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Min).IsRequired();
+                entity.Property(x => x.Max).IsRequired();
+                entity.Property(x => x.Percentage).IsRequired();
+                entity.Property(x => x.Base).IsRequired();
+                entity.Property(x => x.Excess).IsRequired();
+            });
 
 
             modelBuilder.Entity<User>(entity =>
@@ -187,7 +203,28 @@ namespace Infrastructure.Persistence
                       .WithMany(x => x.Subcategories) // una categoría padre puede tener muchas categorías hijas
                       .HasForeignKey(x => x.ParentId)
                       .OnDelete(DeleteBehavior.Restrict); // evitar eliminación en cascada para no borrar toda la jerarquía
+                entity.HasMany(x => x.Params)
+                      .WithOne(d => d.Category)
+                      .HasForeignKey(d => d.CategoryId);
             });
+
+
+            modelBuilder.Entity<CategoryParams>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Id).HasColumnName("ParamId");
+                entity.Property(x => x.ApplySalary).IsRequired();
+                entity.Property(x => x.ApplyPercentage).IsRequired();
+                entity.Property(x => x.ApplyAmount).IsRequired();
+                entity.Property(x => x.Value).IsRequired();
+                entity.HasOne(x => x.Category)
+                      .WithMany(x => x.Params)
+                      .HasForeignKey(x => x.CategoryId);
+            });
+
+
+
+
 
             modelBuilder.Entity<Account>(entity =>
             {

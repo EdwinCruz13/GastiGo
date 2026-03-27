@@ -30,6 +30,7 @@ namespace Infrastructure.DependencyInjection
             services.AddAccountInfrastructure();
             services.AddTransactionTypeInfrastructure();
             services.AddTransactionInfrastructure();
+            services.AddIncomeTaxInfrastructure();
 
             return services;
         }

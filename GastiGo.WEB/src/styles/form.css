@@ -37,3 +37,13 @@
 textarea.form-input {
   resize: vertical;
 }
+
+input[type="checkbox"].form-input {
+  width: 10%;
+  padding: 0;
+  left: 0;
+  margin-left: 0;
+
+  width: 20px;
+  height: 20px;
+}

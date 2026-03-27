@@ -10,6 +10,12 @@ export interface Category {
   level: number,
   children?: Category[];
   isActive: boolean;
+  isSalary: boolean;
+
+  applySalary: boolean;
+  applyPercentage: boolean;
+  applyAmount: boolean;
+  value: number;
 }
 
 export interface CategoryRequestDTO {
@@ -19,4 +25,11 @@ export interface CategoryRequestDTO {
   description: string;
   natureId: string;
   isActive: boolean;
+  isSalary: boolean;
+
+  applySalary: boolean;
+  applyPercentage: boolean;
+  applyAmount: boolean;
+  value: number;
+
 }

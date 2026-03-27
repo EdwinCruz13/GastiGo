@@ -7,143 +7,194 @@
   </div>
 
   @for (node of tree(); track node.id) {
-  <app-tree-node [node]="node" (add)="addNodeCategory($event)" (edit)="editNodeCategory($event)"
-    (delete)="deleteCategory($event)"></app-tree-node>
+    <app-tree-node
+      [node]="node"
+      (add)="addNodeCategory($event)"
+      (edit)="editNodeCategory($event)"
+      (delete)="deleteCategory($event)"
+    ></app-tree-node>
   }
 </div>
 
-
-
-
-
-
-
-
 <app-modal [open]="modalFormOpen()" (close)="modalFormOpen.set(false)">
-
   <div modal-header>
     <span>Nueva categoría</span>
-    <button (click)="modalFormOpen.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    <button (click)="modalFormOpen.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
   <div modal-body>
     <form id="categoryForm" class="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label class="form-label">
-          Nombre
-        </label>
-        <input type="text" class="form-input" placeholder="Nombre de la categoría" formControlName="name"
-          autocomplete="off">
+        <label class="form-label"> Nombre </label>
+        <input
+          type="text"
+          class="form-input"
+          placeholder="Nombre de la categoría"
+          formControlName="name"
+          autocomplete="off"
+        />
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          Descripción
-        </label>
+        <label class="form-label"> Descripción </label>
 
-        <textarea class="form-input" rows="3" placeholder="Descripción" formControlName="description"
-          autocomplete="off">
+        <textarea
+          class="form-input"
+          rows="3"
+          placeholder="Descripción"
+          formControlName="description"
+          autocomplete="off"
+        >
         </textarea>
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          Categoria padre
-        </label>
+        <label class="form-label"> Categoria padre </label>
 
         <input
           type="text"
           class="form-input"
           placeholder="Categoria padre"
           formControlName="parentName"
-          readonly>
+          readonly
+        />
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          Naturaleza
-        </label>
+        <label class="form-label"> Naturaleza </label>
 
-        <app-dropdown-select [items]="natures()" labelField="name" valueField="natureId"
-          placeholder="Seleccione la naturaleza" (valueChange)="onCategoryChange($event)" [selectedValue]="categoryForm.get('natureId')?.value">
+        <app-dropdown-select
+          [items]="natures()"
+          labelField="name"
+          valueField="natureId"
+          placeholder="Seleccione la naturaleza"
+          (valueChange)="onCategoryChange($event)"
+          [selectedValue]="categoryForm.get('natureId')?.value"
+        >
         </app-dropdown-select>
       </div>
 
       <div class="form-group">
-        <label class="form-label">
-          Activo
-        </label>
+        <label class="form-label"> Activo </label>
 
-        <app-dropdown-select [items]="Estados()" labelField="name" valueField="id"
-          placeholder="Seleccione el estado" (valueChange)="onStateChange($event)" [selectedValue]="categoryForm.controls.isActive.value">
+        <app-dropdown-select
+          [items]="Estados()"
+          labelField="name"
+          valueField="id"
+          placeholder="Seleccione el estado"
+          (valueChange)="onStateChange($event)"
+          [selectedValue]="categoryForm.controls.isActive.value"
+        >
         </app-dropdown-select>
-
       </div>
+
+      <div class="form-group">
+        <label class="form-label"> Es Salario </label>
+
+        <input
+          type="checkbox"
+          class="form-input"
+          placeholder="Es Salario"
+          formControlName="isSalary"
+          readonly
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Aplicar deducción/percepción al salario</label>
+        <input
+          type="checkbox"
+          class="form-input"
+          placeholder="Aplicar Salario Deducción y Percepción"
+          formControlName="applySalary"
+          readonly
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Aplicar Porcentaje </label>
+        <input
+          type="checkbox"
+          class="form-input"
+          placeholder="Aplicar Porcentaje"
+          formControlName="applyPercentage"
+          readonly
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Aplicar Monto </label>
+        <input
+          type="checkbox"
+          class="form-input"
+          placeholder="Aplicar Monto"
+          formControlName="applyAmount"
+          readonly
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"> Valor </label>
+        <input
+          type="number"
+          class="form-input"
+          placeholder="Valor"
+          formControlName="value"
+        />
+      </div>
+
     </form>
   </div>
 
   <div modal-footer>
-
-
-    @if(apiErrors.length > 0){
-    <div class="api-errors">
-      @for(error of apiErrors; track error){
-      <div class="error-message">
-        {{error}}
+    @if (apiErrors.length > 0) {
+      <div class="api-errors">
+        @for (error of apiErrors; track error) {
+          <div class="error-message">
+            {{ error }}
+          </div>
+        }
       </div>
-      }
-    </div>
     }
 
-    <button class="btn btn-secondary" (click)="modalFormOpen.set(false)">
-      Cancelar
-    </button>
+    <button class="btn btn-secondary" (click)="modalFormOpen.set(false)">Cancelar</button>
 
-    <button type="submit" form="categoryForm" class="btn btn-primary">
-      Guardar
-    </button>
-
+    <button type="submit" form="categoryForm" class="btn btn-primary">Guardar</button>
   </div>
 </app-modal>
-
-
 
 <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
   <div modal-header>
     <span>Mensaje</span>
-    <button (click)="modalAlert.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    <button (click)="modalAlert.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
   <div modal-body>
-      {{modalMessageText()}}
+    {{ modalMessageText() }}
   </div>
 
   <div modal-footer>
-    <button class="btn btn-danger" (click)="modalAlert.set(false)">
-      Cerrar
-    </button>
+    <button class="btn btn-danger" (click)="modalAlert.set(false)">Cerrar</button>
   </div>
 </app-modal>
-
 
 <app-modal [open]="modalDeleteOpen()" (close)="modalDeleteOpen.set(false)">
   <div modal-header>
     <span>Mensaje</span>
-    <button (click)="modalDeleteOpen.set(false)" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    <button (click)="modalDeleteOpen.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
-  <div modal-body>
-      Desea eliminar esta categoría?
-  </div>
+  <div modal-body>Desea eliminar esta categoría?</div>
 
   <div modal-footer>
-    <button class="btn btn-danger" (click)="deleteCategoryById()">
-      Eliminar
-    </button>
+    <button class="btn btn-danger" (click)="deleteCategoryById()">Eliminar</button>
 
-    <button class="btn btn-secondary" (click)="modalDeleteOpen.set(false)">
-      Cancelar
-    </button>
-
+    <button class="btn btn-secondary" (click)="modalDeleteOpen.set(false)">Cancelar</button>
   </div>
 </app-modal>

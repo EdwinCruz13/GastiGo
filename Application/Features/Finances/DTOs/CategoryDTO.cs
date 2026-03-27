@@ -18,8 +18,15 @@ namespace Application.Features.Finances.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public Boolean isActive { get; set; }
+        public Boolean isSalary { get; set; }
 
-}
+        //valores para aplicar parametros a la categoria
+        public Boolean ApplySalary { get; set; }
+        public Boolean ApplyPercentage { get; set; }
+        public Boolean ApplyAmount { get; set; }
+        public Double Value { get; set; }
+
+    }
 
 
 
@@ -38,5 +45,11 @@ namespace Application.Features.Finances.DTOs
         public string Description { get; set; }
         public int Level { get; set; }
         public Boolean isActive { get; set; }
+        public Boolean isSalary { get; set; }
+
+        public Boolean ApplySalary { get; set; }
+        public Boolean ApplyPercentage { get; set; }
+        public Boolean ApplyAmount { get; set; }
+        public Double Value { get; set; }
     }
 }

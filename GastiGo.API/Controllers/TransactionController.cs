@@ -14,7 +14,7 @@ namespace GastiGo.API.Controllers
         /// <summary>
         /// injecta el servicio de cuentas para manejar las operaciones relacionadas con las cuentas financieras.
         /// </summary>
-        /// <param name="accountService"></param>
+        /// <param name="transactionService"></param>
         public TransactionController(TransactionService transactionService)
         {
             _transactionService = transactionService;

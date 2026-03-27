@@ -74,7 +74,12 @@ export class CategoryPage implements OnInit {
     natureId: [null as string | null, Validators.required], //campo de ID de naturaleza con validación de requerido
     name: ['', [Validators.required, Validators.nullValidator]], //campo de nombre con validación de requerido
     description: ['', [Validators.required, Validators.nullValidator, Validators.maxLength(120)]], //campo de descripción con validación de requerido y longitud mínima de 6 caracteres
-    isActive: [null as boolean | null, Validators.required] //campo de activación con valor por defecto true
+    isActive: [null as boolean | null, Validators.required], //campo de activación con valor por defecto true
+    isSalary: [null as boolean | null, Validators.required], //campo de salario con valor por defecto false
+    applySalary: [false],
+    applyPercentage: [false],
+    applyAmount: [false],
+    value: [0, [Validators.min(0)]]
   });
 
 
@@ -152,6 +157,12 @@ export class CategoryPage implements OnInit {
       parentId: null,
       parentName: 'Categoría raíz',
       isActive: true,
+      isSalary: false,
+      userId: this.userID(),
+      applySalary: false,
+      applyPercentage: false,
+      applyAmount: false,
+      value: 0
     });
     this.categoryForm.controls.parentName.disable();
 
@@ -171,7 +182,12 @@ export class CategoryPage implements OnInit {
       parentName: node.label,
       userId: this.userID(),
       natureId: node.data?.nature.natureId,
-      isActive: true
+      isActive: true,
+      isSalary: false,
+      applySalary: false,
+      applyPercentage: false,
+      applyAmount: false,
+      value: 0
     });
 
     this.categoryForm.controls.parentName.disable();
@@ -193,6 +209,11 @@ export class CategoryPage implements OnInit {
       description: node.data?.description,
       natureId: node.data?.nature.natureId,
       isActive: node.data?.isActive ?? null,
+      isSalary: node.data?.isSalary ?? null,
+      applySalary: node.data?.applySalary ?? false,
+      applyPercentage: node.data?.applyPercentage ?? false,
+      applyAmount: node.data?.applyAmount ?? false,
+      value: node.data?.value ?? 0,
       parentId: node.data?.parentId ?? null,
       parentName: parentNode?.label ?? ""
     });

@@ -18,7 +18,7 @@ namespace Domain.Features.Finances.Entities
         public Guid? ParentId { get; private set; } = null;
         public Category Parent { get; private set; } = default!;
 
-        public Guid NatureId { get; private set; } 
+        public Guid NatureId { get; private set; }
         public Nature Nature { get; private set; } = default!;
 
         public String Name { get; private set; }
@@ -27,6 +27,10 @@ namespace Domain.Features.Finances.Entities
         public ICollection<Category> Subcategories { get; private set; } = new List<Category>();
 
         public Boolean isActive { get; private set; } = false;
+
+        public Boolean isSalary { get; set; }
+
+        public ICollection<CategoryParams> Params { get; private set; } = new List<CategoryParams>();
 
         private Category() { } // EF
 
@@ -39,7 +43,7 @@ namespace Domain.Features.Finances.Entities
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="parentId"></param>
-        public Category(Guid userId, Guid natureId, string name, string description, Guid? parentId = null)
+        public Category(Guid userId, Guid natureId, string name, string description, Guid? parentId = null, Boolean isSalary = false)
         {
             UserId = userId;
             NatureId = natureId;
@@ -47,15 +51,17 @@ namespace Domain.Features.Finances.Entities
             Description = description;
             ParentId = parentId;
             isActive = true;
+            this.isSalary = isSalary;
         }
 
-        public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId, bool isActive)
+        public void Update(Guid userId, string name, string description, Guid natureId, Guid? parentId, bool isActive, Boolean isSalary = false)
         {
             Name = name;
             Description = description;
             NatureId = natureId;
             ParentId = parentId;
             this.isActive = isActive;
+            this.isSalary = isSalary;
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace Domain.Features.Finances.Entities
         /// </summary>
         public void MarkAsDeleted()
         {
-           isActive = false;
+            isActive = false;
         }
     }
 }

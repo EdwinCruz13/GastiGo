@@ -16,6 +16,8 @@ namespace Domain.Features.Users.Entities
         public string FullName { get; private set; }
         public bool IsActive { get; private set; }
         public bool TwoFactorEnabled { get; private set; }
+        public DateTime? HiresDate { get; set; } // Agregado para registrar la fecha de contratación del usuario
+
 
         /// <summary>
         /// una vez que se ha creado un usuario, no se puede modificar su Id, lo que garantiza la integridad de los datos y la consistencia en el sistema.
@@ -30,7 +32,7 @@ namespace Domain.Features.Users.Entities
         /// <param name="username"></param>
         /// <param name="passwordHash"></param>
         /// <param name="fullName"></param>
-        public User(string email, string username, string passwordHash, string fullName)
+        public User(string email, string username, string passwordHash, string fullName, DateTime? hireDate = null)
         {
             Email = email;
             PasswordHash = passwordHash;
@@ -38,6 +40,7 @@ namespace Domain.Features.Users.Entities
             Username = username;
             IsActive = true;
             TwoFactorEnabled = false;
+            HiresDate = hireDate.Value == null ? DateTime.UtcNow: hireDate;
         }
 
         /// <summary>
