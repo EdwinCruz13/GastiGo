@@ -14,6 +14,8 @@ export interface Transaction{
     reference?: string;
     transferGroupId?: string;
     transactionDetail: TransactionDetail[];
+    amount: number;
+    entryType: 'IN' | 'OUT' | 'TRANSFER';
 }
 
 export interface TransactionRequestDTO{

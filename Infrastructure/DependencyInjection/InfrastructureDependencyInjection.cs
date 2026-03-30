@@ -23,6 +23,7 @@ namespace Infrastructure.DependencyInjection
             services.AddAuthInfrastructure();
             services.AddUsersInfrastructure();
             services.AddCategoriesInfrastructure();
+            services.AddCategoriesParamInfrastructure();
             services.AddCurrenciesInfrastructure();
             services.AddBanksInfrastructure();
             services.AddNaturesInfrastructure();

@@ -19,7 +19,7 @@ namespace Application.Features.Finances.DTOs
     {
         public Guid TransactionDetailId { get; set; }
         public TransactionResponseDTO Transaction { get; set; } = default!;
-        public AccountResponseDTO Account { get; set; } = default!;
+        public AccountResponseDTO? Account { get; set; } = default!;
         public Double Amount { get; set; }
         public String EntryType { get; set; } = string.Empty;
     }

@@ -36,10 +36,10 @@ namespace Infrastructure.Persistence
         public DbSet<Currency> Currencies => Set<Currency>();
         public DbSet<TransactionType> TransactionTypes => Set<TransactionType>();
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<CategoryParams> CategoryParams => Set<CategoryParams>();
         public DbSet<AccountType> AccountTypes => Set<AccountType>();
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
-
         public DbSet<IncomeTax> IncomeTaxes => Set<IncomeTax>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)

@@ -15,6 +15,39 @@
 
 
 
+
+
+/* ===== SCROLL GLOBAL ===== */
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent; /* limpio */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3); /* gris suave */
+  border-radius: 10px;
+  transition: background 0.2s ease in-out, opacity 0.1s ease in-out;
+  opacity: 0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+  opacity: 1;
+}
+
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148,163,184,0.4) transparent;
+}
+
 body{
   font-family: 'Inter', sans-serif, Arial;
   background-color: #0f172a;
@@ -36,31 +69,3 @@ body{
   margin-bottom: 16px;
 }
 
-
-/* ===== SCROLL GLOBAL ===== */
-
-/* Chrome, Edge, Safari */
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent; /* limpio */
-}
-
-*::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3); /* gris suave */
-  border-radius: 10px;
-  transition: background 0.2s ease;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.6);
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148,163,184,0.4) transparent;
-}

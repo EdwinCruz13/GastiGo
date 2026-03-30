@@ -35,7 +35,10 @@ namespace Infrastructure.Repositories.Finances
             return await _context.Transactions.Where(u => u.UserId == UserID)
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
-                .Include(c => c.Category).Include(n => n.Category.Nature)
+                .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Bank)
+                .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Currency)
+                .Include(c => c.Category).ThenInclude(n => n.Nature)
+                .OrderBy(o => o.CreatedAt).ThenBy(o => o.Category.Name)
                 .ToListAsync();
         }
 

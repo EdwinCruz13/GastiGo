@@ -32,6 +32,10 @@ namespace Application.Features.Finances.DTOs
         public DateTime TransactionDate { get; set; }
         public Guid? TransferGroupId { get; set; }
         public string Reference { get; set; } = string.Empty;
-        public TransactionDetailResponseDTO Details { get; set; } = default!;
+        public Double Amount { get; set; } = 0.0;
+        public String EntryType { get; set; } = string.Empty;
+        public AccountResponseDTO Account { get; set; } = default!;
+
+        public TransactionDetailResponseDTO Detail { get; set; } = default!;
     }
 }
