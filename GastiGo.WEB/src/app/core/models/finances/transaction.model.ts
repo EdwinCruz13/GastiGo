@@ -29,3 +29,21 @@ export interface TransactionRequestDTO{
     amount: number;
     entryType: 'IN' | 'OUT' | 'TRANSFER';
 }
+
+
+export interface TransactionDetailDTO{
+    transactionId: string;
+    userName: string;
+    transactionName: string;
+    categoryName: string;
+    description: string;
+    transactionDate: Date;
+    reference?: string;
+    transferGroupId?: string;
+    accountName: string;
+    currencyName: string;
+    inicialBalance: number;
+    amount: number;
+    balance: number;
+    entryType: 'IN' | 'OUT' | 'TRANSFER';
+}

@@ -1,31 +1,46 @@
 <div class="container">
   <div class="toolbar-options">
-
     <div class="wrapper">
       <div class="form-group">
         <label class="form-label"> Tipo de Cuentas </label>
-        <app-dropdown-select [items]="cuentas()" labelField="name" valueField="accountId"
-          placeholder="Seleccione la cuenta" (valueChange)="onAccountChanged($event)"
-          [selectedValue]="selectedAccountId()">
+        <app-dropdown-select
+          [items]="cuentas()"
+          labelField="name"
+          valueField="accountId"
+          placeholder="Seleccione la cuenta"
+          (valueChange)="onAccountChanged($event)"
+          [selectedValue]="selectedAccountId()"
+        >
         </app-dropdown-select>
       </div>
 
       <div class="header-toolbar">
-        <app-card [data]="cuentaSeleccionada()" titleField="name" descriptionField="bank.abbre"
-          badgeField="currency.symbol" metaField="description"></app-card>
+        <app-card
+          [data]="cuentaSeleccionada()"
+          titleField="name"
+          descriptionField="bank.abbre"
+          badgeField="currency.symbol"
+          metaField="description"
+        ></app-card>
       </div>
-
 
       <div class="filter-toolbar">
         <div class="filter">
           <div class="form-group">
-            <app-date-input label="Fecha Inicio"  [value]="fecha1()" (valueChange)="fecha1.set($event)">
+            <app-date-input
+              label="Fecha Inicio"
+              [value]="date1()"
+              (valueChange)="onDate1Changed($event)"
+            >
             </app-date-input>
-            
           </div>
 
           <div class="form-group">
-            <app-date-input label="Fecha Fin"  [value]="fecha2()" (valueChange)="fecha2.set($event)">
+            <app-date-input
+              label="Fecha Fin"
+              [value]="date2()"
+              (valueChange)="onDate2Changed($event)"
+            >
             </app-date-input>
           </div>
         </div>
@@ -47,25 +62,24 @@
           </button>
 
           @if (showEntryForm()) {
-          <app-entry-form [EntryType]="tipoMov()" (close)="closeEntryForm()" (result)="closeEntryFormByResult(false)">
-          </app-entry-form>
+            <app-entry-form
+              [EntryType]="tipoMov()"
+              (close)="closeEntryForm()"
+              (result)="closeEntryFormByResult(false)"
+            >
+            </app-entry-form>
           }
 
           @if (showTransferForm()) {
-          <app-transfer-form [EntryType]="'TRANSFER'" (close)="showTransferForm.set(false)"> </app-transfer-form>
+            <app-transfer-form [EntryType]="'TRANSFER'" (close)="showTransferForm.set(false)">
+            </app-transfer-form>
           }
         </div>
       </div>
-
-
-
     </div>
 
-
-
-
+    <app-table [data]="transactiones()"> </app-table>
   </div>
-
 
   <!--Modal de alerta-->
   <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">

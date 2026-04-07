@@ -35,4 +35,12 @@ export class TransactionService {
   getTransactionById(transactionId: string): Observable<ApiResponse<Transaction>> {
     return this.http.get<ApiResponse<Transaction>>(`${this.apiUrl}/${transactionId}`);
   }
+
+  // Método para obtener transacciones por fecha
+  getTransactionsByDate(userID: string, accountId: string | null, date1: string, date2: string): Observable<ApiResponse<Transaction[]>> {
+    return this.http.get<ApiResponse<Transaction[]>>(`${this.apiUrl}/byuserdate?userID=${userID}&accountId=${accountId}&date1=${date1}&date2=${date2}`);
+  }
+
+
+
 }

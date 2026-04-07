@@ -20,6 +20,7 @@ namespace Application.Features.Users.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<User?> GetUserByIdAsync(Guid id);
+
         /// <summary>
         /// obtiene un usuario por su correo electrónico
         /// </summary>

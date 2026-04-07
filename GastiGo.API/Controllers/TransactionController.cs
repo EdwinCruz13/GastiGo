@@ -92,5 +92,35 @@ namespace GastiGo.API.Controllers
                 Data = item
             });
         }
+
+        /// <summary>
+        /// obtiene las transacciones del usuario por un rango de fecha y tiepo de cuenta
+        /// parametros opcionales el rango de fecha, si esta vacio o nulo entonces solo obtener las transacciones por cuentas del mes actual
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="Fecha1"></param>
+        /// <param name="Fecha2"></param>
+        /// <returns></returns>
+        [HttpGet("byuserdate")]
+        public async Task<IActionResult> GetByUserIDAndTime([FromQuery] Guid userId, [FromQuery] Guid accountId, [FromQuery] String date1 = "", [FromQuery] String date2 = "")
+        {
+            var item = await _transactionService.GetAllTransactionsByUserIdAndTimeAsync(userId, accountId, date1, date2);
+            if (item == null || !item.Any())
+            {
+                return Ok(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "No se encontraron transacciones para el usuario especificado",
+                    Data = null,
+                    Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }
+                });
+            }
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "",
+                Data = item
+            });
+        }
     }
 }

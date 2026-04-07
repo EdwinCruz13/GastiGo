@@ -42,6 +42,26 @@ namespace Infrastructure.Repositories.Finances
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// retorna las transacciones del usuario por un rango de fecha y cuentaId
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="CuentaId"></param>
+        /// <param name="FechaInicio"></param>
+        /// <param name="FechaFin"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAndTimeAsync(Guid UserID, Guid CuentaId, DateTime FechaInicio, DateTime FechaFin)
+        {
+            return await _context.Transactions.Where(u => u.UserId == UserID && u.TransactionDate >= FechaInicio && u.TransactionDate <= FechaFin && u.Details.Any(ac => ac.AccountId == CuentaId))
+               .Include(u => u.User)
+               .Include(t => t.TransactionType)
+               .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Bank)
+               .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Currency)
+               .Include(c => c.Category).ThenInclude(n => n.Nature)
+               .OrderBy(o => o.CreatedAt).ThenBy(o => o.Category.Name)
+               .ToListAsync();
+        }
+
         public async Task<Transaction?> GetTransactionByIDAsync(Guid id)
         {
             return await _context.Transactions.Where(u => u.Id == id)
@@ -55,5 +75,7 @@ namespace Infrastructure.Repositories.Finances
         {
             await _context.SaveChangesAsync();
         }
+
+        
     }
 }

@@ -529,6 +529,138 @@ namespace Application.Features.Finances.Services
                 throw new Exception(ex.Message);
             }
 
+        }
+
+        /// <summary>
+        /// transaccion segun usuario, cuenta y fecha
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="cuentaId"></param>
+        /// <param name="Fecha1"></param>
+        /// <param name="Fecha2"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Exception"></exception>
+        public async Task<IEnumerable<TransactionResponseDTO?>> GetAllTransactionsByUserIdAndTimeAsync(Guid UserID, Guid cuentaId, string Fecha1, string Fecha2)
+        {
+
+            DateTime fechaInicio;
+            DateTime fechaFin;
+
+            try
+            {
+                //validar que el usuario exista
+                var user = await _userRepository.GetUserByIdAsync(UserID);
+
+                if (user == null)
+                    throw new ArgumentException($"No se encontró ningún usuario con el ID {UserID}.");
+
+
+                //validar cuenta exista
+                var account = await _accountRepository.GetAccountByIdAsync(cuentaId);
+
+                if (account == null)
+                    throw new ArgumentException($"No se encontró ninguna cuenta con el ID {cuentaId}.");
+
+
+                // Validar si vienen ambas fechas
+                if (!string.IsNullOrWhiteSpace(Fecha1) && !string.IsNullOrWhiteSpace(Fecha2))
+                {
+                    // Validar que sean fechas válidas
+                    bool esFecha1Valida = DateTime.TryParse(Fecha1, out fechaInicio);
+                    bool esFecha2Valida = DateTime.TryParse(Fecha2, out fechaFin);
+
+                    if (!esFecha1Valida || !esFecha2Valida)
+                    {
+                        throw new ArgumentException("Una o ambas fechas no son válidas.");
+                    }
+
+                    // Validar que fecha1 sea menor o igual que fecha2
+                    if (fechaInicio > fechaFin)
+                    {
+                        throw new ArgumentException("La Fecha1 no puede ser mayor que Fecha2.");
+                    }
+
+
+                    
+
+                }
+                else
+                {
+                    // Si vienen vacías o nulas → asignar valores por defecto
+                    var hoy = DateTime.Now;
+
+                    fechaInicio = new DateTime(hoy.Year, hoy.Month, 1); // primer día del mes
+                    fechaFin = fechaInicio.AddMonths(1).AddDays(-1);    // último día del mes
+                }
+
+
+
+                //convierte a formato UTC ya que postgree maldito, solo reconoce UTC como si yo fuera militar
+                fechaInicio = DateTime.SpecifyKind(fechaInicio, DateTimeKind.Utc).ToUniversalTime();
+                fechaFin = DateTime.SpecifyKind(fechaFin, DateTimeKind.Utc).ToUniversalTime();
+
+
+                //buscar trnsaccion
+                var transaction = await _transactionRepository.GetTransactionsByUserIDAndTimeAsync(UserID, cuentaId, fechaInicio, fechaFin);
+                return transaction.Select(t => t == null ? null : new TransactionResponseDTO
+                {
+                    TransactionId = t.TransactionId,
+
+                    Description = t.Description,
+                    TransactionDate = t.TransactionDate,
+                    Reference = t.Reference,
+                    User = new UserDTO
+                    {
+                        UserID = t.User.UserID,
+                        Username = t.User.Username,
+                        Email = t.User.Email
+                    },
+                    TransactionType = new TransactionTypeDTO
+                    {
+                        TransactionTypeId = t.TransactionType.TransactionTypeId,
+                        Name = t.TransactionType.Name,
+                        Code = t.TransactionType.Code,
+                        CurrentValue = t.TransactionType.CurrentValue
+                    },
+                    Category = (t.Category == null) ? null : new CategoryResponseDTO
+                    {
+                        CategoryId = t.Category.CategoryId,
+                        Name = t.Category.Name,
+                        Description = t.Category.Description,
+                        Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
+                    },
+                    Amount = t.Details.Select(d => d.Amount).FirstOrDefault(),
+                    EntryType = t.Details.Select(d => d.EntryType).FirstOrDefault() ?? string.Empty,
+                    Account = t.Details.Select(d => d.Account == null ? null : new AccountResponseDTO
+                    {
+                        Description = d.Account.Description,
+                        Bank = (d.Account.Bank == null) ? null : new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee },
+                        Currency = new CurrencyDTO { Name = d.Account.Currency.Name, Symbol = d.Account.Currency.Symbol, Code = d.Account.Currency.Code, CurrencyId = d.Account.Currency.CurrencyId },
+                        Balance = d.Account.Balance
+                    }).FirstOrDefault(),
+
+                    Detail = new TransactionDetailResponseDTO
+                    {
+                        TransactionDetailId = t.Details.Select(d => d.TransactionDetailId).FirstOrDefault(),
+                        Amount = t.Details.Select(d => d.Amount).FirstOrDefault(),
+                        EntryType = t.Details.Select(d => d.EntryType).FirstOrDefault() ?? string.Empty,
+                        Account = (t.Details.Select(d => d.Account == null ? null : new AccountResponseDTO
+                        {
+                            Description = d.Account.Description,
+                            Bank = (d.Account.Bank == null) ? null : new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee },
+                            Currency = new CurrencyDTO { Name = d.Account.Currency.Name, Symbol = d.Account.Currency.Symbol, Code = d.Account.Currency.Code, CurrencyId = d.Account.Currency.CurrencyId },
+                            Balance = d.Account.Balance
+                        })).FirstOrDefault()
+                    },
+
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
 
         }
 
