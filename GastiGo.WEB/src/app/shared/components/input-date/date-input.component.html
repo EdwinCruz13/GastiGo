@@ -1,0 +1,11 @@
+<div class="date-group">
+  @if (label) {
+  <label class="date-label">{{ label }}</label>
+  }
+
+  <div class="date-wrapper">
+    <input type="date" class="date-input" [(ngModel)]="internalValue" (ngModelChange)="onChange($event)" />
+
+    <i class="fa-solid fa-calendar calendar-icon"></i>
+  </div>
+</div>

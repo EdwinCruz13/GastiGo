@@ -1,0 +1,53 @@
+.date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.date-input {
+  height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+
+  width: 100%;
+  padding-right: 36px;
+}
+
+.date-input:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 2px rgba(37,117,252,0.1);
+}
+
+.date-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+/* ocultar icono nativo */
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* icono custom */
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}

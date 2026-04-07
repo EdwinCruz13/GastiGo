@@ -16,7 +16,7 @@
           valueField="accountId"
           placeholder="Seleccione la cuenta origen"
           (valueChange)="onAccountChangeOrigin($event)"
-          [selectedValue]="transactionForm.get('cuentaOrigenId')?.value"
+          [selectedValue]="transactionForm.get('fromAccountId')?.value"
         >
         </app-dropdown-select>
       </div>
@@ -29,7 +29,7 @@
           valueField="accountId"
           placeholder="Seleccione la cuenta destino"
           (valueChange)="onAccountChangeDestination($event)"
-          [selectedValue]="transactionForm.get('cuentaDestinoId')?.value"
+          [selectedValue]="transactionForm.get('toAccountId')?.value"
         >
         </app-dropdown-select>
       </div>

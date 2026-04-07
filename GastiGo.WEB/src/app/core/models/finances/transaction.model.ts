@@ -8,7 +8,7 @@ export interface Transaction{
     transactionId: string;
     user: User;
     transactionType: TransactionType;
-    category: Category;
+    category?: Category;
     description: string;
     transactionDate: Date;
     reference?: string;

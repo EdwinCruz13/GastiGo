@@ -259,11 +259,12 @@ namespace Application.Features.Finances.Services
 
                 Account? fromAccount = null;
                 Account? toAccount = null;
+                Category? category = null;
 
                 //validar que el usuario exista
                 var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
                 var transactionType = await _transactionTypeRepository.GetTransactionTypeByIdAsync(transaction.TransactionTypeId);
-                var category = await _categoryRepository.GetCategoryByIdAsync(transaction.CategoryId);
+                category = transaction.CategoryId.HasValue? await _categoryRepository.GetCategoryByIdAsync(transaction.CategoryId.Value): null;
 
 
                 //crear una lista de transacciones a ejecutar
@@ -278,7 +279,7 @@ namespace Application.Features.Finances.Services
                 if (transactionType == null)
                     throw new Exception($"No se encontró ningún tipo de transacción con el ID {transaction.TransactionTypeId}.");
 
-                if (category == null)
+                if (category == null && transaction.EntryType != "TRANSFER")
                     throw new Exception($"No se encontró ninguna categoría con el ID {transaction.CategoryId}.");
 
 
@@ -414,15 +415,16 @@ namespace Application.Features.Finances.Services
                         ));
 
                         // comisión
-                        if (fromAccount?.Bank != null && fromAccount?.Bank.TransferFee > 0)
-                        {
-                            details.Add(new TransactionDetail(
-                                transactionEntity.TransactionId,
-                                transaction.FromAccountId.Value,
-                                fromAccount.Bank.TransferFee * transaction.Amount,
-                                "OUT"
-                            ));
-                        }
+                        if(transactionType.Code != "TRF")
+                            if (fromAccount?.Bank != null && toAccount?.Bank.TransferFee > 0)
+                            {
+                                details.Add(new TransactionDetail(
+                                    transactionEntity.TransactionId,
+                                    transaction.FromAccountId.Value,
+                                    fromAccount.Bank.TransferFee * transaction.Amount,
+                                    "OUT"
+                                ));
+                            }
 
 
                     }
@@ -489,7 +491,7 @@ namespace Application.Features.Finances.Services
                         Code = t.TransactionType.Code,
                         CurrentValue = t.TransactionType.CurrentValue
                     },
-                    Category = new CategoryResponseDTO
+                    Category = (t.Category == null) ? null : new CategoryResponseDTO
                     {
                         CategoryId = t.Category.CategoryId,
                         Name = t.Category.Name,
@@ -501,7 +503,7 @@ namespace Application.Features.Finances.Services
                     Account = t.Details.Select(d => d.Account == null ? null : new AccountResponseDTO
                     {
                         Description = d.Account.Description,
-                        Bank = new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee },
+                        Bank = (d.Account.Bank == null) ? null : new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee },
                         Currency = new CurrencyDTO { Name = d.Account.Currency.Name, Symbol = d.Account.Currency.Symbol, Code = d.Account.Currency.Code, CurrencyId = d.Account.Currency.CurrencyId },
                         Balance = d.Account.Balance
                     }).FirstOrDefault(),
@@ -514,7 +516,7 @@ namespace Application.Features.Finances.Services
                         Account = (t.Details.Select(d => d.Account == null ? null : new AccountResponseDTO
                         {
                             Description = d.Account.Description,
-                            Bank = new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee},
+                            Bank = (d.Account.Bank == null) ? null : new BankResponseDTO { Name = d.Account.Bank.Name, Abbre = d.Account.Bank.Abbre, BankId = d.Account.Bank.BankId, TransferFee = d.Account.Bank.TransferFee},
                             Currency = new CurrencyDTO { Name = d.Account.Currency.Name, Symbol = d.Account.Currency.Symbol, Code = d.Account.Currency.Code, CurrencyId = d.Account.Currency.CurrencyId},
                             Balance = d.Account.Balance
                         })).FirstOrDefault()

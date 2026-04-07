@@ -19,7 +19,7 @@ namespace Domain.Features.Finances.Entities
         public Guid TransactionTypeId { get; private set; } 
         public TransactionType TransactionType { get; private set; } = default!;
 
-        public Guid CategoryId { get; private set; } 
+        public Guid? CategoryId { get; private set; } 
         public Category Category { get; private set; } = default!;
 
         public String Description { get; set; }
@@ -34,7 +34,7 @@ namespace Domain.Features.Finances.Entities
         private Transaction() { } // EF
 
 
-        public Transaction(Guid userId, Guid transactionTypeId, Guid categoryId, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
+        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
         {
             UserId = userId;
             TransactionTypeId = transactionTypeId;

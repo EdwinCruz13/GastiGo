@@ -25,9 +25,9 @@ namespace Application.Features.Finances.DTOs
     public class BankResponseDTO
     {
         public Guid BankId { get; set; }
-        public String Name { get; set; }
-        public String Abbre { get; set; }
+        public String Name { get; set; } = string.Empty;
+        public String Abbre { get; set; } = string.Empty;
         public double TransferFee { get; set; }
-        public String imgURL { get; set; }
+        public String imgURL { get; set; } = string.Empty;
     }
 }

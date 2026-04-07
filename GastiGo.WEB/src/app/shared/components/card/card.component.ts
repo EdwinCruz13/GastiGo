@@ -34,6 +34,8 @@ export class CardComponent<T = any> {
 
   //saber si es array
   isArray(data: T | T[]): data is T[] {
+    
+
     return Array.isArray(data);
   }
 

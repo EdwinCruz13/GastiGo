@@ -27,11 +27,13 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent; /* limpio */
+  background: transparent;
+  /* limpio */
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3); /* gris suave */
+  background: rgba(148, 163, 184, 0.3);
+  /* gris suave */
   border-radius: 10px;
   transition: background 0.2s ease in-out, opacity 0.1s ease in-out;
   opacity: 0;
@@ -45,10 +47,10 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(148,163,184,0.4) transparent;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
 }
 
-body{
+body {
   font-family: 'Inter', sans-serif, Arial;
   background-color: #0f172a;
   color: #e5e7eb;
@@ -65,7 +67,71 @@ body{
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap:16px;
+  gap: 16px;
   margin-bottom: 16px;
 }
 
+
+.toolbar-options .wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.toolbar-options .wrapper .header-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+  width: fit-content;
+}
+
+
+
+.toolbar-options .wrapper .filter-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+}
+
+.toolbar-options .wrapper .filter-toolbar .filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-options .wrapper .filter-toolbar .options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+
+
+/* Responsive */
+@media (max-width: 600px) {
+
+
+
+  .toolbar-options .wrapper .filter-toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 8px;
+
+  }
+
+  .toolbar-options .wrapper .filter-toolbar .filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+}
