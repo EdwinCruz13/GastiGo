@@ -22,7 +22,9 @@ namespace Domain.Features.Finances.Entities
 
         public String Name { get; set; }
         public String Description { get; set; }
-        public Double Balance { get; private set; } 
+        public Double Balance { get; private set; }
+
+        public DateTime InitialBalanceDate { get; private set; }
 
         private Account() { } // EF
 

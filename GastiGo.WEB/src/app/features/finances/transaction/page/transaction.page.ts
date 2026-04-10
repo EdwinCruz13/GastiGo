@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TransactionTypeService } from '@core/services/finances/transaction-type.service';
 import { TransactionService } from '@core/services/finances/transaction.service';
 import { TransactionType } from '@core/models/finances/transactionType.model';
-import { Transaction } from '@core/models/finances/transaction.model';
+import { BalanceDTO } from '@core/models/finances/transaction.model';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { EntryFormComponent } from '../components/entry-form/entry-form.component';
@@ -33,7 +33,7 @@ export class TransactionPage implements OnInit {
   private cuentaServicio = inject(AccountService);
 
   //listados
-  transactiones = signal<Transaction[] | []>([]);
+  transactiones = signal<BalanceDTO[] | []>([]);
   tiposTransacciones = signal<TransactionType[] | []>([]);
 
   cuentas = signal<Account[] | []>([]);

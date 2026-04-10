@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { ApiResponse } from '@core/models/common/api-response.model';
-import { Transaction, TransactionRequestDTO } from '@core/models/finances/transaction.model';
+import { BalanceDTO, Transaction, TransactionRequestDTO } from '@core/models/finances/transaction.model';
 
 /**
  * Servicio para manejar las transacciones existentes
@@ -37,8 +37,8 @@ export class TransactionService {
   }
 
   // Método para obtener transacciones por fecha
-  getTransactionsByDate(userID: string, accountId: string | null, date1: string, date2: string): Observable<ApiResponse<Transaction[]>> {
-    return this.http.get<ApiResponse<Transaction[]>>(`${this.apiUrl}/byuserdate?userID=${userID}&accountId=${accountId}&date1=${date1}&date2=${date2}`);
+  getTransactionsByDate(userID: string, accountId: string | null, date1: string, date2: string): Observable<ApiResponse<BalanceDTO[]>> {
+    return this.http.get<ApiResponse<BalanceDTO[]>>(`${this.apiUrl}/byuserdate?userID=${userID}&accountId=${accountId}&date1=${date1}&date2=${date2}`);
   }
 
 

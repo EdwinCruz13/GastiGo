@@ -115,6 +115,11 @@ body {
 }
 
 
+.toolbar-options  .wrapper-details {
+  width: 100% ;
+}
+
+
 
 /* Responsive */
 @media (max-width: 600px) {

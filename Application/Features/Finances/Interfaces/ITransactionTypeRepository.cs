@@ -13,5 +13,7 @@ namespace Application.Features.Finances.Interfaces
         Task<TransactionType?> GetTransactionTypeByIdAsync(Guid id);
         Task IncrementCurrentValueAsync(Guid id);
 
+       
+
     }
 }

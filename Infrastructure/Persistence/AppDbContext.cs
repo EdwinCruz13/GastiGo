@@ -76,9 +76,6 @@ namespace Infrastructure.Persistence
 
             modelBuilder.Entity<TransactionType>().ToTable("TransactionTypes", "finances");
             modelBuilder.Entity<Transaction>().ToTable("Transactions", "finances");
-            modelBuilder.Entity<TransactionDetail>().ToTable("TransactionDetails", "finances");
-
-
 
             modelBuilder.Entity<IncomeTax>(entity =>
             {
@@ -253,7 +250,7 @@ namespace Infrastructure.Persistence
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Id).HasColumnName("TransactionId");
                 entity.HasIndex(x => new { x.UserId, x.TransactionDate });
-                entity.HasIndex(x => x.Reference);
+                entity.HasIndex(x => x.AccountId); // para consultas por cuenta
                 entity.HasOne(x => x.User)
                       .WithMany() // un usuario puede tener muchas cuentas
                       .HasForeignKey(x => x.UserId);
@@ -263,40 +260,20 @@ namespace Infrastructure.Persistence
                 entity.HasOne(x => x.Category)
                         .WithMany() // una categoría
                         .HasForeignKey(x => x.CategoryId);
-                entity.HasMany(x => x.Details)
-                      .WithOne(d => d.Transaction)
-                      .HasForeignKey(d => d.TransactionId);
+                entity.HasOne(x => x.Account)
+                        .WithMany() // una cuenta
+                        .HasForeignKey(x => x.AccountId);
                 entity.Property(x => x.Description).HasMaxLength(500);
                 entity.Property(x => x.TransactionDate).IsRequired();
+                entity.Property(x => x.Amount).IsRequired();
+                entity.Property(x => x.PreviousBalance).IsRequired();
+                entity.Property(x => x.Balance).IsRequired();
+                entity.Property(x => x.EntryType).IsRequired().HasMaxLength(3);
                 entity.Property(x => x.TransferGroupID);
             });
 
 
-            modelBuilder.Entity<TransactionDetail>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("TransactionDetailId");
-
-                entity.HasOne(x => x.Account)
-                      .WithMany() // una cuenta puede tener muchos detalles de transacción
-                      .HasForeignKey(x => x.AccountId);
-                entity.HasOne(x => x.Transaction)
-                      .WithMany(x => x.Details)
-                      .HasForeignKey(x => x.TransactionId);
-                entity.Property(x => x.Amount).IsRequired();
-                entity.Property(x => x.EntryType).HasMaxLength(3);
-                entity.ToTable(t =>t.HasCheckConstraint(
-                        "CK_TransactionDetail_EntryType",
-                        "\"EntryType\" IN ('IN', 'OUT')"
-                        ) //solo permite valores 'IN' o 'OUT' para el tipo de entrada
-                );
-            });
-
-
-
-
-
-
+          
 
 
             //categorías de estado para los códigos 2FA

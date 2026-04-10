@@ -35,8 +35,6 @@ namespace Infrastructure.Repositories.Finances
             return await _context.Transactions.Where(u => u.UserId == UserID)
                 .Include(u => u.User)
                 .Include(t => t.TransactionType)
-                .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Bank)
-                .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Currency)
                 .Include(c => c.Category).ThenInclude(n => n.Nature)
                 .OrderBy(o => o.CreatedAt).ThenBy(o => o.Category.Name)
                 .ToListAsync();
@@ -52,15 +50,14 @@ namespace Infrastructure.Repositories.Finances
         /// <returns></returns>
         public async Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAndTimeAsync(Guid UserID, Guid CuentaId, DateTime FechaInicio, DateTime FechaFin)
         {
-            return await _context.Transactions.Where(u => u.UserId == UserID && u.TransactionDate >= FechaInicio && u.TransactionDate <= FechaFin && u.Details.Any(ac => ac.AccountId == CuentaId))
+            return await _context.Transactions.Where(u => u.UserId == UserID && u.TransactionDate >= FechaInicio && u.TransactionDate <= FechaFin)
                .Include(u => u.User)
                .Include(t => t.TransactionType)
-               .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Bank)
-               .Include(d => d.Details).ThenInclude(a => a.Account).ThenInclude(a => a.Currency)
                .Include(c => c.Category).ThenInclude(n => n.Nature)
                .OrderBy(o => o.CreatedAt).ThenBy(o => o.Category.Name)
                .ToListAsync();
         }
+
 
         public async Task<Transaction?> GetTransactionByIDAsync(Guid id)
         {
@@ -76,6 +73,6 @@ namespace Infrastructure.Repositories.Finances
             await _context.SaveChangesAsync();
         }
 
-        
+       
     }
 }

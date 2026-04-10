@@ -13,28 +13,37 @@ namespace Domain.Features.Finances.Entities
     {
         public Guid TransactionId => Id;
 
-        public Guid UserId { get; private set; } 
+        public Guid UserId { get; private set; }
         public User User { get; private set; } = default!;
 
-        public Guid TransactionTypeId { get; private set; } 
+        public Guid TransactionTypeId { get; private set; }
         public TransactionType TransactionType { get; private set; } = default!;
 
-        public Guid? CategoryId { get; private set; } 
-        public Category Category { get; private set; } = default!;
+        public Guid? CategoryId { get; private set; }
+        public Category? Category { get; private set; } = default!;
+
+
+        public Guid? AccountId { get; private set; }
+        public Account? Account { get; private set; } = default!;
+
 
         public String Description { get; set; }
-        public Guid? TransferGroupID { get; private set; } = null;
         public DateTime TransactionDate { get; private set; }
+        public String EntryType { get; private set; } = string.Empty;
 
+        public Double PreviousBalance { get; set; }
+        public Double Amount { get; private set; }
+        public Double Balance { get; set; }
+
+
+        public Guid? TransferGroupID { get; private set; } = null;
         public String Reference { get; private set; }
-
-        public ICollection<TransactionDetail> Details { get; private set; } = new List<TransactionDetail>();
 
 
         private Transaction() { } // EF
 
 
-        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, string description, DateTime transactionDate, string reference, Guid? transferGroupId = null)
+        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, Guid? accountId, string description, DateTime transactionDate, string entryType, double previousBalance, double amount, double balance, string reference, Guid? transferGroupId = null)
         {
             UserId = userId;
             TransactionTypeId = transactionTypeId;
@@ -43,6 +52,11 @@ namespace Domain.Features.Finances.Entities
             TransactionDate = DateTime.UtcNow;  //transactionDate ?? 
             TransferGroupID = transferGroupId;
             Reference = reference;
+            EntryType = entryType;
+            PreviousBalance = previousBalance;
+            Amount = amount;
+            Balance = balance;
+            AccountId = accountId;
         }
 
 

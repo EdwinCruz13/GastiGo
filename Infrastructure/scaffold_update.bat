@@ -1,0 +1,14 @@
+@echo off
+REM ================================================
+REM SUERTE Y QUE LA FUERZA LOS ACOMPA�E :D
+REM ================================================
+
+REM para primera migracion puedes usar un nombre llamado "InitialCreate"
+REM pero si cambias alguna columna, entonces usa otro nombre "Mi cambioColumna"
+REM luegos ejecutas update 
+
+@echo off
+dotnet ef database update 
+
+
+pause
