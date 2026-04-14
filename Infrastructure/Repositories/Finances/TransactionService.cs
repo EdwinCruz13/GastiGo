@@ -50,7 +50,7 @@ namespace Infrastructure.Repositories.Finances
         /// <returns></returns>
         public async Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAndTimeAsync(Guid UserID, Guid CuentaId, DateTime FechaInicio, DateTime FechaFin)
         {
-            return await _context.Transactions.Where(u => u.UserId == UserID && u.TransactionDate >= FechaInicio && u.TransactionDate <= FechaFin)
+            return await _context.Transactions.Where(u => u.UserId == UserID && u.TransactionDate >= FechaInicio && u.TransactionDate <= FechaFin && u.AccountId == CuentaId)
                .Include(u => u.User)
                .Include(t => t.TransactionType)
                .Include(c => c.Category).ThenInclude(n => n.Nature)
@@ -68,11 +68,28 @@ namespace Infrastructure.Repositories.Finances
                 .FirstOrDefaultAsync();
         }
 
+        //public async Task SaveChangesAsync()
+        //{
+        //    await _context.SaveChangesAsync();
+        //}
+
         public async Task SaveChangesAsync()
         {
-            await _context.SaveChangesAsync();
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync("CALL recalcular();");
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
-       
+
     }
 }

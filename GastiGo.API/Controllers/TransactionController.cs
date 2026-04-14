@@ -37,6 +37,24 @@ namespace GastiGo.API.Controllers
             });
         }
 
+
+        /// <summary>
+        /// crear el primer movimiento de una transaccion, este metodo se utiliza para crear una transaccion con un solo movimiento
+        /// </summary>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
+        [HttpPost("firstMovement")]
+        public async Task<IActionResult> CreateFirstMovement(TransactionMovenmetDTO transaction)
+        {
+            await _transactionService.AddFirstMovementAsync(transaction);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Transaccion creada correctamente",
+                Data = null
+            });
+        }
+
         /// <summary>
         /// busca una transaccion por id, si no se encuentra la transaccion, se devuelve un mensaje de error con un código de estado 404 (Not Found).
         /// </summary>

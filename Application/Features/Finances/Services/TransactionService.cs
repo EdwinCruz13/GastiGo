@@ -37,206 +37,304 @@ namespace Application.Features.Finances.Services
             _categoryParamRepository = categoryParamRepository;
         }
 
-        /// <summary>
+        // <summary>
         /// crea una lista de transacciones relacionadas con el pago de salario de un usuario, calculando las bonificaciones y deducciones correspondientes según los parámetros de categoría definidos en el sistema.
         /// </summary>
         /// <param name="UserID"></param>
         /// <param name="salary"></param>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        //private List<Transaction> CreateListOfTransactionBySalary(Guid UserID, double salary, Guid accountId)
-        //{
-        //    List<Transaction> transactions = new List<Transaction>();
+        private List<Transaction> CreateListOfTransactionBySalary(Guid UserID, double salary, Guid accountId)
+        {
+            List<Transaction> transactions = new List<Transaction>();
 
-        //    //obtener los parametros de categoria para calcular las bonificaciones
-        //    var user = _userRepository.GetUserByIdAsync(UserID).Result;
-        //    var categoryParam = _categoryParamRepository.GetAllCategoryParamsAsync().Result;
-        //    var transactionType = _transactionTypeRepository.GetAllTransactionTypesAsync().Result;
+            //obtener los parametros de categoria para calcular las bonificaciones
+            var user = _userRepository.GetUserByIdAsync(UserID).Result;
+            var categoryParam = _categoryParamRepository.GetAllCategoryParamsAsync().Result;
+            var transactionType =  _transactionTypeRepository.GetAllTransactionTypesAsync().Result;
 
+            var transactionTypeByIncome = transactionType.Where(x => x.Code == "INC").FirstOrDefault();
+            var transactionTypeByExpense = transactionType.Where(x => x.Code == "EXP").FirstOrDefault();
 
-        //    //calcular los años de servicio
-        //    DateTime hireFrom = Convert.ToDateTime(user.HiresDate.Value);
-        //    int yearOfService = DateTime.Now.Year - hireFrom.Year;
-        //    //si el usuario no ha cumplido un año completo, no se le asigna la bonificacion por año de servicio
-        //    if (DateTime.Now < hireFrom.AddYears(yearOfService)) yearOfService--;
-
-        //    //calcular el antiguedad
-        //    double bonificacionPorAños = 0;
-        //    //calcular el titulo
-        //    double bonificacionPorTitulo = 0;
-        //    //viatico de alimentacion
-        //    double bonificacionViaticoAlimentacion = 0;
+            
 
 
-        //    //obtener seguro colectivo
-        //    double seguroColectivo = 0;
-        //    //calcular INSS
-        //    double inss = 0;
-        //    //calcular el impuesto sobre la renta
-        //    double ir = 0;
+            //calcular los años de servicio
+            DateTime hireFrom = Convert.ToDateTime(user.HiresDate.Value);
+            int yearOfService = DateTime.Now.Year - hireFrom.Year;
+            //si el usuario no ha cumplido un año completo, no se le asigna la bonificacion por año de servicio
+            if (DateTime.Now < hireFrom.AddYears(yearOfService)) yearOfService--;
+
+
+            //buscar las cuentas relacionada al salario
+            var bonificacionPorAños = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "Años de servicios")?.CategoryId,
+                Amount = 0
+            };
+
+            var bonificacionViaticoAlimentacion = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "Viático de alimentación")?.CategoryId,
+                Amount = 0
+            };
+
+            var bonificacionPorTitulo = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "Titulo")?.CategoryId,
+                Amount = 0
+            };
+
+            var seguroColectivo = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "Seguro colectivo")?.CategoryId,
+                Amount = 0
+            };
+
+            var inss = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "INSS")?.CategoryId,
+                Amount = 0
+            };
+
+            var ir = new TransactionMovenmetDTO
+            {
+                UserId = UserID,
+                AccountId = accountId,
+                CategoryId = categoryParam.FirstOrDefault(p => p.Category.Name == "IR")?.CategoryId,
+                Amount = 0
+            };
+
+
+            if (categoryParam == null) return transactions;
+            foreach (var param in categoryParam)
+            {
+                if (param.Category.Name == "Años de servicios")
+                {
+
+                    bonificacionPorAños.Amount = Convert.ToDecimal((salary * ((param.Value * yearOfService) / 100)));
+                    var sequence = transactionTypeByIncome.Next();
+                    var reference = TransactionReference.Create(transactionTypeByIncome.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                        UserID,
+                        transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
+                        param.CategoryId,
+                        bonificacionPorAños.AccountId,
+                        $"Bonificacion por año({param.Value * yearOfService})",
+                        DateTime.UtcNow,
+                        "IN",
+                        0,
+                        bonificacionPorAños.Amount,
+                        0,
+                        reference,
+                        null
+                    );
+
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+
+                if (param.Category.Name == "Titulo")
+                {
+                    bonificacionPorTitulo.Amount = Convert.ToDecimal((salary * (param.Value / 100)));
+                    var sequence = transactionTypeByIncome.Next();
+                    var reference = TransactionReference.Create(transactionTypeByIncome.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                       UserID,
+                       transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
+                       param.CategoryId,
+                       bonificacionPorTitulo.AccountId,
+                       $"Titulo",
+                       DateTime.UtcNow,
+                       "IN",
+                       0,
+                       bonificacionPorTitulo.Amount,
+                       0,
+                       reference,
+                       null
+                   );
+
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+
+                if (param.Category.Name == "Viático de alimentación")
+                {
+                    bonificacionViaticoAlimentacion.Amount = Convert.ToDecimal(param.Value);
+                    var sequence = transactionTypeByIncome.Next();
+                    var reference = TransactionReference.Create(transactionTypeByIncome.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                      UserID,
+                      transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
+                      param.CategoryId,
+                      bonificacionViaticoAlimentacion.AccountId,
+                      $"Viático de alimentación",
+                      DateTime.UtcNow,
+                      "IN",
+                      0,
+                      bonificacionViaticoAlimentacion.Amount,
+                      0,
+                      reference,
+                      null
+                    );
+
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+            }
+
+            //salario bruto
+            decimal salarioBruto = Convert.ToDecimal(salary) + bonificacionPorAños.Amount + bonificacionPorTitulo.Amount;
+
+
+            foreach (var param in categoryParam)
+            {
+                if (param.Category.Name == "INSS")
+                {
+
+                    inss.Amount = Convert.ToDecimal((param.Value / 100)) * salarioBruto;
+                    var sequence = transactionTypeByExpense.Next();
+                    var reference = TransactionReference.Create(transactionTypeByExpense.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                         UserID,
+                         transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
+                         param.CategoryId,
+                         inss.AccountId,
+                         $"Seguro INSS",
+                         DateTime.UtcNow,
+                         "OUT",
+                         0,
+                         inss.Amount,
+                         0,
+                         reference,
+                         null
+                     );
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+
+                if (param.Category.Name == "IR")
+                {
+                    ir.Amount = CalcularIR(salarioBruto - inss.Amount);
+                    var sequence = transactionTypeByExpense.Next();
+                    var reference = TransactionReference.Create(transactionTypeByExpense.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                         UserID,
+                         transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
+                         param.CategoryId,
+                         ir.AccountId,
+                         "Impuesto sobre la renta",
+                         DateTime.UtcNow,
+                         "OUT",
+                         0,
+                         ir.Amount,
+                         0,
+                         reference,
+                         null
+                    );
+
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+
+                if (param.Category.Name == "Seguro colectivo")
+                {
+                    seguroColectivo.Amount = Convert.ToDecimal(param.Value);
+                    var sequence = transactionTypeByExpense.Next();
+                    var reference = TransactionReference.Create(transactionTypeByExpense.Code, sequence).ToString();
+                    var transaction = new Transaction(
+                        UserID,
+                        transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
+                        param.CategoryId,
+                        seguroColectivo.AccountId,
+                         $"Seguro Colectivo",
+                        DateTime.UtcNow,
+                        "OUT",
+                        0,
+                        seguroColectivo.Amount,
+                        0,
+                        reference,
+                        null
+                    );
+                    //añadir a la lista
+                    transactions.Add(transaction);
+                }
+            }
+
+
+            return transactions;
+        }
+
+
+        /// <summary>
+        /// crea el primer movimiento de una transacción, validando que el usuario y la cuenta existan en el sistema, y guardando los cambios en el repositorio para iniciar el proceso de creación de una transacción completa posteriormente.
+        /// </summary>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task AddFirstMovementAsync(TransactionMovenmetDTO transaction)
+        {
+            try
+            {
+                //obtener la cuenta
+                var account = await _accountRepository.GetAccountByIdAsync(transaction.AccountId);
+                //obtener el usuario
+                var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
+                //obtener el tipo de transacción de primer movimiento
+                var transactionTypes = await _transactionTypeRepository.GetAllTransactionTypesAsync();
+                //obtener el tipo de transacción de primer movimiento
+                var FirstMovTransactionType = transactionTypes.FirstOrDefault(t => t.Code == "FM");
+
+
+                if (user == null)
+                    throw new Exception($"No se encontró ningún usuario con el ID {transaction.UserId}.");
+                if (account == null)
+                    throw new Exception($"No se encontró ninguna cuenta con el ID {transaction.AccountId}.");
 
 
 
+                //crea la secuencia
+                var sequence = FirstMovTransactionType.Next();
+                var reference = TransactionReference.Create(FirstMovTransactionType.Code, sequence).ToString();
 
 
-        //    if (categoryParam == null) return transactions;
-        //    foreach (var param in categoryParam)
-        //    {
-        //        var details = new List<TransactionDetail>();
-        //        if (param.Category.Name == "Años de servicios")
-        //        {
+                //crear la transacción de primer movimiento con la información proporcionada en el DTO, incluyendo la referencia generada
+                var transactionEntity = new Transaction(
+                        transaction.UserId,
+                        FirstMovTransactionType.TransactionTypeId,
+                        null,
+                        transaction.AccountId,
+                        $"Primer Movimiento con secuencia: {reference}",
+                        DateTime.UtcNow,
+                        "IN",
+                        0,
+                        transaction.Amount,
+                        transaction.Amount,
+                        reference,
+                        null
+                );
 
-        //            bonificacionPorAños = (salary * ((param.Value * yearOfService) / 100));
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                $"Bonificacion por año({param.Value * yearOfService})",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-
-
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                bonificacionPorAños,
-        //                "IN"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-
-        //        if (param.Category.Name == "Titulo")
-        //        {
-        //            bonificacionPorTitulo = (salary * (param.Value / 100));
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                $"Titulo",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                bonificacionPorTitulo,
-        //                "IN"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-
-        //        if (param.Category.Name == "Viático de alimentación")
-        //        {
-        //            bonificacionViaticoAlimentacion = param.Value;
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "INC")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                $"Viático de alimentación",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                bonificacionViaticoAlimentacion,
-        //                "IN"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-        //    }
-
-        //    //salario bruto
-        //    double salarioBruto = salary + bonificacionPorAños + bonificacionPorTitulo;
+                //guardar la transacción en el repositorio para iniciar el proceso
+                await _transactionRepository.AddAsync(transactionEntity);
+                await _transactionRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
 
-        //    foreach (var param in categoryParam)
-        //    {
-        //        var details = new List<TransactionDetail>();
-        //        if (param.Category.Name == "INSS")
-        //        {
-
-        //            inss = (param.Value / 100) * salarioBruto;
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                $"Seguro INSS",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                inss,
-        //                "OUT"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-
-        //        if (param.Category.Name == "IR")
-        //        {
-        //            ir = CalcularIR(salarioBruto - inss);
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                "Impuesto sobre la renta",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                ir,
-        //                "OUT"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-
-        //        if (param.Category.Name == "Seguro colectivo")
-        //        {
-        //            seguroColectivo = param.Value;
-        //            var transaction = new Transaction(
-        //                UserID,
-        //                transactionType.FirstOrDefault(t => t.Code == "EXP")!.TransactionTypeId,
-        //                param.CategoryId,
-        //                $"Seguro Colectivo",
-        //                DateTime.UtcNow,
-        //                "",
-        //                null
-        //            );
-        //            details.Add(new TransactionDetail(
-        //                transaction.TransactionId,
-        //                accountId,
-        //                seguroColectivo,
-        //                "OUT"
-        //            ));
-        //            foreach (var detail in details) transaction.Details.Add(detail);
-        //            //añadir a la lista
-        //            transactions.Add(transaction);
-        //        }
-        //    }
-
-
-        //    return transactions;
-        //}
 
         /// <summary>
         /// crea una nueva transacción a partir de un DTO y la guarda en el repositorio
@@ -246,7 +344,8 @@ namespace Application.Features.Finances.Services
         /// <exception cref="Exception"></exception>
         public async Task AddTransactionAsync(TransactionDTO transaction)
         {
-            try{
+            try
+            {
 
                 Account? fromAccount = null;
                 Account? toAccount = null;
@@ -262,7 +361,7 @@ namespace Application.Features.Finances.Services
                 var category = transaction.CategoryId.HasValue ? await _categoryRepository.GetCategoryByIdAsync(transaction.CategoryId.Value) : null;
 
 
-                
+
 
 
                 //obtener la informacion de las cuentas origne y destino
@@ -274,9 +373,8 @@ namespace Application.Features.Finances.Services
 
 
 
-                //crear una lista de transacciones a ejecutar
+                //crear una lista de transacciones a ejecutar en caso de salario
                 List<Transaction> transactionsToExecute = new List<Transaction>();
-
 
 
                 //validar que el usuario, el tipo de transacción y la categoría (si es que se proporcionó) existan en el sistema
@@ -304,11 +402,6 @@ namespace Application.Features.Finances.Services
                 if (transactionType.Code == "TRF")
                     transferGroupId = Guid.NewGuid();
 
-
-
-
-                //creamos el detalle de la transacción segun el tipo de transacción
-
                 //si es un ingreso, el monto se registra en la cuenta de destino
                 if (transactionType.Code == "INC")
                 {
@@ -324,9 +417,9 @@ namespace Application.Features.Finances.Services
                         transaction.ToAccountId,
                         transaction.Description,
                         DateTime.UtcNow,
-                        "INC",
+                        "IN",
                         0,
-                        0,
+                        transaction.Amount,
                         0,
                         reference,
                         transferGroupId
@@ -334,10 +427,20 @@ namespace Application.Features.Finances.Services
 
 
                     //si es salario, crear las percepciones y deducciones correspondientes
+                    if (category != null && category.isSalary)
+                        transactionsToExecute = CreateListOfTransactionBySalary(transaction.UserId, Convert.ToDouble(transaction.Amount), transaction.ToAccountId.Value);
+
+
+                    await _transactionRepository.AddAsync(transactionEntity);
+                    foreach (var item in transactionsToExecute)
+                    {
+                        await _transactionRepository.AddAsync(item);
+                    }
 
                 }
 
                 //guardar los cambios en el repositorio
+                
                 await _transactionRepository.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -395,7 +498,7 @@ namespace Application.Features.Finances.Services
                         Description = t.Category.Description,
                         Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
                     },
-                   
+
 
                 });
             }
@@ -416,7 +519,7 @@ namespace Application.Features.Finances.Services
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="Exception"></exception>
-        public async Task<IEnumerable<TransactionResponseDTO?>> GetAllTransactionsByUserIdAndTimeAsync(Guid UserID, Guid cuentaId, string Fecha1, string Fecha2)
+        public async Task<IEnumerable<BalanceDTO?>> GetAllTransactionsByUserIdAndTimeAsync(Guid UserID, Guid cuentaId, string Fecha1, string Fecha2)
         {
 
             DateTime fechaInicio;
@@ -476,44 +579,20 @@ namespace Application.Features.Finances.Services
                 fechaFin = DateTime.SpecifyKind(fechaFin, DateTimeKind.Utc).ToUniversalTime();
 
 
-                //buscar trnsaccion
-                // var movimientos = await _transactionRepository.GetBalanceAsync(UserID, cuentaId, fechaInicio, fechaFin);
-
                 var transactions = await _transactionRepository.GetTransactionsByUserIDAndTimeAsync(UserID, cuentaId, fechaInicio, fechaFin);
 
-                // saldo base
-                var balance = account.Balance;
 
-                //agruptar por transaccion
-                //var movimientosDict = movimientos.GroupBy(m => m.TransactionId).ToDictionary(g => g.Key, g => g.First());
-
-                return transactions.Select(t => t == null ? null : new TransactionResponseDTO
+                return transactions.Select(t => t == null ? null : new BalanceDTO
                 {
-                    TransactionId = t.TransactionId,
+                    
 
                     Description = t.Description,
-                    TransactionDate = t.TransactionDate,
+                    TransactionDate = t.TransactionDate.ToString("dd/MM/yyyy"),
                     Reference = t.Reference,
-                    User = new UserDTO
-                    {
-                        UserID = t.User.UserID,
-                        Username = t.User.Username,
-                        Email = t.User.Email
-                    },
-                    TransactionType = new TransactionTypeDTO
-                    {
-                        TransactionTypeId = t.TransactionType.TransactionTypeId,
-                        Name = t.TransactionType.Name,
-                        Code = t.TransactionType.Code,
-                        CurrentValue = t.TransactionType.CurrentValue
-                    },
-                    Category = (t.Category == null) ? null : new CategoryResponseDTO
-                    {
-                        CategoryId = t.Category.CategoryId,
-                        Name = t.Category.Name,
-                        Description = t.Category.Description,
-                        Nature = new NatureDTO { NatureId = t.Category.Nature.Id, Name = t.Category.Nature.Name, Abbre = t.Category.Nature.Abbre }
-                    }
+                    EntryType = t.EntryType,
+                    Balance = t.Balance,
+                    PreviousBalance = t.PreviousBalance,
+                    Amount = t.Amount,
                 });
 
 
@@ -576,36 +655,23 @@ namespace Application.Features.Finances.Services
         }
 
 
-        private double CalcularIR(double salarioMensual)
+        private decimal CalcularIR(decimal salarioMensual)
         {
-            double anual = salarioMensual * 12;
-            double IR = 0;
+            decimal anual = salarioMensual * 12;
+            decimal IR = 0;
             var Taxes = _incomeTaxRepository.GetAllIncomeTax().Result;
 
             if (Taxes == null) return IR;
             foreach (var tax in Taxes)
             {
-                if (anual > tax?.Min && anual <= tax.Max)
+                if (anual > Convert.ToDecimal(tax?.Min) && anual <= Convert.ToDecimal(tax.Max))
                 {
-                    IR = (((anual - tax.Excess) * (tax.Percentage / 100)) + tax.Base) / 12;
+                    IR = (((anual - Convert.ToDecimal(tax.Excess)) * (Convert.ToDecimal(tax.Percentage) / 100)) + Convert.ToDecimal(tax.Base)) / 12;
                 }
             }
 
             return IR;
 
-            //if (anual <= 100000)
-            //    return 0;
-
-            //if (anual <= 200000)
-            //    return ((anual - 100000) * 0.15) / 12;
-
-            //if (anual <= 350000)
-            //    return ((anual - 200000) * 0.20 + 15000) / 12;
-
-            //if (anual <= 500000)
-            //    return ((anual - 350000) * 0.25 + 45000) / 12;
-
-            //return ((anual - 500000) * 0.30 + 82500) / 12;
         }
 
 

@@ -14,7 +14,9 @@ export interface Transaction{
     reference?: string;
     transferGroupId?: string;
     transactionDetail: TransactionDetail[];
+    previousBalance: number;
     amount: number;
+    balance: number;
     entryType: 'IN' | 'OUT' | 'TRANSFER';
 }
 
@@ -35,7 +37,7 @@ export interface BalanceDTO{
    // transactionId: string;
     transactionDate: string;
     description: string;
-    initialBalance: number;
+    previousBalance: number;
     amount: number;
     balance: number;
     entryType: 'IN' | 'OUT' | 'TRANSFER';

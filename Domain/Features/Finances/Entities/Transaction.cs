@@ -31,9 +31,9 @@ namespace Domain.Features.Finances.Entities
         public DateTime TransactionDate { get; private set; }
         public String EntryType { get; private set; } = string.Empty;
 
-        public Double PreviousBalance { get; set; }
-        public Double Amount { get; private set; }
-        public Double Balance { get; set; }
+        public decimal PreviousBalance { get; set; }
+        public decimal Amount { get; private set; }
+        public decimal Balance { get; set; }
 
 
         public Guid? TransferGroupID { get; private set; } = null;
@@ -43,7 +43,7 @@ namespace Domain.Features.Finances.Entities
         private Transaction() { } // EF
 
 
-        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, Guid? accountId, string description, DateTime transactionDate, string entryType, double previousBalance, double amount, double balance, string reference, Guid? transferGroupId = null)
+        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, Guid? accountId, string description, DateTime transactionDate, string entryType, decimal previousBalance, decimal amount, decimal balance, string reference, Guid? transferGroupId = null)
         {
             UserId = userId;
             TransactionTypeId = transactionTypeId;

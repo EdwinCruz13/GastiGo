@@ -18,8 +18,21 @@ namespace Application.Features.Finances.DTOs
         //ya que el detalle es el que tiene la información de la cuenta y el monto, además del tipo de entrada (ingreso o gasto)
         public Guid? FromAccountId { get; set; } //cuenta de origen, puede ser nula si es un ingreso
         public Guid? ToAccountId { get; set; } //cuenta de destino, puede ser nula si es un gasto
-        public Double Amount { get; set; } //monto de la transacción
+        public decimal Amount { get; set; } //monto de la transacción
         public String EntryType { get; set; } = string.Empty; //tipo de entrada, puede ser "IN" o "OUT"
+    }
+
+
+    /// <summary>
+    /// primer movimiento de una transacción, se utiliza para la creación de una transacción
+    /// </summary>
+    public class TransactionMovenmetDTO 
+    {
+        public Guid UserId { get; set; }
+        public Guid AccountId { get; set; }
+        public Guid? CategoryId { get; set; } = default;
+        public decimal Amount { get; set; }
+
     }
 
     public class TransactionResponseDTO
@@ -32,10 +45,11 @@ namespace Application.Features.Finances.DTOs
         public DateTime TransactionDate { get; set; }
         public Guid? TransferGroupId { get; set; }
         public string Reference { get; set; } = string.Empty;
-        public Double Amount { get; set; } = 0.0;
+        public decimal Amount { get; set; }
+        public decimal Balance { get; set; }
+        public decimal PreviousBalance { get; set; }
         public String EntryType { get; set; } = string.Empty;
         public AccountResponseDTO? Account { get; set; }
 
-        public TransactionDetailResponseDTO Detail { get; set; } = default!;
     }
 }

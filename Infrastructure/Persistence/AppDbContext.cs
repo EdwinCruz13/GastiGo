@@ -265,9 +265,9 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(x => x.AccountId);
                 entity.Property(x => x.Description).HasMaxLength(500);
                 entity.Property(x => x.TransactionDate).IsRequired();
-                entity.Property(x => x.Amount).IsRequired();
-                entity.Property(x => x.PreviousBalance).IsRequired();
-                entity.Property(x => x.Balance).IsRequired();
+                entity.Property(x => x.Amount).IsRequired().HasColumnType("numeric(18,2)");
+                entity.Property(x => x.PreviousBalance).IsRequired().HasColumnType("numeric(18,2)");
+                entity.Property(x => x.Balance).IsRequired().HasColumnType("numeric(18,2)");
                 entity.Property(x => x.EntryType).IsRequired().HasMaxLength(3);
                 entity.Property(x => x.TransferGroupID);
             });
