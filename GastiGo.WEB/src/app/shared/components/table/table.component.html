@@ -1,6 +1,6 @@
 <div class="table-container">
 
-  <!-- 🔍 BUSCADOR -->
+  <!--  BUSCADOR -->
   <div class="table-toolbar">
     <input
       type="text"
@@ -31,7 +31,7 @@
         <tr>
 
           @for (col of columns; track col) {
-            <td>{{ row[col] }}</td>
+            <td>{{ formatValue(row[col], col) }}</td>
           }
 
           @if(actions.length > 0){

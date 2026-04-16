@@ -9,7 +9,7 @@
           valueField="accountId"
           placeholder="Seleccione la cuenta"
           (valueChange)="onAccountChanged($event)"
-          [selectedValue]="selectedAccountId()"
+          [selectedValue]="cuentaSeleccionada()?.accountId"
         >
         </app-dropdown-select>
       </div>
@@ -21,6 +21,16 @@
           descriptionField="bank.abbre"
           badgeField="currency.symbol"
           metaField="description"
+        ></app-card>
+
+        <app-card
+          [data]="balance()"
+          title="Saldo Actual"
+          descriptionField="balance"
+          meta="Saldo Anterior"
+          metaField="previousBalance"
+          badgeField="currency"
+          [isNumber]="true"
         ></app-card>
       </div>
 

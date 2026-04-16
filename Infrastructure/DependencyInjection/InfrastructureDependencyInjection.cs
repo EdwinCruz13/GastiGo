@@ -20,6 +20,7 @@ namespace Infrastructure.DependencyInjection
                 options.UseNpgsql(
                     configuration.GetConnectionString("Default")));
 
+            services.AddUOWInfrastructure();
             services.AddAuthInfrastructure();
             services.AddUsersInfrastructure();
             services.AddCategoriesInfrastructure();

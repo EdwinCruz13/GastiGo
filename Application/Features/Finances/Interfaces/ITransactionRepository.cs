@@ -12,8 +12,9 @@ namespace Application.Features.Finances.Interfaces
         Task AddAsync(Transaction request);
         Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAsync(Guid UserID);
         Task<IEnumerable<Transaction?>> GetTransactionsByUserIDAndTimeAsync(Guid UserID, Guid CuentaId, DateTime FechaInicio, DateTime FechaFin);
-
         Task<Transaction?> GetTransactionByIDAsync(Guid id);
+        Task<Transaction?> GetBalanceByAccountIdAsync(Guid userId, Guid accountId);
+        Task Recalculate(Guid userId, Guid accountId);
         Task SaveChangesAsync();
     }
 }

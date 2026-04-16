@@ -34,11 +34,13 @@ export interface TransactionRequestDTO{
 
 
 export interface BalanceDTO{
-   // transactionId: string;
+    //transactionId: string;
     transactionDate: string;
     description: string;
+    currency: string;
     previousBalance: number;
     amount: number;
     balance: number;
+
     entryType: 'IN' | 'OUT' | 'TRANSFER';
 }

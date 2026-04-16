@@ -41,6 +41,11 @@ export class TransactionService {
     return this.http.get<ApiResponse<BalanceDTO[]>>(`${this.apiUrl}/byuserdate?userID=${userID}&accountId=${accountId}&date1=${date1}&date2=${date2}`);
   }
 
+  // Método para obtener el balance de una cuenta
+  getBalance(userID: string, accountId: string): Observable<ApiResponse<BalanceDTO>> {
+    return this.http.get<ApiResponse<BalanceDTO>>(`${this.apiUrl}/getbalance?userID=${userID}&accountId=${accountId}`);
+  }
+
 
 
 }

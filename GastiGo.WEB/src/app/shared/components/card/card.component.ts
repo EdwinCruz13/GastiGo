@@ -10,20 +10,34 @@ import { CommonModule } from '@angular/common';
 })
 export class CardComponent<T = any> {
 
-  //data puede ser item o lista
+  // =========================
+  // INPUTS
+  // =========================
+
+  // data puede ser item o lista
   @Input({ required: true }) data!: T | T[];
 
-  //campos dinámicos (soportan nested: "currency.name")
-  @Input({ required: true }) titleField!: string;
-  @Input({ required: true }) descriptionField!: string;
+  // campos dinámicos (soportan nested: "currency.name")
+  @Input() titleField?: string;
+  @Input() descriptionField?: string;
   @Input() imageField?: string;
   @Input() badgeField?: string;
   @Input() metaField?: string;
 
+  // valores estáticos
+  @Input() title?: string;
+  @Input() description?: string;
+  @Input() badge?: string;
+  @Input() meta?: string;
+  @Input() isNumber = false;
+
   // acciones disponibles
   @Input() actions: ('view' | 'edit' | 'delete')[] = [];
 
-  // eventos
+  // =========================
+  // OUTPUTS
+  // =========================
+
   @Output() view = new EventEmitter<T>();
   @Output() edit = new EventEmitter<T>();
   @Output() delete = new EventEmitter<T>();
@@ -32,27 +46,38 @@ export class CardComponent<T = any> {
   // HELPERS
   // =========================
 
-  //saber si es array
+  // saber si es array
   isArray(data: T | T[]): data is T[] {
-    
-
     return Array.isArray(data);
   }
 
-  //obtener valores (soporta "currency.name")
+  // obtener valores dinámicos (soporta "currency.name")
   getValue(item: any, field?: string): any {
     if (!item || !field) return null;
-
     return field.split('.').reduce((obj, key) => obj?.[key], item);
   }
 
-  //validar si existe el campo
-  hasField(item: any, field?: string): boolean {
+  // resolver valor (prioridad: estático > dinámico)
+  resolveValue(item: any, field?: string, staticValue?: any): any {
+    if (staticValue !== undefined && staticValue !== null) return staticValue;
+    return this.getValue(item, field);
+  }
+
+  // validar si existe el campo
+  hasField1(item: any, field?: string): boolean {
     const value = this.getValue(item, field);
     return value !== null && value !== undefined && value !== '';
   }
 
-  // acciones
+  hasField(item: any, field?: string): boolean {
+    const value = this.getValue(item, field);
+    return value !== null && value !== undefined;
+  }
+
+  // =========================
+  // ACTIONS
+  // =========================
+
   onAction(action: 'view' | 'edit' | 'delete', item: T) {
     switch (action) {
       case 'view':
@@ -67,7 +92,10 @@ export class CardComponent<T = any> {
     }
   }
 
-  // ✔️ opcional (mejora rendimiento en listas grandes)
+  // =========================
+  // PERFORMANCE
+  // =========================
+
   trackByFn(index: number, item: any): any {
     return item?.id || item?.accountId || index;
   }

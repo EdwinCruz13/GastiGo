@@ -91,4 +91,33 @@ export class TableComponent implements OnChanges, OnInit {
       .replace(/([A-Z])/g, ' $1')
       .replace(/^./, str => str.toUpperCase());
   }
+
+  /// formatear valores
+  formatValue(value: any, col: string): any {
+    // null o undefined
+    if (value === null || value === undefined) return '';
+
+    // si es número
+    if (typeof value === 'number') {
+      return new Intl.NumberFormat('es-NI', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value);
+    }
+
+    // si es fecha
+    if (value instanceof Date) {
+      return new Intl.DateTimeFormat('es-NI').format(value);
+    }
+
+    // si viene como string numérico
+    if (!isNaN(value) && value !== '') {
+      return new Intl.NumberFormat('es-NI', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(Number(value));
+    }
+
+    return value;
+  }
 }

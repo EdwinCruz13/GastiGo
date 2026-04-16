@@ -26,7 +26,7 @@ namespace Application.Features.Finances.DTOs
     /// <summary>
     /// primer movimiento de una transacción, se utiliza para la creación de una transacción
     /// </summary>
-    public class TransactionMovenmetDTO 
+    public class TransactionMovementDTO 
     {
         public Guid UserId { get; set; }
         public Guid AccountId { get; set; }

@@ -101,12 +101,13 @@ export class EntryFormComponent implements OnInit {
           this.categorias.set(response.data ?? []);
           if(this.EntryType === 'OUT'){
             //filtrar categorias para mostrar solo las de naturaleza de gasto
-            this.categorias.set(this.categorias().filter(categoria => categoria.nature.abbre === 'E' && categoria.parentId != null));
+            this.categorias.set(this.categorias().filter(categoria => categoria.nature.abbre === 'E' && categoria.parentId != null && categoria.isActive));
           }
 
           if(this.EntryType === 'IN'){
             //filtrar categorias para mostrar solo las de naturaleza de ingreso
-            this.categorias.set(this.categorias().filter(categoria => categoria.nature.abbre === 'I' && categoria.parentId != null));
+            this.categorias.set(this.categorias().filter(categoria => categoria.nature.abbre === 'I' && categoria.parentId != null && categoria.isActive));
+
           }
 
         } else {

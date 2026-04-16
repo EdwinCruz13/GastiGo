@@ -24,6 +24,7 @@ namespace Application.DependencyInjection
             services.AddScoped<TransactionTypeService>();
             services.AddScoped<TransactionService>();
             services.AddScoped<IncomeTaxService>();
+            
            
 
             //retornar servicios

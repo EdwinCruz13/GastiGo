@@ -44,7 +44,7 @@ namespace GastiGo.API.Controllers
         /// <param name="transaction"></param>
         /// <returns></returns>
         [HttpPost("firstMovement")]
-        public async Task<IActionResult> CreateFirstMovement(TransactionMovenmetDTO transaction)
+        public async Task<IActionResult> CreateFirstMovement(TransactionMovementDTO transaction)
         {
             await _transactionService.AddFirstMovementAsync(transaction);
             return Ok(new ApiResponse<object>
@@ -120,10 +120,38 @@ namespace GastiGo.API.Controllers
         /// <param name="Fecha2"></param>
         /// <returns></returns>
         [HttpGet("byuserdate")]
-        public async Task<IActionResult> GetByUserIDAndTime([FromQuery] Guid userId, [FromQuery] Guid accountId, [FromQuery] String date1 = "", [FromQuery] String date2 = "")
+        public async Task<ActionResult<BalanceDTO>> GetByUserIDAndTime([FromQuery] Guid userId, [FromQuery] Guid accountId, [FromQuery] String date1 = "", [FromQuery] String date2 = "")
         {
             var item = await _transactionService.GetAllTransactionsByUserIdAndTimeAsync(userId, accountId, date1, date2);
             if (item == null || !item.Any())
+            {
+                return Ok(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "No se encontraron transacciones para el usuario especificado",
+                    Data = null,
+                    Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }
+                });
+            }
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "",
+                Data = item
+            });
+        }
+
+        /// <summary>
+        /// endpoint que devuelve el balance de una cuenta específica
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        [HttpGet("getbalance")]
+        public async Task<ActionResult<BalanceDTO>> GetBalance([FromQuery] Guid userId, [FromQuery] Guid accountId)
+        {
+            var item = await _transactionService.GetBalance(userId, accountId);
+            if (item == null)
             {
                 return Ok(new ApiResponse<object>
                 {

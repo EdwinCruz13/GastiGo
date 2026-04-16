@@ -54,6 +54,7 @@ namespace Infrastructure.Repositories.Finances
                .Include(u => u.User)
                .Include(t => t.TransactionType)
                .Include(c => c.Category).ThenInclude(n => n.Nature)
+               .Include(a => a.Account).ThenInclude(c => c.Currency)
                .OrderBy(o => o.CreatedAt).ThenBy(o => o.Category.Name)
                .ToListAsync();
         }
@@ -68,11 +69,29 @@ namespace Infrastructure.Repositories.Finances
                 .FirstOrDefaultAsync();
         }
 
-        //public async Task SaveChangesAsync()
-        //{
-        //    await _context.SaveChangesAsync();
-        //}
+        /// <summary>
+        /// obtiene el balance de una cuenta específica, busca la última transacción asociada a la cuenta y devuelve su balance.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public async Task<Transaction?> GetBalanceByAccountIdAsync(Guid userId, Guid accountId)
+        {
+            await this.Recalculate(userId, accountId);
 
+            return await _context.Transactions.Where(u => u.AccountId == accountId && u.UserId == userId)
+               .Include(u => u.User)
+               .Include(t => t.TransactionType)
+               .Include(a => a.Account).ThenInclude(c => c.Currency)
+               .Include(c => c.Category).ThenInclude(n => n.Nature)
+               .OrderBy(o => o.TransactionDate)
+               .LastOrDefaultAsync();
+        }
+
+
+        /// <summary>
+        /// permite guardar los cambios realizados en las transacciones y luego llama a un procedimiento almacenado para recalcular los balances de las transacciones, si ocurre algún error durante el proceso, se realiza un rollback de la transacción para mantener la integridad de los datos.
+        /// </summary>
+        /// <returns></returns>
         public async Task SaveChangesAsync()
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -80,7 +99,6 @@ namespace Infrastructure.Repositories.Finances
             try
             {
                 await _context.SaveChangesAsync();
-                await _context.Database.ExecuteSqlRawAsync("CALL recalcular();");
                 await transaction.CommitAsync();
             }
             catch
@@ -90,6 +108,31 @@ namespace Infrastructure.Repositories.Finances
             }
         }
 
+        /// <summary>
+        /// recalcula los balances de las transacciones de una cuenta específica
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public async Task Recalculate(Guid userId, Guid accountId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Llama al procedimiento almacenado para recalcular el estado de cuetna de una cuenta específica
+                await _context.Database.ExecuteSqlRawAsync(
+                    "CALL recalcular(@p0, @p1)",
+                    userId,
+                    accountId
+                );
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
 
+       
     }
 }

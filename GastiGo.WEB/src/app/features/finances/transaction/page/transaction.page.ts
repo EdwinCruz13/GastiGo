@@ -29,16 +29,18 @@ export class TransactionPage implements OnInit {
   private transaccionesServicio = inject(TransactionService);
   private tiposTransaccionesServicio = inject(TransactionTypeService);
   private AuthServicio = inject(AuthService);
-  private tipoCuentaServicio = inject(AccountTypeService);
   private cuentaServicio = inject(AccountService);
 
   //listados
   transactiones = signal<BalanceDTO[] | []>([]);
+  balance = signal<BalanceDTO | null>(null);
   tiposTransacciones = signal<TransactionType[] | []>([]);
 
   cuentas = signal<Account[] | []>([]);
   cuentaSeleccionada = signal<Account | null>(null);
   selectedAccountId = computed(() => this.cuentaSeleccionada()?.accountId ?? null);
+
+  previousBalance = computed(() => this.balance()?.previousBalance ?? null);
 
 
   // variable para obtener el usuario logueado
@@ -94,8 +96,9 @@ export class TransactionPage implements OnInit {
           //seleccionar la primera cuenta por defecto
           if (response.data && response.data.length > 0) {
             this.cuentaSeleccionada.set(response.data[0]);
-            this.selectedAccountId = computed(() => this.cuentaSeleccionada()?.accountId ?? null);
-            console.log('Cuenta seleccionada por defecto:', this.selectedAccountId());
+
+
+            console.log('Cuenta seleccionada por defecto:', this.cuentaSeleccionada());
 
           }
 
@@ -112,14 +115,31 @@ export class TransactionPage implements OnInit {
   }
 
 
+  //metodo para cargar el balance de la cuenta seleccionada de un usuario
+  cargarBalance() {
+    if (this.selectedAccountId() && this.userID()) {
+      this.transaccionesServicio.getBalance(this.userID(), this.selectedAccountId()!).subscribe(response => {
+        if (response.success) {
+          this.balance.set(response.data ?? null);
+        } else {
+          this.balance.set(null);
+          this.modalMessageText.set('No se encontraron transacciones para este usuario.');
+          this.modalAlert.set(true);
+        }
+      });
+    }
+  }
+
+
     //metodo para cargar las transacciones existentes
   cargarTransacciones() {
     this.transaccionesServicio.getTransactionsByDate(this.userID(), this.selectedAccountId(), this.date1(), this.date2()).subscribe(response => {
       if (response.success) {
         this.transactiones.set(response.data ?? []);
       } else {
-        this.modalMessageText.set('No se encontraron transacciones para este usuario.');
-        this.modalAlert.set(true);
+        this.transactiones.set([]);
+        // this.modalMessageText.set('No se encontraron transacciones para este usuario.');
+        // this.modalAlert.set(true);
       }
     });
   }
@@ -168,6 +188,7 @@ export class TransactionPage implements OnInit {
 
       //buscar las transacciones segun cuenta y Fechas
       this.cargarTransacciones();
+      this.cargarBalance();
     }
   }
 
@@ -175,12 +196,14 @@ export class TransactionPage implements OnInit {
   onDate1Changed(value: string) {
     this.date1.set(value);
     this.cargarTransacciones();
+    this.cargarBalance();
   }
 
   //metodos para manejar el cambio de fechas
   onDate2Changed(value: string) {
     this.date2.set(value);
     this.cargarTransacciones();
+    this.cargarBalance();
   }
 
 

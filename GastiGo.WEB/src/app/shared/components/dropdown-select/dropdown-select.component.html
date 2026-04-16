@@ -1,14 +1,19 @@
 <div class="dropdown-wrapper">
-    <select class="dropdown-select" [value]="selectedValue" (change)="onChange($event)" [disabled]="disabled">
-        <option value="00">{{placeholder}}</option>
-        @for (item of items; track item) {
-        <option [value]="item[valueField]">
-            {{ item[labelField] }}
-        </option>
-        }
-    </select>
+  <select
+    class="dropdown-select"
+    [value]="selectedValue"
+    (change)="onChange($event)"
+    [disabled]="disabled"
+  >
+    <option value="00">{{ placeholder }}</option>
+    @for (item of items; track item) {
+      <option [value]="item[valueField]">
+        {{ item[labelField] }}
+      </option>
+    }
+  </select>
 
-    <span class="dropdown-arrow">
-        <i class="fa-solid fa-chevron-down"></i>
-    </span>
+  <span class="dropdown-arrow">
+    <i class="fa-solid fa-chevron-down"></i>
+  </span>
 </div>
