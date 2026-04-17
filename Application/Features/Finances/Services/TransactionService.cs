@@ -149,6 +149,7 @@ namespace Application.Features.Finances.Services
                 List<Transaction> transactionsToExecute = new();
 
                 Guid? affectedAccountId = null;
+                Guid? affectedAccountId2 = null; //para transferencia
 
                 // INGRESO
                 if (transactionType.Code == "INC")
@@ -213,6 +214,55 @@ namespace Application.Features.Finances.Services
                     await _transactionRepository.AddAsync(transactionEntity);
                 }
 
+                //hacer transferencia entre cuentas
+                if (transactionType.Code == "TRF")
+                {
+                    if (transaction.ToAccountId == null)
+                        throw new Exception("Cuenta destino es requerida.");
+
+                    if (transaction.FromAccountId == null)
+                        throw new Exception("Cuenta origen es requerida.");
+
+                    affectedAccountId = transaction.FromAccountId;
+                    affectedAccountId2 = transaction.ToAccountId;
+
+                    var transactionExit = new Transaction(
+                        transaction.UserId,
+                        transaction.TransactionTypeId,
+                        transaction.CategoryId,
+                        transaction.FromAccountId,
+                        transaction.Description,
+                        DateTime.UtcNow,
+                        "OUT",
+                        0,
+                        transaction.Amount,
+                        0,
+                        reference,
+                        transferGroupId
+                    );
+
+                    var transactionEntry = new Transaction(
+                        transaction.UserId,
+                        transaction.TransactionTypeId,
+                        transaction.CategoryId,
+                        transaction.ToAccountId,
+                        transaction.Description,
+                        DateTime.UtcNow,
+                        "IN",
+                        0,
+                        transaction.Amount,
+                        0,
+                        reference,
+                        transferGroupId
+                    );
+
+                    await _transactionRepository.AddAsync(transactionEntry);
+                    await _transactionRepository.AddAsync(transactionExit);
+                }
+
+
+
+
                 // GUARDAR
                 await _unitOfWork.SaveChangesAsync();
 
@@ -223,6 +273,15 @@ namespace Application.Features.Finances.Services
                         "CALL recalcular(@p0, @p1)",
                         transaction.UserId,
                         affectedAccountId
+                    );
+                }
+                //si hay transferencia RECALCULAR
+                if (affectedAccountId2 != null)
+                {
+                    await _unitOfWork.ExecuteSqlAsync(
+                        "CALL recalcular(@p0, @p1)",
+                        transaction.UserId,
+                        affectedAccountId2
                     );
                 }
 
@@ -454,6 +513,9 @@ namespace Application.Features.Finances.Services
             DateTime fechaInicio;
             DateTime fechaFin;
 
+            //para la respuesta
+            var timezone = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
+
             try
             {
                 //validar que el usuario exista
@@ -511,7 +573,7 @@ namespace Application.Features.Finances.Services
                 return transactions.Select(t => t == null ? null : new BalanceDTO
                 {
                     Description = t.Description,
-                    TransactionDate = t.TransactionDate.ToString("dd/MM/yyyy"),
+                    TransactionDate = TimeZoneInfo.ConvertTimeFromUtc(t.TransactionDate,timezone).ToString("dd/MM/yyyy HH:mm:ss"),
                     Reference = t.Reference,
                     EntryType = t.EntryType,
                     Balance = t.Balance,

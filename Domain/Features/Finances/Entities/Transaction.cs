@@ -48,7 +48,7 @@ namespace Domain.Features.Finances.Entities
             UserId = userId;
             TransactionTypeId = transactionTypeId;
             CategoryId = categoryId;
-            Description = description;
+            Description = description.ToUpper().Trim();
             TransactionDate = DateTime.UtcNow;  //transactionDate ?? 
             TransferGroupID = transferGroupId;
             Reference = reference;

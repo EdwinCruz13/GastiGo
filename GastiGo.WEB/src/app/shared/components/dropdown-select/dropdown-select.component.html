@@ -1,12 +1,30 @@
 <div class="dropdown-wrapper">
-  <select
+  <!-- <select
     class="dropdown-select"
-    [value]="selectedValue"
+    id="dropdown-select"
+    [value]="normalizedSelectedValue()"
     (change)="onChange($event)"
     [disabled]="disabled"
   >
-    <option value="00">{{ placeholder }}</option>
-    @for (item of items; track item) {
+    <option value="">{{ placeholder }}</option>
+    @for (item of items; track item[valueField]) {
+      <option [value]="item[valueField]">
+        {{ item[labelField] }}
+      </option>
+    }
+  </select> -->
+
+  <select
+    [id]="uniqueId()"
+    class="dropdown-select"
+    [value]="normalizedSelectedValue"
+    [(ngModel)]="normalizedSelectedValue"
+    (ngModelChange)="onChange($event)"
+    [disabled]="disabled"
+  >
+    <option value="">{{ placeholder }}</option>
+
+    @for (item of items; track item[valueField]) {
       <option [value]="item[valueField]">
         {{ item[labelField] }}
       </option>

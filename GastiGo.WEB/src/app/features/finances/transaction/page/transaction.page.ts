@@ -9,20 +9,20 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { EntryFormComponent } from '../components/entry-form/entry-form.component';
 import { TransferFormComponent } from '../components/transfer-form/transfer-form.component';
-import { AccountTypeService } from '@core/services/finances/account-type.service';
 import { DropdownSelectComponent } from '@shared/components/dropdown-select/dropdown-select.component';
 import { CardComponent } from '@shared/components/card/card.component';
 import { AccountService } from '@core/services/finances/account.service';
 import { Account } from '@core/models/finances/account.model';
 import { DateInputComponent } from '@shared/components/input-date/date-input.component';
 import { TableComponent } from '@shared/components/table/table.component';
+import { FormsModule } from "@angular/forms";
 
 
 
 @Component({
   selector: 'app-transaction.page',
   standalone: true,
-  imports: [CommonModule, ModalComponent, DropdownSelectComponent, CardComponent, DateInputComponent, TableComponent, EntryFormComponent, TransferFormComponent],
+  imports: [CommonModule, ModalComponent, DropdownSelectComponent, CardComponent, DateInputComponent, TableComponent, EntryFormComponent, TransferFormComponent, FormsModule],
   templateUrl: './transaction.page.html'
 })
 export class TransactionPage implements OnInit {
@@ -89,25 +89,23 @@ export class TransactionPage implements OnInit {
 
   CargarCuentas() {
     this.cuentaServicio.getAccounts(this.userID()).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.cuentas.set(response.data ?? []);
-
-          //seleccionar la primera cuenta por defecto
-          if (response.data && response.data.length > 0) {
-            this.cuentaSeleccionada.set(response.data[0]);
-
-
-            console.log('Cuenta seleccionada por defecto:', this.cuentaSeleccionada());
-
-          }
-
-        } else {
-          this.modalMessageText.set(response.message || 'Error al cargar las cuentas.');
+      next: ({ success, data, message }) => {
+        if (!success) {
+          this.modalMessageText.set(message || 'Error al cargar las cuentas.');
           this.modalAlert.set(true);
+          return;
+        }
+
+        const cuentas = data ?? [];
+        this.cuentas.set(cuentas);
+
+        if (cuentas.length) {
+          const first = cuentas[0];
+          this.cuentaSeleccionada.set(first);
+          this.onAccountChanged(first.accountId);
         }
       },
-      error: (error) => {
+      error: () => {
         this.modalMessageText.set('Error al cargar las cuentas.');
         this.modalAlert.set(true);
       }
@@ -172,7 +170,7 @@ export class TransactionPage implements OnInit {
 
   closeEntryFormByResult(result: boolean) {
     this.showEntryForm.set(false);
-    this.ngOnInit(); // Recargar las transacciones para
+    this.resetTransactions();
   }
 
   //#endregion
@@ -182,26 +180,33 @@ export class TransactionPage implements OnInit {
   onAccountChanged(accountId: string) {
     //buscar la primera cuenta que tenga el tipo de cuenta seleccionado
     const cuenta = this.cuentas().find(c => c.accountId === accountId);
-
     if (cuenta) {
       this.cuentaSeleccionada.set(cuenta);
-
-      //buscar las transacciones segun cuenta y Fechas
-      this.cargarTransacciones();
-      this.cargarBalance();
+      this.resetTransactions();
+    }
+    else{
+      this.transactiones.set([]);
+      this.balance.set(null);
     }
   }
 
   //metodos para manejar el cambio de fechas
   onDate1Changed(value: string) {
     this.date1.set(value);
-    this.cargarTransacciones();
-    this.cargarBalance();
+    this.resetTransactions();
   }
 
   //metodos para manejar el cambio de fechas
   onDate2Changed(value: string) {
     this.date2.set(value);
+     this.resetTransactions();
+  }
+
+  resetTransactions() {
+    this.transactiones.set([]);
+    this.balance.set(null);
+
+    //buscar las transacciones segun cuenta y Fechas
     this.cargarTransacciones();
     this.cargarBalance();
   }

@@ -24,7 +24,6 @@ export class EntryFormComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() result = new EventEmitter<boolean>();
 
-
   private cuentasServicio = inject(AccountService);
   private categoriasServicio = inject(CategoryService);
   private tipoTransaccionesServicio = inject(TransactionTypeService);
@@ -157,6 +156,8 @@ export class EntryFormComponent implements OnInit {
 
     //evento para cuando se selecciona una cuenta en el dropdown de cuentas
     onAccountChange(accountId: string) {
+
+
       this.transactionForm.patchValue({
         fromAccountId: this.EntryType === 'OUT' ? accountId : null,
         toAccountId: this.EntryType === 'IN' ? accountId : null,
