@@ -1,0 +1,145 @@
+<div class="financial-wrapper">
+  <table class="financial-table">
+    <!-- HEADER -->
+    <thead>
+      <tr>
+        <th class="sticky-col">Summary</th>
+
+        @for (m of months; track m) {
+          <th>{{ m }}</th>
+        }
+
+        <th class="total-col" *ngIf="showTotals">Total</th>
+      </tr>
+    </thead>
+
+    <!-- BODY -->
+    <tbody>
+      @for (group of data?.groups ?? []; track group.name) {
+        <!-- GROUP TITLE -->
+        <tr
+          class="group-total-row"
+          [class.income-total]="group.name === 'Income'"
+          [class.expense-total]="group.name === 'Expenses'"
+          [class.savings-total]="group.name === 'Savings'"
+        >
+          <td colspan="14">{{ group.name }}</td>
+        </tr>
+
+        <!-- CATEGORIES -->
+        @for (cat of group?.categories ?? []; track cat.name) {
+          <tr class="category-row">
+            <td class="sticky-col">
+              <span class="category-name">{{ cat.name }}</span>
+            </td>
+
+            @for (val of cat?.values ?? []; track val.month) {
+              <td [class.income]="val.amount > 0" [class.expense]="val.amount < 0">
+                {{ val.amount | number: '1.2-2' }}
+              </td>
+            }
+
+            <td class="total-col" *ngIf="showTotals">
+              {{ categoryTotals()[cat.name] | number: '1.2-2' }}
+            </td>
+          </tr>
+        }
+
+        <tr
+          class="group-total-row"
+          [class.income-total]="group.name === 'Income'"
+          [class.expense-total]="group.name === 'Expenses'"
+          [class.savings-total]="group.name === 'Savings'"
+        >
+          <td class="sticky-col total-label">TOTAL {{ group.name }}</td>
+
+          @for (val of groupMonthTotals()[group.name]; track $index) {
+            <td [class.income]="val > 0" [class.expense]="val < 0">
+              {{ val | number: '1.2-2' }}
+            </td>
+          }
+
+          <td class="total-col">
+            {{ groupTotals()[group.name] | number: '1.2-2' }}
+          </td>
+        </tr>
+
+        <!-- TOTAL INCOME (CON MESES) -->
+        <!-- <tr class="group-total-row income-total" *ngIf="group.name === 'Income'">
+          <td class="sticky-col total-label">TOTAL INCOME</td>
+
+          @for (val of groupMonthTotals()[group.name]; track $index) {
+            <td class="income">
+              {{ val | number: '1.2-2' }}
+            </td>
+          }
+
+          <td class="total-col">
+            {{ groupTotals()['Income'] | number: '1.2-2' }}
+          </td>
+        </tr> -->
+
+        <!-- TOTAL EXPENSES (CON MESES) -->
+        <!-- <tr class="group-total-row expense-total" *ngIf="group.name === 'Expenses'">
+          <td class="sticky-col total-label">TOTAL EXPENSES</td>
+
+          @for (val of groupMonthTotals()[group.name]; track $index) {
+            <td class="expense">
+              {{ val | number: '1.2-2' }}
+            </td>
+          }
+
+          <td class="total-col">
+            {{ groupTotals()['Expenses'] | number: '1.2-2' }}
+          </td>
+        </tr> -->
+      }
+
+      <!-- SEPARADOR -->
+      <tr class="separator-row">
+        <td colspan="14"></td>
+      </tr>
+
+      <!-- ================= RESUMEN ================= -->
+
+      <!-- TOTAL MENSUAL -->
+      <tr class="month-total-row" *ngIf="showTotals">
+        <td class="sticky-col">Total Mensual</td>
+
+        @for (total of monthTotals(); track $index) {
+          <td [class.income]="total > 0" [class.expense]="total < 0">
+            {{ total | number: '1.2-2' }}
+          </td>
+        }
+
+        <td></td>
+      </tr>
+
+      <!-- FLUJO -->
+      <tr class="net-row" *ngIf="showNetFlow">
+        <td class="sticky-col">Flujo Neto</td>
+
+        @for (val of netFlow(); track $index) {
+          <td [class.income]="val > 0" [class.expense]="val < 0">
+            {{ val | number: '1.2-2' }}
+          </td>
+        }
+
+        <td></td>
+      </tr>
+
+      <!-- ACUMULADO -->
+      <tr class="acc-row" *ngIf="showAccumulated">
+        <td class="sticky-col">Acumulado</td>
+
+        @for (val of accumulated(); track $index) {
+          <td [class.income]="val > 0" [class.expense]="val < 0">
+            {{ val | number: '1.2-2' }}
+          </td>
+        }
+
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

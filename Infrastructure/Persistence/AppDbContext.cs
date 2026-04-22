@@ -6,6 +6,7 @@ using Domain.Features.Public.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Domain.Features.Public;
 
 
 
@@ -42,6 +43,8 @@ namespace Infrastructure.Persistence
         public DbSet<Transaction> Transactions => Set<Transaction>();
         public DbSet<IncomeTax> IncomeTaxes => Set<IncomeTax>();
 
+        public DbSet<ExchangeRate> ExchangeRate => Set<ExchangeRate>();
+
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -60,6 +63,7 @@ namespace Infrastructure.Persistence
             modelBuilder.HasDefaultSchema("public");
 
             modelBuilder.Entity<IncomeTax>().ToTable("IncomeTax", "public");
+            modelBuilder.Entity<ExchangeRate>().ToTable("ExchangeRates", "public");
 
             modelBuilder.Entity<User>().ToTable("Users", "users");
             modelBuilder.Entity<TwoFactorCode>().ToTable("TwoFactorCodes", "auth");
@@ -76,6 +80,7 @@ namespace Infrastructure.Persistence
 
             modelBuilder.Entity<TransactionType>().ToTable("TransactionTypes", "finances");
             modelBuilder.Entity<Transaction>().ToTable("Transactions", "finances");
+            
 
             modelBuilder.Entity<IncomeTax>(entity =>
             {
@@ -145,6 +150,22 @@ namespace Infrastructure.Persistence
                 new Currency("Cordoba Nicaraguense", "NIO", "C$"),
                 new Currency("Euro", "EUR", "€")
             );
+
+
+            modelBuilder.Entity<ExchangeRate>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Id).HasColumnName("ExchangeId");
+                entity.HasIndex(x => x.Date).IsUnique();
+                entity.Property(x => x.Value).IsRequired().HasPrecision(18,4);
+                entity.HasOne(x => x.CurrencyFrom)
+                      .WithMany() // una moneda puede tener muchas tasas de cambio
+                      .HasForeignKey(x => x.CurrencyFromId);
+                entity.HasOne(x => x.CurrencyTo)
+                      .WithMany() // una moneda puede tener muchas tasas de cambio
+                      .HasForeignKey(x => x.CurrencyToId);
+
+            });
 
 
             modelBuilder.Entity<TransactionType>(entity =>

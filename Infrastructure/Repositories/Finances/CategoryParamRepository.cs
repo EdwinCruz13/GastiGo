@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Finances
 {
-    public class CategoryParamService : ICategoryParamRepository
+    public class CategoryParamRepository : ICategoryParamRepository
     {
         readonly private AppDbContext _context;
 
-        public CategoryParamService(AppDbContext context)
+        public CategoryParamRepository(AppDbContext context)
         {
             _context = context;
         }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Finances
 {
-    public class TransactionService : ITransactionRepository
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly AppDbContext _context;
 
@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories.Finances
         /// inyecta el contexto de la base de datos para poder realizar operaciones CRUD en la entidad Transaction
         /// </summary>
         /// <param name="context"></param>
-        public TransactionService(AppDbContext context)
+        public TransactionRepository(AppDbContext context)
         {
             _context = context;
         }

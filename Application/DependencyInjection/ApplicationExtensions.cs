@@ -1,5 +1,5 @@
 ﻿using Application.Features.Auth.Services;
-using Application.Features.Finances.Interfaces;
+using Application.Features.Dashboard.Services;
 using Application.Features.Finances.Services;
 using Application.Features.Public.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +23,11 @@ namespace Application.DependencyInjection
             services.AddScoped<AccountService>();
             services.AddScoped<TransactionTypeService>();
             services.AddScoped<TransactionService>();
-            services.AddScoped<IncomeTaxService>();
             
-           
+            services.AddScoped<DashboardService>();
+
+            services.AddScoped<IncomeTaxService>();
+            services.AddScoped<ExchangeRateService>();
 
             //retornar servicios
             return services;

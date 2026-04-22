@@ -1,5 +1,7 @@
 ﻿using Application.Features.Finances.Interfaces;
+using Application.Features.Public.Interfaces;
 using Infrastructure.Repositories.Finances;
+using Infrastructure.Repositories.Public;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DependencyInjection.DI
 {
-    
-     public static class TransaTransactionDependencyInjectionctionTypeDependencyInjection
+    public static class ExchangeRateDependencyInjection
     {
-        public static IServiceCollection AddTransactionInfrastructure(
+        public static IServiceCollection AddExchangeRateInfrastructure(
             this IServiceCollection services)
         {
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IExchangeRateRepository, ExchangeRateRepository>();
 
             return services;
         }

@@ -14,7 +14,7 @@ namespace Infrastructure.DependencyInjection.DI
         public static IServiceCollection AddCategoriesParamInfrastructure(
             this IServiceCollection services)
         {
-            services.AddScoped<ICategoryParamRepository, CategoryParamService>();
+            services.AddScoped<ICategoryParamRepository, CategoryParamRepository>();
 
             return services;
         }

@@ -1,1 +1,66 @@
-<h3>dashboard works</h3>
+<div class="container">
+  <div class="toolbar-options"></div>
+
+  <section class="dashboard-graph">
+    <div class="graph-container">
+      <h2>Flujo Neto Mensual</h2>
+      <app-line-chart [labels]="MONTHS" [datasets]="IncomeExpenseslineData()"> </app-line-chart>
+    </div>
+
+    <div class="graph-container">
+      <h2>Gastos y mas gastos</h2>
+      <app-bar-chart [labels]="expensesBarData().labels" [datasets]="expensesBarData().datasets">
+      </app-bar-chart>
+    </div>
+
+    <div class="graph-container">
+      <h2>Neto</h2>
+      <app-line-chart [labels]="MONTHS" [datasets]="NetLineData()"> </app-line-chart>
+    </div>
+  </section>
+
+  <section class="dashboard-section">
+    <h2>Ingresos y Gastos</h2>
+
+    <app-financial-table
+      [data]="incomeAndExpenses()"
+      [months]="MONTHS"
+      [showTotals]="true"
+      [showNetFlow]="false"
+      [showAccumulated]="false"
+    >
+    </app-financial-table>
+  </section>
+
+  <br />
+  <br />
+
+  <section class="dashboard-section">
+    <h2>Ahorros</h2>
+    <app-financial-table
+      [data]="savings()"
+      [months]="MONTHS"
+      [showTotals]="true"
+      [showNetFlow]="false"
+      [showAccumulated]="false"
+    >
+    </app-financial-table>
+  </section>
+</div>
+
+<app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
+  <div modal-header>
+    <span>Mensaje</span>
+    <button (click)="modalAlert.set(false)" class="modal-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div modal-body>
+    {{ modalMessageText() }}
+  </div>
+
+  <div modal-footer>
+    <button class="btn btn-danger" (click)="modalAlert.set(false)">Cerrar</button>
+  </div>
+</app-modal>

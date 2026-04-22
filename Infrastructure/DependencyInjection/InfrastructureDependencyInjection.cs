@@ -33,6 +33,8 @@ namespace Infrastructure.DependencyInjection
             services.AddTransactionTypeInfrastructure();
             services.AddTransactionInfrastructure();
             services.AddIncomeTaxInfrastructure();
+            services.AddExchangeRateInfrastructure();
+            services.AddDashboardInfrastructure();
 
             return services;
         }
