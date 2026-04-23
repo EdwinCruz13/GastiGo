@@ -43,13 +43,12 @@ namespace Domain.Features.Finances.Entities
         private Transaction() { } // EF
 
 
-        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, Guid? accountId, string description, DateTime transactionDate, string entryType, decimal previousBalance, decimal amount, decimal balance, string reference, Guid? transferGroupId = null)
+        public Transaction(Guid userId, Guid transactionTypeId, Guid? categoryId, Guid? accountId, string description, DateTime transactionDate, string entryType, decimal previousBalance, decimal amount, decimal balance, string reference, Guid? transferGroupId = null, DateTime? Fecha = null)
         {
             UserId = userId;
             TransactionTypeId = transactionTypeId;
             CategoryId = categoryId;
             Description = description.ToUpper().Trim();
-            TransactionDate = DateTime.UtcNow;  //transactionDate ?? 
             TransferGroupID = transferGroupId;
             Reference = reference;
             EntryType = entryType;
@@ -57,6 +56,7 @@ namespace Domain.Features.Finances.Entities
             Amount = amount;
             Balance = balance;
             AccountId = accountId;
+            TransactionDate = Fecha ?? DateTime.UtcNow;
         }
 
 

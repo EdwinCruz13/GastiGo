@@ -171,7 +171,8 @@ namespace Application.Features.Finances.Services
                         transaction.Amount,
                         0,
                         reference,
-                        transferGroupId
+                        transferGroupId,
+                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
                     );
 
                     // SI ES SALARIO, ENTONCES CREAR LAS PERCEPCIONES Y DEDUCCIONES CORRESPONDIENTES
@@ -179,7 +180,8 @@ namespace Application.Features.Finances.Services
                         transactionsToExecute = CreateListOfTransactionBySalary(
                             transaction.UserId,
                             Convert.ToDouble(transaction.Amount),
-                            transaction.ToAccountId.Value
+                            transaction.ToAccountId.Value,
+                            !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
                         );
 
                     await _transactionRepository.AddAsync(transactionEntity);
@@ -208,7 +210,8 @@ namespace Application.Features.Finances.Services
                         transaction.Amount,
                         0,
                         reference,
-                        transferGroupId
+                        transferGroupId,
+                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
                     );
 
                     await _transactionRepository.AddAsync(transactionEntity);
@@ -238,7 +241,8 @@ namespace Application.Features.Finances.Services
                         transaction.Amount,
                         0,
                         reference,
-                        transferGroupId
+                        transferGroupId,
+                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
                     );
 
                     var transactionEntry = new Transaction(
@@ -253,7 +257,8 @@ namespace Application.Features.Finances.Services
                         transaction.Amount,
                         0,
                         reference,
-                        transferGroupId
+                        transferGroupId,
+                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
                     );
 
                     await _transactionRepository.AddAsync(transactionEntry);
@@ -563,7 +568,7 @@ namespace Application.Features.Finances.Services
         /// <param name="salary"></param>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        private List<Transaction> CreateListOfTransactionBySalary(Guid UserID, double salary, Guid accountId)
+        private List<Transaction> CreateListOfTransactionBySalary(Guid UserID, double salary, Guid accountId, DateTime? fecha = null)
         {
             List<Transaction> transactions = new List<Transaction>();
 
@@ -575,7 +580,8 @@ namespace Application.Features.Finances.Services
             var transactionTypeByIncome = transactionType.Where(x => x.Code == "INC").FirstOrDefault();
             var transactionTypeByExpense = transactionType.Where(x => x.Code == "EXP").FirstOrDefault();
 
-
+            if(!fecha.HasValue)
+                fecha = DateTime.UtcNow;
 
 
             //calcular los años de servicio
@@ -656,7 +662,8 @@ namespace Application.Features.Finances.Services
                         bonificacionPorAños.Amount,
                         0,
                         reference,
-                        null
+                        null,
+                        fecha
                     );
 
                     //añadir a la lista
@@ -680,7 +687,8 @@ namespace Application.Features.Finances.Services
                        bonificacionPorTitulo.Amount,
                        0,
                        reference,
-                       null
+                       null,
+                       fecha
                    );
 
                     //añadir a la lista
@@ -704,7 +712,8 @@ namespace Application.Features.Finances.Services
                       bonificacionViaticoAlimentacion.Amount,
                       0,
                       reference,
-                      null
+                      null,
+                      fecha
                     );
 
                     //añadir a la lista
@@ -736,7 +745,8 @@ namespace Application.Features.Finances.Services
                          inss.Amount,
                          0,
                          reference,
-                         null
+                         null,
+                         fecha
                      );
                     //añadir a la lista
                     transactions.Add(transaction);
@@ -759,7 +769,8 @@ namespace Application.Features.Finances.Services
                          ir.Amount,
                          0,
                          reference,
-                         null
+                         null,
+                         fecha
                     );
 
                     //añadir a la lista
@@ -783,7 +794,8 @@ namespace Application.Features.Finances.Services
                         seguroColectivo.Amount,
                         0,
                         reference,
-                        null
+                        null,
+                        fecha
                     );
                     //añadir a la lista
                     transactions.Add(transaction);

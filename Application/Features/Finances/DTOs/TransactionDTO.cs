@@ -20,6 +20,7 @@ namespace Application.Features.Finances.DTOs
         public Guid? ToAccountId { get; set; } //cuenta de destino, puede ser nula si es un gasto
         public decimal Amount { get; set; } //monto de la transacción
         public String EntryType { get; set; } = string.Empty; //tipo de entrada, puede ser "IN" o "OUT"
+        public DateTime? dateTransaction { get; set; }
     }
 
 

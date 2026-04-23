@@ -25,6 +25,7 @@ export interface TransactionRequestDTO{
     transactionTypeId: string;
     categoryId: string;
     description: string;
+    dateTransaction: Date;
 
     fromAccountId?: string;
     toAccountId?: string;

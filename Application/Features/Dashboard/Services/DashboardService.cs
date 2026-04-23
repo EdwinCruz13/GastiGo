@@ -49,6 +49,17 @@ namespace Application.Features.Dashboard.Services
                 if (transactions == null || !transactions.Any())
                     throw new ArgumentException($"No se encontraron transacciones para el usuario con ID {UserID} en el año {yearId}.");
 
+
+
+                var Monedas = await _currencyRepository.GetAllCurrenciesAsync();
+                var cordoba = Monedas.FirstOrDefault(c => c.Symbol == "C$");
+                var dolares = Monedas.FirstOrDefault(c => c.Symbol == "$");
+
+
+                var currentExchage = await _ExchangeRateRepository.GetCurrentExchangeRateAsync(dolares.Id, cordoba.Id);
+                if (currentExchage == null)
+                    throw new ArgumentException($"No existe tasa de cambio actual.");
+
                 // Crear una lista de meses del año (1-12)
                 var months = Enumerable.Range(1, 12);
 
@@ -72,8 +83,8 @@ namespace Application.Features.Dashboard.Services
                                Amount = cat
                                    .Where(t => t.TransactionDate.Month == m)
                                    .Sum(t => t.EntryType == "IN"
-                                       ? t.Amount
-                                       : -t.Amount)
+                                       ? t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount
+                                       : -(t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount))
                            }).ToList() ?? new List<MonthlyValueDTO>()
                        }).ToList() ?? new List<DashboardCategoryDTO>()
                }).ToList();

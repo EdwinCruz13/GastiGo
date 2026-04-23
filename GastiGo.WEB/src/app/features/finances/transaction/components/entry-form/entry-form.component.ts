@@ -55,6 +55,7 @@ export class EntryFormComponent implements OnInit {
     fromAccountId: [null as string | null],
     toAccountId: [null as string | null],
     amount: [0, [Validators.required, Validators.nullValidator, Validators.min(0.01)]],
+    dateTransaction: [new Date(), [Validators.required, Validators.nullValidator]],
     entryType: [this.EntryType]
   });
 
@@ -162,7 +163,8 @@ export class EntryFormComponent implements OnInit {
         fromAccountId: this.EntryType === 'OUT' ? accountId : null,
         toAccountId: this.EntryType === 'IN' ? accountId : null,
         transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
-        userId: this.AuthServicio.userId()
+        userId: this.AuthServicio.userId(),
+        dateTransaction: new Date() // Establecer la fecha actual al seleccionar una cuenta
       });
     }
 
@@ -171,7 +173,8 @@ export class EntryFormComponent implements OnInit {
       this.transactionForm.patchValue({
         categoryId: categoryId,
         transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
-        userId: this.AuthServicio.userId()
+        userId: this.AuthServicio.userId(),
+        dateTransaction: new Date() // Establecer la fecha actual al seleccionar una categoría
       });
     }
 
