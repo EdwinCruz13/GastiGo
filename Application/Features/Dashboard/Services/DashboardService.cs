@@ -85,6 +85,7 @@ namespace Application.Features.Dashboard.Services
                                    .Sum(t => t.EntryType == "IN"
                                        ? t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount
                                        : -(t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount))
+                                   
                            }).ToList() ?? new List<MonthlyValueDTO>()
                        }).ToList() ?? new List<DashboardCategoryDTO>()
                }).ToList();
