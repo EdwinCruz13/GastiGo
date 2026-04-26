@@ -1,6 +1,7 @@
 ﻿using Application.Features.Finances.DTOs;
 using Application.Features.Finances.Interfaces;
 using Application.Features.Public.Interfaces;
+using Application.Features.Public.Services;
 using Application.Features.UnitOfWork;
 using Application.Features.Users.DTOs;
 using Application.Features.Users.Interfaces;
@@ -21,14 +22,19 @@ namespace Application.Features.Finances.Services
         private readonly IAccountRepository _accountRepository;
         private readonly IIncomeTaxRepository _incomeTaxRepository;
         private readonly ICategoryParamRepository _categoryParamRepository;
+        private readonly IExchangeRateRepository _ExchangeRateRepository;
+        private readonly ICurrencyRepository _currencyRepository;
         private readonly IUnitOfWork _unitOfWork;
+
+
+        private BalanceService balanceService;
 
         /// <summary>
         /// inyecta servicios de transacciones
         /// </summary>
         /// <param name="transactionRepository"></param>
         public TransactionService(ITransactionRepository transactionRepository, IUserRepository userRepository, ITransactionTypeRepository transactionTypeRepository,
-            ICategoryRepository categoryRepository, IAccountRepository accountRepository, IIncomeTaxRepository taxRepository, ICategoryParamRepository categoryParamRepository, IUnitOfWork unitOfWork)
+            ICategoryRepository categoryRepository, IAccountRepository accountRepository, IIncomeTaxRepository taxRepository, ICategoryParamRepository categoryParamRepository, IExchangeRateRepository exchanged, ICurrencyRepository currencyRepository , IUnitOfWork unitOfWork)
         {
             _transactionRepository = transactionRepository;
             _userRepository = userRepository;
@@ -37,7 +43,12 @@ namespace Application.Features.Finances.Services
             _accountRepository = accountRepository;
             _incomeTaxRepository = taxRepository;
             _categoryParamRepository = categoryParamRepository;
+            _ExchangeRateRepository = exchanged;
+            _currencyRepository = currencyRepository;
             _unitOfWork = unitOfWork;
+
+
+            balanceService = new BalanceService(_transactionRepository, _userRepository, _accountRepository, _unitOfWork);
         }
 
 
@@ -87,7 +98,8 @@ namespace Application.Features.Finances.Services
                         transaction.Amount,
                         transaction.Amount,
                         reference,
-                        null
+                        null,
+                        transaction.dateTransaction
                 );
 
                 //guardar la transacción en el repositorio para iniciar el proceso
@@ -226,6 +238,42 @@ namespace Application.Features.Finances.Services
                     if (transaction.FromAccountId == null)
                         throw new Exception("Cuenta origen es requerida.");
 
+
+                    var Monedas = await _currencyRepository.GetAllCurrenciesAsync();
+                    var cordoba = Monedas.FirstOrDefault(c => c.Symbol == "C$");
+                    var dolares = Monedas.FirstOrDefault(c => c.Symbol == "$");
+
+
+
+
+                    var currentExchage = await _ExchangeRateRepository.GetCurrentExchangeRateAsync(dolares.Id, cordoba.Id);
+                    if (currentExchage == null)
+                        throw new ArgumentException($"No existe tasa de cambio actual.");
+
+
+                    var affectedAccountToObject = await _accountRepository.GetAccountByIdAsync(transaction.ToAccountId.Value);
+                    var affectedAccountFromObject = await _accountRepository.GetAccountByIdAsync(transaction.FromAccountId.Value);
+
+
+                    decimal amountFrom = transaction.Amount;
+                    decimal amountTo = transaction.Amount;
+
+                    if (affectedAccountFromObject.Currency.Symbol != affectedAccountToObject.Currency.Symbol)
+                    {
+                        if (affectedAccountFromObject.Currency.Symbol == "$" && affectedAccountToObject.Currency.Symbol == "C$")
+                        {
+                            // USD -> NIO
+                            amountTo = Math.Round(amountFrom * currentExchage.Value, 2);
+                        }
+                        else if (affectedAccountFromObject.Currency.Symbol == "C$" && affectedAccountToObject.Currency.Symbol == "$")
+                        {
+                            // NIO -> USD
+                            amountTo = Math.Round(amountFrom / currentExchage.Value, 2);
+                        }
+                    }
+
+
+
                     affectedAccountId = transaction.FromAccountId;
                     affectedAccountId2 = transaction.ToAccountId;
 
@@ -238,7 +286,7 @@ namespace Application.Features.Finances.Services
                         DateTime.UtcNow,
                         "OUT",
                         0,
-                        transaction.Amount,
+                        amountFrom,
                         0,
                         reference,
                         transferGroupId,
@@ -254,7 +302,7 @@ namespace Application.Features.Finances.Services
                         DateTime.UtcNow,
                         "IN",
                         0,
-                        transaction.Amount,
+                       amountTo,
                         0,
                         reference,
                         transferGroupId,
@@ -321,6 +369,9 @@ namespace Application.Features.Finances.Services
                 if (user == null)
                     throw new ArgumentException($"No se encontró ningún usuario con el ID {UserID}.");
 
+
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
 
                 var transaction = await _transactionRepository.GetTransactionsByUserIDAsync(UserID);
                 return transaction.Select(t => t == null ? null : new TransactionResponseDTO
@@ -389,6 +440,10 @@ namespace Application.Features.Finances.Services
                     throw new ArgumentException($"No se encontró ningún usuario con el ID {UserID}.");
 
 
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
+
+
                 //validar cuenta exista
                 var account = await _accountRepository.GetAccountByIdAsync(cuentaId);
 
@@ -429,6 +484,9 @@ namespace Application.Features.Finances.Services
                 //convierte a formato UTC ya que postgree maldito, solo reconoce UTC como si yo fuera militar
                 fechaInicio = DateTime.SpecifyKind(fechaInicio, DateTimeKind.Utc).ToUniversalTime();
                 fechaFin = DateTime.SpecifyKind(fechaFin, DateTimeKind.Utc).ToUniversalTime();
+
+
+
 
 
                 var transactions = await _transactionRepository.GetTransactionsByUserIDAndTimeAsync(UserID, cuentaId, fechaInicio, fechaFin);
@@ -474,9 +532,15 @@ namespace Application.Features.Finances.Services
                 if (user == null)
                     throw new ArgumentException($"No se encontró ningún usuario con el ID {UserID}.");
 
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
+
+
                 var account = await _accountRepository.GetAccountByIdAsync(AccountID);
                 if (account == null)
                     throw new ArgumentException($"No se encontró ninguna cuenta con el ID {AccountID}.");
+
+
 
 
                 var transaction = await _transactionRepository.GetBalanceByAccountIdAsync(UserID, AccountID);

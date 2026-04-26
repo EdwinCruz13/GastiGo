@@ -55,7 +55,7 @@ namespace Infrastructure.Repositories.Finances
                .Include(t => t.TransactionType)
                .Include(c => c.Category).ThenInclude(n => n.Nature)
                .Include(a => a.Account).ThenInclude(c => c.Currency)
-               .OrderBy(o => o.TransactionDate).ThenBy(o => o.Category.Name)
+               .OrderBy(o => o.TransactionDate).ThenBy(o => o.CreatedAt)
                .ToListAsync();
         }
 

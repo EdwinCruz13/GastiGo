@@ -34,6 +34,8 @@ namespace Application.Features.Finances.DTOs
         public Guid? CategoryId { get; set; } = default;
         public decimal Amount { get; set; }
 
+        public DateTime? dateTransaction { get; set; }
+
     }
 
     public class TransactionResponseDTO

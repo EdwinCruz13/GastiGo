@@ -2,6 +2,8 @@
 using Application.Features.Dashboard.Interfaces;
 using Application.Features.Finances.Interfaces;
 using Application.Features.Public.Interfaces;
+using Application.Features.Public.Services;
+using Application.Features.UnitOfWork;
 using Application.Features.Users.Interfaces;
 using Domain.Features.Finances.Entities;
 using Domain.Features.Users.Entities;
@@ -15,17 +17,25 @@ namespace Application.Features.Dashboard.Services
     {
         private readonly IDashboardRepository _dashboardRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IExchangeRateRepository _ExchangeRateRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DashboardService(IDashboardRepository dashboardRepository, IUserRepository userRepository, IExchangeRateRepository IExchangeRateRepository, IAccountRepository accountRepository, ICurrencyRepository currency)
+        private BalanceService balanceService;
+
+        public DashboardService(IDashboardRepository dashboardRepository, IUserRepository userRepository, ITransactionRepository transaction , IExchangeRateRepository IExchangeRateRepository, IAccountRepository accountRepository, ICurrencyRepository currency, IUnitOfWork unitOfWork)
         {
             _dashboardRepository = dashboardRepository;
             _userRepository = userRepository;
+            _transactionRepository = transaction;
             _ExchangeRateRepository = IExchangeRateRepository;
             _accountRepository = accountRepository;
             _currencyRepository = currency;
+            _unitOfWork = unitOfWork;
+
+            balanceService = new BalanceService(_transactionRepository, _userRepository, _accountRepository, _unitOfWork);
         }
 
 
@@ -38,8 +48,11 @@ namespace Application.Features.Dashboard.Services
         public async Task<DashboardYearDTO?> GetTIncomeAndExpenseByUserAndYearAsync(Guid UserID, Int32 yearId)
         {
 
+
             try
             {
+
+
                 var user = await _userRepository.GetUserByIdAsync(UserID);
                 if (user == null)
                     throw new ArgumentException($"No se encontró un usuario con el ID {UserID}.");
@@ -49,6 +62,10 @@ namespace Application.Features.Dashboard.Services
                 if (transactions == null || !transactions.Any())
                     throw new ArgumentException($"No se encontraron transacciones para el usuario con ID {UserID} en el año {yearId}.");
 
+
+
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
 
 
                 var Monedas = await _currencyRepository.GetAllCurrenciesAsync();
@@ -128,6 +145,8 @@ namespace Application.Features.Dashboard.Services
                 var accounts = await _accountRepository.GetAllAccountsByUserIDAsync(UserID);
                 var savingsAccount = accounts.FirstOrDefault(a => a.AccountType.Abbre == "TYPE-SAVS");
 
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
 
                 var Monedas = await _currencyRepository.GetAllCurrenciesAsync();
                 var cordoba = Monedas.FirstOrDefault(c => c.Symbol == "C$");
@@ -228,6 +247,20 @@ namespace Application.Features.Dashboard.Services
                     throw new ArgumentException($"No se encontraron transacciones en la cuenta de ahorro para el usuario con ID {UserID} en el año {yearId}.");
 
 
+
+                //recalcular
+                balanceService.RecalculateBalanceAsync(UserID).Wait();
+
+                var Monedas = await _currencyRepository.GetAllCurrenciesAsync();
+                var cordoba = Monedas.FirstOrDefault(c => c.Symbol == "C$");
+                var dolares = Monedas.FirstOrDefault(c => c.Symbol == "$");
+
+                var currentExchage = await _ExchangeRateRepository.GetCurrentExchangeRateAsync(dolares.Id, cordoba.Id);
+                if (currentExchage == null)
+                    throw new ArgumentException($"No existe tasa de cambio actual.");
+
+
+
                 // Crear una lista de meses del año (1-12)
                 var months = Enumerable.Range(1, 12);
 
@@ -252,8 +285,8 @@ namespace Application.Features.Dashboard.Services
                                Amount = cat
                                    .Where(t => t.TransactionDate.Month == m)
                                    .Sum(t => t.EntryType == "IN"
-                                       ? t.Amount
-                                       : -t.Amount)
+                                       ? t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount
+                                       : -(t.Account.Currency.Symbol == "$" ? t.Amount * currentExchage.Value : t.Amount))
                            }).ToList() ?? new List<MonthlyValueDTO>()
                        }).ToList() ?? new List<DashboardCategoryDTO>()
                }).ToList();

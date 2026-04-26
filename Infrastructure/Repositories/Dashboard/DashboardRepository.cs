@@ -26,6 +26,7 @@ namespace Infrastructure.Repositories.Dashboard
                 .Include(c => c.Category).ThenInclude(b => b.Nature)
                 .Include(a => a.Account).ThenInclude(d => d.Bank)
                 .Include(a => a.Account).ThenInclude(ac => ac.AccountType)
+                .OrderBy(o => o.EntryType).ThenBy(ac => ac.CreatedAt)
                 
                 .ToListAsync();
         }

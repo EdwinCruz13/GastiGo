@@ -19,7 +19,7 @@ import { BarChartComponent } from '@shared/components/chart/bar-chart/bar-chart.
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.css'],
-  imports: [ ModalComponent, FinancialTableComponent , LineChartComponent, BarChartComponent , CommonModule],
+  imports: [ModalComponent, FinancialTableComponent, LineChartComponent, BarChartComponent, CommonModule],
   standalone: true
 })
 export class DashboardPage implements OnInit {
@@ -33,13 +33,13 @@ export class DashboardPage implements OnInit {
   savings = signal<DashboardYear | null>(null);
   investments = signal<DashboardYear | null>(null);
 
-   // Variable para mostrar un mensaje de éxito después de guardar una categoría.
-   modalAlert = signal(false);
-   modalMessageText = signal("");
+  // Variable para mostrar un mensaje de éxito después de guardar una categoría.
+  modalAlert = signal(false);
+  modalMessageText = signal("");
 
-   MONTHS = MONTHS;
+  MONTHS = MONTHS;
 
-//#region "Gráficos"
+  //#region "Gráficos"
   // Variable computada para obtener los totales mensuales de ingresos, gastos y ahorros
   IncomeExpenseslineData = computed(() => {
 
@@ -76,6 +76,9 @@ export class DashboardPage implements OnInit {
   });
 
   // Variable computada para obtener los totales mensuales de gastos por categoría
+
+
+
   expensesBarData = computed(() => {
     const groups = this.incomeAndExpenses()?.groups ?? [];
     const expenses = groups.find(g => g.name === 'Expenses');
@@ -87,23 +90,35 @@ export class DashboardPage implements OnInit {
       };
     }
 
-    const labels = expenses.categories.map(c => c.name);
+    // 1. Construir lista con total por categoría
+    const topCategories = expenses.categories
+      .map(c => ({
+        name: c.name,
+        total: Math.abs(
+          c.values.reduce((acc, v) => acc + v.amount, 0)
+        )
+      }))
+      // 2. ordenar de mayor a menor
+      .sort((a, b) => b.total - a.total)
+      // 3. tomar solo top 10
+      .slice(0, 10);
 
-    const data = expenses.categories.map(c =>
-      Math.abs(c.values.reduce((acc, v) => acc + v.amount, 0))
-    );
+    const labels = topCategories.map(c => c.name);
+    const data = topCategories.map(c => c.total);
 
     return {
       labels,
       datasets: [
         {
-          label: 'Expenses',
+          label: 'Gastos por categoría',
           data,
           color: '#ef4444'
         }
       ]
     };
   });
+
+
 
   // Variable computada para obtener los totales mensuales netos (ingresos - gastos + ahorros)
   NetLineData = computed(() => {
@@ -148,7 +163,7 @@ export class DashboardPage implements OnInit {
   });
 
 
-//endregion
+  //endregion
 
 
 

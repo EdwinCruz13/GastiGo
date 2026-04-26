@@ -119,6 +119,7 @@ export class TransactionPage implements OnInit {
       this.transaccionesServicio.getBalance(this.userID(), this.selectedAccountId()!).subscribe(response => {
         if (response.success) {
           this.balance.set(response.data ?? null);
+          console.log('Balance cargado:', this.balance());
         } else {
           this.balance.set(null);
           this.modalMessageText.set('No se encontraron transacciones para este usuario.');
