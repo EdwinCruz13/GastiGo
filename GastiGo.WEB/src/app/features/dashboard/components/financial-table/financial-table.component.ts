@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, computed, signal } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, computed, signal } from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardYear } from '@core/models/dashboard/dashboard.model';
 
@@ -9,7 +10,7 @@ import { DashboardYear } from '@core/models/dashboard/dashboard.model';
   templateUrl: './financial-table.component.html',
   styleUrls: ['./financial-table.component.css']
 })
-export class FinancialTableComponent implements OnChanges {
+export class FinancialTableComponent implements OnChanges, AfterViewInit  {
 
   @Input({ required: true }) data!: DashboardYear | null;
   @Input() months: string[] = [];
@@ -17,8 +18,12 @@ export class FinancialTableComponent implements OnChanges {
   @Input() showNetFlow = true;
   @Input() showAccumulated = true;
 
+  @ViewChild('tableWrapper') tableWrapper!: ElementRef<HTMLDivElement>;
+
 
   dataSignal = signal<DashboardYear | null>(null);
+  currentMonthIndex = -1;
+
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -26,6 +31,15 @@ export class FinancialTableComponent implements OnChanges {
       this.dataSignal.set(this.data);
     }
   }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.scrollToCurrentMonth(), 100);
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToCurrentMonth();
+  }
+
 
   // =========================
   // COMPUTEDS INTERNOS
@@ -119,5 +133,21 @@ export class FinancialTableComponent implements OnChanges {
 
     return result;
   });
+
+  // permite mover el scroll horizontal para centrar el mes actual al cargar la tabla
+  scrollToCurrentMonth() {
+    const wrapper = this.tableWrapper.nativeElement;
+    this.currentMonthIndex = new Date().getMonth(); // 0 = Enero
+    const firstCell = wrapper.querySelector('th:nth-child(2)') as HTMLElement;
+    if (!firstCell) return;
+    const columnWidth = firstCell.offsetWidth;
+    // +1 porque la primera columna es "Summary"
+    const scrollPosition = columnWidth * (this.currentMonthIndex );
+
+    wrapper.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  }
 
 }

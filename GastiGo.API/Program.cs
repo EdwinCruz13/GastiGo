@@ -44,6 +44,10 @@ builder.Services.AddCors(options =>
         policy => policy
             .WithOrigins("http://localhost:54941")
             .WithOrigins("http://127.0.0.1:54941")
+            .WithOrigins(
+                "http://44.213.110.185",
+                "http://44.213.110.185:80"
+             )
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -56,11 +60,9 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseCors("Angular");
 app.UseMiddleware<ErrorHandlingMiddleware>();

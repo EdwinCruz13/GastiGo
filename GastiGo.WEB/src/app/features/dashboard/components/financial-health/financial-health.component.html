@@ -1,0 +1,51 @@
+<div class="financial-health">
+
+  <!-- Neto -->
+  <div class="health-card"
+       [ngClass]="data.neto >= 0 ? 'good' : 'danger'">
+
+    <span class="label">Ingresos - Gastos</span>
+    <span class="value">
+      {{ data.neto | number:'1.2-2' }}
+    </span>
+  </div>
+
+  <!-- Gastos -->
+  <div class="health-card"
+       [ngClass]="data.expenseStatus">
+
+    <span class="label">Gastos</span>
+    <span class="value">
+      {{ data.expenseRatio * 100 | number:'1.2-2' }}%
+    </span>
+  </div>
+
+  <!-- Ahorro -->
+  <div class="health-card"
+       [ngClass]="data.savingsStatus">
+
+    <span class="label">Ahorro MesActual vs MesAnterior</span>
+    <span class="value">
+      {{ data.savingsChange * 100 | number:'1.2-2' }}%
+    </span>
+  </div>
+
+</div>
+
+<!-- Mensaje -->
+<div class="health-message"
+     [ngClass]="data.expenseStatus">
+
+  <ng-container *ngIf="data.expenseStatus === 'danger'">
+    ⚠️ Estás gastando más del 70% de tus ingresos
+  </ng-container>
+
+  <ng-container *ngIf="data.expenseStatus === 'warning'">
+    ⚠️ Tus gastos están subiendo
+  </ng-container>
+
+  <ng-container *ngIf="data.expenseStatus === 'good'">
+    ✅ Buen control de gastos
+  </ng-container>
+
+</div>

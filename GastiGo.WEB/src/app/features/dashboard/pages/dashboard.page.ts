@@ -8,18 +8,21 @@ import { DashboardService } from '@core/services/dashboard/dashboard.service';
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { getCategoryTotal, getGroupTotal, MONTHS } from '@core/utils/month.helper';
-import { FinancialTableComponent } from '@shared/components/financial-table/financial-table.component/financial-table.component';
+import { FinancialTableComponent } from '@features/dashboard/components/financial-table/financial-table.component';
 import { LineChartComponent } from '@shared/components/chart/linechart/line-chart.component';
 import { BarChartComponent } from '@shared/components/chart/bar-chart/bar-chart.component';
+import { FinancialHealthComponent } from '../components/financial-health/financial-health.component';
 
 
 
+type ExpenseStatus = 'good' | 'warning' | 'danger';
+type SavingsStatus = 'good' | 'danger';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.css'],
-  imports: [ModalComponent, FinancialTableComponent, LineChartComponent, BarChartComponent, CommonModule],
+  imports: [CommonModule, ModalComponent, FinancialTableComponent, LineChartComponent, BarChartComponent, FinancialHealthComponent],
   standalone: true
 })
 export class DashboardPage implements OnInit {
@@ -36,6 +39,7 @@ export class DashboardPage implements OnInit {
   // Variable para mostrar un mensaje de éxito después de guardar una categoría.
   modalAlert = signal(false);
   modalMessageText = signal("");
+
 
   MONTHS = MONTHS;
 
@@ -161,6 +165,138 @@ export class DashboardPage implements OnInit {
       }
     ];
   });
+
+
+
+  // Variable computada para obtener el estado de salud financiera
+  totalIncome = computed(() => {
+    const groups = this.incomeAndExpenses()?.groups ?? [];
+    const income = groups.find(g => g.name === 'Income');
+
+    if (!income) return 0;
+
+    return income.categories.reduce((acc, c) =>
+      acc + c.values.reduce((a, v) => a + v.amount, 0)
+    , 0);
+  });
+
+  // Total de gastos es positivo para mostrar en la tarjeta, aunque internamente se guarde como negativo
+  totalExpenses = computed(() => {
+    const groups = this.incomeAndExpenses()?.groups ?? [];
+    const expenses = groups.find(g => g.name === 'Expenses');
+
+
+
+    if (!expenses) return 0;
+
+    return Math.abs(expenses.categories.reduce((acc, c) =>
+      acc + c.values.reduce((a, v) => a + v.amount, 0)
+    , 0));
+  });
+
+  // Total de ahorros
+  totalSavings = computed(() => {
+    //mes actual
+    const currentMonth = new Date().getMonth() + 1;
+
+    const groups = this.savings()?.groups ?? [];
+    const savings = groups.find(g => g.name === 'Savings')?.categories.reduce((acc, c) =>
+      acc + c.values.reduce((a, v) => {
+        if (v.month === currentMonth) {
+          a += v.amount;
+        }
+        return a;
+      }, 0)
+    , 0) ?? 0;
+
+    return savings;
+  });
+
+
+  totalSavingsNeto = computed(() => {
+    //mes actual
+    const currentMonth = new Date().getMonth() + 1;
+    const groups = this.savings()?.groups ?? [];
+
+    const savings = groups.find(g => g.name === 'Savings')?.categories.reduce((acc, c) =>
+      acc + c.values.reduce((a, v) => {
+        if (v.month === currentMonth) {
+          a += v.amount;
+        }
+        return a;
+      }, 0)
+    , 0) ?? 0;
+
+    return savings;
+  });
+
+
+  // Neto total (ingresos - gastos + ahorros)
+  prevSavings = computed(() => {
+    //mes actual
+    const currentMonth = new Date().getMonth() + 1;
+    //mes anterior
+    const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+
+    // ahorros del mes anterior
+    const groups = this.savings()?.groups ?? [];
+
+    //solo el monto del ahorro del mes anterior, no acumulado
+    const savings = groups.find(g => g.name === 'Savings')?.categories.reduce((acc, c) =>
+      acc + c.values.reduce((a, v) => {
+        if (v.month === prevMonth) {
+          a += v.amount;
+        }
+        return a;
+      }, 0)
+    , 0) ?? 0;
+
+    return savings;
+  });
+
+  // neto total (ingresos - gastos + ahorros)
+  neto = computed(() => {
+    //solo ingreso - gastos
+    return this.totalIncome()- this.totalExpenses();
+  });
+
+
+  financialHealth = computed(() => {
+    const income = this.totalIncome();
+    const expenses = this.totalExpenses();
+    const savings = this.totalSavings();
+    const prevSavings = this.prevSavings();
+
+    const expenseRatio = income > 0 ? expenses / income : 0;
+    const savingsChange = prevSavings > 0 ? (savings - prevSavings) / prevSavings : 0;
+
+    const expenseStatus: ExpenseStatus =
+      expenseRatio >= 0.7 ? 'danger' :
+      expenseRatio >= 0.5 ? 'warning' : 'good';
+
+    const savingsStatus: SavingsStatus =
+      savingsChange < 0 ? 'danger' : 'good';
+
+      console.log('Financial Health Computation:');
+      console.log('Income:', income);
+      console.log('Expenses:', expenses);
+      console.log('Savings:', savings);
+      console.log('Previous Savings:', prevSavings);
+      console.log('Expense Ratio:', expenseRatio);
+
+    return {
+      expenseRatio,
+      savingsChange,
+      expenseStatus,
+      savingsStatus
+    };
+  });
+
+  financialHealthData = computed(() => ({
+    ...this.financialHealth(),
+    neto: this.neto()
+  }));
+
 
 
   //endregion

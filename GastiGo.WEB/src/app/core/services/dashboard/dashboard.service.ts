@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { DashboardYear } from '@core/models/dashboard/dashboard.model';
 import { Observable } from 'rxjs';
 
-import { environment } from '@env/environment';
+import { environment } from 'src/environments/environment';
 import { ApiResponse } from '@core/models/common/api-response.model';
 
 /**

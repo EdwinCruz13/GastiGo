@@ -1,51 +1,65 @@
 <div class="container">
-  <div class="toolbar-options"></div>
-
-  <section class="dashboard-graph">
+  <div class="toolbar-options">
     <div class="graph-container">
-      <h2>Flujo Neto Mensual</h2>
-      <app-line-chart [labels]="MONTHS" [datasets]="IncomeExpenseslineData()"> </app-line-chart>
+      <h2>Resumen Financiero</h2>
+      <app-financial-health [data]="financialHealthData()"> </app-financial-health>
     </div>
+  </div>
 
-    <div class="graph-container">
-      <h2>Gastos y mas gastos</h2>
-      <app-bar-chart [labels]="expensesBarData().labels" [datasets]="expensesBarData().datasets">
-      </app-bar-chart>
+  <div class="dashboard-header">
+    <h1>Dashboard Financiero</h1>
+    <div class="dashboard-body">
+      <section class="dashboard-graph">
+        <div class="graph-container">
+          <h2>Flujo Neto Mensual</h2>
+          <app-line-chart [labels]="MONTHS" [datasets]="IncomeExpenseslineData()"> </app-line-chart>
+        </div>
+
+        <div class="graph-container">
+          <h2>Gastos y mas gastos</h2>
+          <app-bar-chart
+            [labels]="expensesBarData().labels"
+            [datasets]="expensesBarData().datasets"
+          >
+          </app-bar-chart>
+        </div>
+
+        <div class="graph-container">
+          <h2>Neto</h2>
+          <app-line-chart [labels]="MONTHS" [datasets]="NetLineData()"> </app-line-chart>
+        </div>
+      </section>
+
+      <!-- Tarjeta de salud financiera  -->
+      <section class="dashboard-section">
+        <h2>Ingresos y Gastos</h2>
+
+        <app-financial-table
+          [data]="incomeAndExpenses()"
+          [months]="MONTHS"
+          [showTotals]="true"
+          [showNetFlow]="false"
+          [showAccumulated]="false"
+        >
+        </app-financial-table>
+      </section>
+
+      <br />
+      <br />
+
+      <section class="dashboard-section">
+        <h2>Ahorros</h2>
+        <app-financial-table
+          [data]="savings()"
+          [months]="MONTHS"
+          [showTotals]="true"
+          [showNetFlow]="false"
+          [showAccumulated]="false"
+        >
+        </app-financial-table>
+      </section>
     </div>
-
-    <div class="graph-container">
-      <h2>Neto</h2>
-      <app-line-chart [labels]="MONTHS" [datasets]="NetLineData()"> </app-line-chart>
-    </div>
-  </section>
-
-  <section class="dashboard-section">
-    <h2>Ingresos y Gastos</h2>
-
-    <app-financial-table
-      [data]="incomeAndExpenses()"
-      [months]="MONTHS"
-      [showTotals]="true"
-      [showNetFlow]="false"
-      [showAccumulated]="false"
-    >
-    </app-financial-table>
-  </section>
-
-  <br />
-  <br />
-
-  <section class="dashboard-section">
-    <h2>Ahorros</h2>
-    <app-financial-table
-      [data]="savings()"
-      [months]="MONTHS"
-      [showTotals]="true"
-      [showNetFlow]="false"
-      [showAccumulated]="false"
-    >
-    </app-financial-table>
-  </section>
+  </div>
 </div>
 
 <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">

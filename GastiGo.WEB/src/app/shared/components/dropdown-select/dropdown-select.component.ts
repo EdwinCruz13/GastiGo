@@ -21,7 +21,10 @@ export class DropdownSelectComponent<T> implements OnChanges, OnInit {
   @Output() valueChange = new EventEmitter<any>();
 
   normalizedSelectedValue = '';
-  uniqueId = signal<string>(crypto.randomUUID());
+  // uniqueId = signal<string>(crypto.randomUUID());
+
+  uniqueId = signal<string>(this.createUUID());
+
 
   ngOnInit(): void {
     this.normalizedSelectedValue = this.toOptionValue(this.selectedValue);
@@ -46,5 +49,18 @@ export class DropdownSelectComponent<T> implements OnChanges, OnInit {
     }
 
     return String(value);
+  }
+
+  private createUUID(): string {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+
+    // fallback
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 }

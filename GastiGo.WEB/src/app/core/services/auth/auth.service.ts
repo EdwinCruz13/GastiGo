@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 
-import { environment } from '@env/environment';
+import { environment } from 'src/environments/environment';
 import { LoginRequest } from '@core/models/auth/login-request.model';
 import { LoginResponse } from '@core/models/auth/login-response.model';
 import { ApiResponse } from '@core/models/common/api-response.model';
@@ -62,7 +62,7 @@ export class AuthService {
     localStorage.removeItem("token");
   }
 
-  // inicializa el nombre del usuario y el ID del usuario a partir del 
+  // inicializa el nombre del usuario y el ID del usuario a partir del
   // token almacenado en el localstorage
   initUser(): void {
     const token = localStorage.getItem('token');

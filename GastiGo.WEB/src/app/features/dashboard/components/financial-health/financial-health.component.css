@@ -1,0 +1,125 @@
+.financial-health {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+
+/* ===== CARD BASE ===== */
+.health-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+
+  transition: all 0.2s ease;
+}
+
+.health-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft, 0 4px 14px rgba(0,0,0,0.08));
+}
+
+/* ===== TEXT ===== */
+.label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ===== STATUS BORDER (lado izquierdo elegante) ===== */
+.health-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 14px 0 0 14px;
+}
+
+/* ===== ESTADOS ===== */
+.health-card.good::before {
+  background: var(--btn-success-bg);
+}
+
+.health-card.warning::before {
+  background: #f59e0b;
+}
+
+.health-card.danger::before {
+  background: var(--btn-danger-bg);
+}
+
+/* ===== MENSAJE ===== */
+.health-message {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* estados mensaje */
+.health-message.good {
+  border-left: 4px solid var(--btn-success-bg);
+}
+
+.health-message.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.health-message.danger {
+  border-left: 4px solid var(--btn-danger-bg);
+}
+
+.health-message {
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .value {
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .health-card {
+    padding: 14px;
+  }
+
+  .health-message {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .financial-health {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .health-message {
+    order: -1;
+    margin-bottom: 10px;
+  }
+}

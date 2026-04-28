@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Category, CategoryRequestDTO } from '@core/models/finances/category.model';
 
-import { environment } from '@env/environment';
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '@core/models/common/api-response.model';
 import { Observable } from 'rxjs';

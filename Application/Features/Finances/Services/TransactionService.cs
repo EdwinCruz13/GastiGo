@@ -34,7 +34,7 @@ namespace Application.Features.Finances.Services
         /// </summary>
         /// <param name="transactionRepository"></param>
         public TransactionService(ITransactionRepository transactionRepository, IUserRepository userRepository, ITransactionTypeRepository transactionTypeRepository,
-            ICategoryRepository categoryRepository, IAccountRepository accountRepository, IIncomeTaxRepository taxRepository, ICategoryParamRepository categoryParamRepository, IExchangeRateRepository exchanged, ICurrencyRepository currencyRepository , IUnitOfWork unitOfWork)
+            ICategoryRepository categoryRepository, IAccountRepository accountRepository, IIncomeTaxRepository taxRepository, ICategoryParamRepository categoryParamRepository, IExchangeRateRepository exchanged, ICurrencyRepository currencyRepository, IUnitOfWork unitOfWork)
         {
             _transactionRepository = transactionRepository;
             _userRepository = userRepository;
@@ -129,6 +129,13 @@ namespace Application.Features.Finances.Services
                 Account? fromAccount = null;
                 Account? toAccount = null;
 
+                //convertir al formato correcto
+                var localDate = transaction.dateTransaction.Value.Date;
+                if (!transaction.dateTransaction.HasValue)
+                    transaction.dateTransaction = DateTime.UtcNow;
+                else
+                    transaction.dateTransaction = TimeZoneInfo.ConvertTimeToUtc(localDate, TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
+
                 var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
                 var transactionType = await _transactionTypeRepository.GetTransactionTypeByIdAsync(transaction.TransactionTypeId);
                 var category = transaction.CategoryId.HasValue
@@ -184,7 +191,7 @@ namespace Application.Features.Finances.Services
                         0,
                         reference,
                         transferGroupId,
-                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
+                        transaction.dateTransaction
                     );
 
                     // SI ES SALARIO, ENTONCES CREAR LAS PERCEPCIONES Y DEDUCCIONES CORRESPONDIENTES
@@ -193,7 +200,7 @@ namespace Application.Features.Finances.Services
                             transaction.UserId,
                             Convert.ToDouble(transaction.Amount),
                             transaction.ToAccountId.Value,
-                            !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
+                            transaction.dateTransaction
                         );
 
                     await _transactionRepository.AddAsync(transactionEntity);
@@ -223,7 +230,7 @@ namespace Application.Features.Finances.Services
                         0,
                         reference,
                         transferGroupId,
-                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
+                        transaction.dateTransaction
                     );
 
                     await _transactionRepository.AddAsync(transactionEntity);
@@ -290,7 +297,7 @@ namespace Application.Features.Finances.Services
                         0,
                         reference,
                         transferGroupId,
-                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
+                        transaction.dateTransaction
                     );
 
                     var transactionEntry = new Transaction(
@@ -306,7 +313,7 @@ namespace Application.Features.Finances.Services
                         0,
                         reference,
                         transferGroupId,
-                        !transaction.dateTransaction.HasValue ? DateTime.UtcNow : DateTime.SpecifyKind(Convert.ToDateTime(transaction.dateTransaction.Value), DateTimeKind.Utc).ToUniversalTime()
+                        transaction.dateTransaction
                     );
 
                     await _transactionRepository.AddAsync(transactionEntry);
@@ -495,7 +502,7 @@ namespace Application.Features.Finances.Services
                 return transactions.Select(t => t == null ? null : new BalanceDTO
                 {
                     Description = t.Description,
-                    TransactionDate = TimeZoneInfo.ConvertTimeFromUtc(t.TransactionDate,timezone).ToString("dd/MM/yyyy HH:mm:ss"),
+                    TransactionDate = TimeZoneInfo.ConvertTimeFromUtc(t.TransactionDate, timezone).ToString("dd/MM/yyyy HH:mm:ss"),
                     Reference = t.Reference,
                     EntryType = t.EntryType,
                     Balance = t.Balance,
@@ -644,7 +651,7 @@ namespace Application.Features.Finances.Services
             var transactionTypeByIncome = transactionType.Where(x => x.Code == "INC").FirstOrDefault();
             var transactionTypeByExpense = transactionType.Where(x => x.Code == "EXP").FirstOrDefault();
 
-            if(!fecha.HasValue)
+            if (!fecha.HasValue)
                 fecha = DateTime.UtcNow;
 
 

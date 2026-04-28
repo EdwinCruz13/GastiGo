@@ -1,0 +1,106 @@
+Instance ID
+i-011ecde2ba0241e74
+
+Public IPv4 address
+44.213.110.185        (username: ubuntu)
+
+Private IPv4 addresses
+172.31.2.79
+
+
+postgrees
+user: app-financial-user
+pass: app-f1n4nc14l-us3r
+
+
+
+
+//para publicar webapi a ec2 en la carpeta home/ubuntu/api
+dotnet clean
+dotnet publish -c Release
+pscp -i E:\GastiGo\config\finanzas-key.ppk -r .\bin\Release\net8.0\publish ubuntu@44.213.110.185:/home/ubuntu/api
+
+//luego de subir, ejecutar con localhost
+ASPNETCORE_URLS=http://0.0.0.0:5000 dotnet GastiGo.API.dll 
+
+
+//subir angular
+pscp -i E:\GastiGo\config\finanzas-key.ppk -r .\dist\GastiGo.WEB\* ubuntu@44.213.110.185:/var/www/html/
+
+
+//exportar bd
+\q
+pg_dump -U postgres -d GastiGoBD > GastiGoBD.backup.sql
+buscar el archivo en C:\Users\edwin.cruz\AppData\Local\Programs\pgAdmin 4\runtime
+
+//subir la bd
+pscp -i E:\GastiGo\config\finanzas-key.ppk E:\GastiGo\config\GastiGoBD.backup.sql ubuntu@44.213.110.185:/home/ubuntu/
+
+//restaurar en aws
+sudo mv /home/ubuntu/GastiGoBD.backup.sql /tmp/
+sudo chmod 644 /tmp/GastiGoBD.backup.sql
+sudo -u postgres psql -d finanzas -f /tmp/GastiGoBD.backup.sql
+
+
+//crear usuario
+CREATE USER "GastiGoUser" WITH PASSWORD 'Synapse13';
+GRANT CONNECT ON DATABASE "GastiGoBD" TO "GastiGoUser";
+
+\c GastiGoBD
+
+GRANT USAGE ON SCHEMA public TO "GastiGoUser";
+GRANT USAGE ON SCHEMA auth TO "GastiGoUser";
+GRANT USAGE ON SCHEMA finances TO "GastiGoUser";
+GRANT USAGE ON SCHEMA users TO "GastiGoUser";
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA auth TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA finances TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA users TO "GastiGoUser";
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO "GastiGoUser";
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA auth TO "GastiGoUser";
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA finances TO "GastiGoUser";
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA users TO "GastiGoUser";
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "GastiGoUser";
+ALTER DEFAULT PRIVILEGES IN SCHEMA auth GRANT ALL ON TABLES TO "GastiGoUser";
+ALTER DEFAULT PRIVILEGES IN SCHEMA finances GRANT ALL ON TABLES TO "GastiGoUser";
+ALTER DEFAULT PRIVILEGES IN SCHEMA users GRANT ALL ON TABLES TO "GastiGoUser";
+
+ALTER ROLE "GastiGoUser" SET search_path TO public, auth, finances, users;
+
+
+
+
+//crear el servicio para la ejecución del frontend backednd y postgresql
+
+sudo nano /etc/systemd/system/gastigo-api.service
+
+pega esto en el archivo
+
+[Unit]
+Description=GastiGo API
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ubuntu/api
+ExecStart=/usr/bin/dotnet /home/ubuntu/api/GastiGo.API.dll
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=gastigo-api
+User=ubuntu
+Environment=ASPNETCORE_URLS=http://0.0.0.0:5000
+
+[Install]
+WantedBy=multi-user.target
+
+
+//activa el servicio
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+
+//inicia tu servicio
+sudo systemctl start gastigo-api

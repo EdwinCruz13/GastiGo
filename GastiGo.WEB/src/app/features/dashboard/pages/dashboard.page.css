@@ -62,17 +62,61 @@ thead th {
   color: #dc2626; /* rojo */
 }
 
-
 .dashboard-graph {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* PC: 3 columnas */
   gap: 20px;
-
 }
 
 .graph-container {
-  flex: 1;
+  min-width: 0;
   background: var(--card-bg);
   padding: 20px;
   border-radius: 8px;
+}
+
+.graph-container app-line-chart,
+.graph-container app-bar-chart {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+
+
+
+/* Tablet y celular. la gráfica se acomodan una debajo de la otra */
+@media (max-width: 1023px) {
+  .dashboard-graph {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+/* Celulares */
+@media (min-width: 480px) {
+
+}
+
+/* Tablets */
+@media (min-width: 768px) {
+}
+
+/* Laptops */
+@media (min-width: 1024px) {
+}
+
+/* Monitores grandes */
+@media (min-width: 1280px) {
+}
+
+/* Pantallas Full HD o mayores */
+@media (min-width: 1440px) {
+}
+
+/* 4K o ultra wide */
+@media (min-width: 1920px) {
+
 }

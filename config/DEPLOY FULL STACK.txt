@@ -1,0 +1,145 @@
+🚀 📘 DEPLOY FULL STACK (Angular + .NET + PostgreSQL en AWS)
+🧩 1. CREAR SERVIDOR (EC2)
+✔ Crear instancia Ubuntu
+AMI: Ubuntu 22.04
+Tipo: t2.micro (lab)
+Security Group:
+SSH (22)     → tu IP
+HTTP (80)    → 0.0.0.0/0
+Custom 5000  → 0.0.0.0/0 (temporal)
+🔐 2. CONEXIÓN SSH (PuTTY)
+login as: ubuntu
+🧩 3. PREPARAR SERVIDOR
+sudo apt update && sudo apt upgrade -y
+🌐 4. INSTALAR NGINX
+sudo apt install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+👉 probar:
+
+http://IP_PUBLICA
+🐘 5. INSTALAR POSTGRESQL
+sudo apt install postgresql postgresql-contrib -y
+Crear BD y usuario inicial
+sudo -u postgres psql
+CREATE DATABASE "GastiGoBD";
+\q
+💾 6. EXPORTAR BD (LOCAL)
+
+⚠️ fuera de psql
+
+pg_dump -U postgres -d GastiGoBD -f "C:\GastiGo\backup\GastiGoBD.sql"
+📤 7. SUBIR BACKUP A AWS
+pscp -i finanzas-key.ppk C:\GastiGo\backup\GastiGoBD.sql ubuntu@IP:/home/ubuntu/
+📥 8. IMPORTAR BD EN AWS
+sudo mv /home/ubuntu/GastiGoBD.sql /tmp/
+sudo chmod 644 /tmp/GastiGoBD.sql
+sudo -u postgres psql -d GastiGoBD -f /tmp/GastiGoBD.sql
+👤 9. CREAR USUARIO BD (PRO)
+sudo -u postgres psql
+CREATE USER "GastiGoUser" WITH PASSWORD '123456';
+
+GRANT CONNECT ON DATABASE "GastiGoBD" TO "GastiGoUser";
+
+\c GastiGoBD
+
+GRANT USAGE ON SCHEMA public, auth, finances, users TO "GastiGoUser";
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA auth TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA finances TO "GastiGoUser";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA users TO "GastiGoUser";
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public, auth, finances, users TO "GastiGoUser";
+
+ALTER ROLE "GastiGoUser" SET search_path TO public, auth, finances, users;
+
+
+
+⚙️ 10. INSTALAR .NET
+sudo apt install dotnet-sdk-8.0 -y
+📦 11. PUBLICAR API (LOCAL)
+dotnet clean
+dotnet publish -c Release
+📤 12. SUBIR API
+pscp -i finanzas-key.ppk -r .\publish\* ubuntu@IP:/home/ubuntu/api
+🚀 13. EJECUTAR API (PRUEBA)
+cd /home/ubuntu/api/publish
+ASPNETCORE_URLS=http://0.0.0.0:5000 dotnet GastiGo.API.dll
+
+👉 probar:
+
+http://IP:5000/swagger
+🔁 14. CONFIGURAR NGINX (PROXY)
+sudo nano /etc/nginx/sites-available/default
+server {
+    listen 80;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+sudo systemctl restart nginx
+
+
+🅰️ 15. BUILD ANGULAR
+ng build --configuration production
+📤 16. SUBIR ANGULAR
+pscp -i E:\GastiGo\config\finanzas-key.ppk -r .\dist\GastiGo.WEB\browser\* ubuntu@44.213.110.185:/var/www/html/
+⚠️ SI HAY 403
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
+🔄 17. REINICIAR NGINX
+sudo systemctl restart nginx
+🧠 18. CORREGIR PROXY (IMPORTANTE)
+proxy_pass http://localhost:5000;
+
+❌ NO usar / al final
+
+⚙️ 19. CONFIGURAR API (BD)
+"ConnectionStrings": {
+  "Default": "Host=localhost;Port=5432;Database=GastiGoBD;Username=GastiGoUser;Password=123456"
+}
+🔁 20. CREAR SERVICIO (SYSTEMD)
+sudo nano /etc/systemd/system/gastigo-api.service
+[Unit]
+Description=GastiGo API
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ubuntu/api/publish
+ExecStart=/usr/bin/dotnet /home/ubuntu/api/publish/GastiGo.API.dll
+Restart=always
+RestartSec=10
+User=ubuntu
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://0.0.0.0:5000
+
+[Install]
+WantedBy=multi-user.target
+sudo systemctl daemon-reload
+sudo systemctl start gastigo-api
+sudo systemctl enable gastigo-api
+🔍 LOGS
+journalctl -u gastigo-api -f
+🔐 21. SEGURIDAD FINAL
+
+👉 quitar puerto 5000 en AWS
+
+🎯 RESULTADO FINAL
+http://IP → Angular
+http://IP/api → API
+http://IP/api/swagger → Swagger
