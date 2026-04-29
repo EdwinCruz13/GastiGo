@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-table',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './table.component.html'
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.css'
 })
 export class TableComponent implements OnChanges, OnInit {
 

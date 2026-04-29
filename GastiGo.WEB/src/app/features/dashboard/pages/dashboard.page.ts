@@ -43,6 +43,13 @@ export class DashboardPage implements OnInit {
 
   MONTHS = MONTHS;
 
+  showIncomeTable = signal(false);
+
+
+  toggleIncomeTable(){
+    this.showIncomeTable.set(!this.showIncomeTable());
+  }
+
   //#region "Gráficos"
   // Variable computada para obtener los totales mensuales de ingresos, gastos y ahorros
   IncomeExpenseslineData = computed(() => {

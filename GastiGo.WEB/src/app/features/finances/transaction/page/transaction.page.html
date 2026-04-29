@@ -95,11 +95,15 @@
 
   <!--Modal de alerta-->
   <app-modal [open]="modalAlert()" (close)="modalAlert.set(false)">
-    <div modal-header>
-      <span>Mensaje</span>
+    <div modal-header class="modal-header-pro">
+
+      <div class="modal-title">
+         <span>Mensaje</span>
+      </div>
       <button (click)="modalAlert.set(false)" class="modal-close">
-        <i class="fa-solid fa-xmark"></i>
+          <i class="fa-solid fa-xmark"></i>
       </button>
+
     </div>
 
     <div modal-body>

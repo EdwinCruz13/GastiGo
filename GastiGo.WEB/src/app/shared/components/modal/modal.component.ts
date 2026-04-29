@@ -5,7 +5,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-modal',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './modal.component.html'
+  templateUrl: './modal.component.html',
+  styleUrl: './modal.component.css'
 })
 export class ModalComponent {
 

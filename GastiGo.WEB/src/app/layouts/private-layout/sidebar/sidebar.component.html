@@ -1,3 +1,8 @@
+<div
+  class="mobile-overlay"
+  [class.show]="layout.mobileMenuOpen()"
+  (click)="layout.closeMobileMenu()"
+></div>
 <aside class="sidebar" [class.collapsed]="layout.collapsed()" [class.mobile-open]="layout.mobileMenuOpen()">
     <div class="sidebar-top">
       <div class="brand">
@@ -26,6 +31,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           [title]="item.label"
+          (click)="layout.closeMobileMenu()"
         >
           <span class="menu-icon"><i [class]="item.icon" ></i></span>
           @if (!layout.collapsed()) {

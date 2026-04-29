@@ -5,7 +5,11 @@
   /* border: 1px solid var(--border-color-table); */
      border: 1px solid #b8bcc3;
   box-shadow: 0px 0px 2px #000;
+
+  overflow-x: auto;
 }
+
+
 
 /* TOOLBAR */
 .table-toolbar {
@@ -61,6 +65,7 @@
   padding: 12px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 /* FILAS */
@@ -179,3 +184,41 @@
 }
 
 
+@media (max-width: 768px) {
+
+  .custom-table th,
+  .custom-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .custom-table td {
+    max-width: 160px;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .table-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .custom-table .actions {
+    justify-content: center;
+  }
+
+  .custom-table .actions button {
+    padding: 5px 6px;
+  }
+
+}

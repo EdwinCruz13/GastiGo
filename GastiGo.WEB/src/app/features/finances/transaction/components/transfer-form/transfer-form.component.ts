@@ -7,7 +7,7 @@ import { TransactionRequestDTO } from '@core/models/finances/transaction.model';
 import { TransactionType } from '@core/models/finances/transactionType.model';
 import { AuthService } from '@core/services/auth/auth.service';
 import { AccountService } from '@core/services/finances/account.service';
-import { CategoryService } from '@core/services/finances/category.service';
+
 import { TransactionTypeService } from '@core/services/finances/transaction-type.service';
 import { TransactionService } from '@core/services/finances/transaction.service';
 import { DropdownSelectComponent } from '@shared/components/dropdown-select/dropdown-select.component';

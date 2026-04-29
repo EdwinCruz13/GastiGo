@@ -8,6 +8,7 @@ import { TreeNode } from '@core/models/common/tree-node.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tree-node.component.html',
+  styleUrl: './tree-node.component.css'
 })
 /**
  * Componente genérico para representar un nodo en un árbol. Recibe un nodo de tipo TreeNode<T> y emite eventos para agregar, editar o eliminar nodos.

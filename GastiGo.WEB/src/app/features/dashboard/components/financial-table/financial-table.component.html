@@ -35,7 +35,7 @@
 
             @for (val of cat?.values ?? []; track val.month) {
               <td [class.income]="val.amount > 0" [class.expense]="val.amount < 0">
-                {{ val.amount | number: '1.2-2' }}
+                <span class="category-amount">{{ val.amount | number: '1.2-2' }}</span>
               </td>
             }
 

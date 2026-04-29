@@ -25,7 +25,7 @@ import { State } from '@core/models/common/state.model';
     DropdownSelectComponent,
     ReactiveFormsModule
   ],
-  templateUrl: './category.page.html'
+  templateUrl: './category.page.html',
 })
 export class CategoryPage implements OnInit {
   /////////////////////////////////////////////////////////////////////////////////////////////////

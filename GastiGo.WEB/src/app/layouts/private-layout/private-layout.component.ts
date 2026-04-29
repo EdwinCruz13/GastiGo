@@ -28,4 +28,6 @@ export class PrivateLayoutComponent {
   theme = inject(ThemeService); // inyecta el servicio de tema
   layout = inject(LayoutService); // inyecta el servicio de layout
 
+
+
 }

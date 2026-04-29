@@ -13,4 +13,6 @@ export class SidebarComponent {
   layout = inject(LayoutService); // inyecta el servicio de layout
   menu = inject(MenuService); // inyecta el servicio de menú
 
+
+
 }

@@ -30,9 +30,16 @@
         </div>
       </section>
 
+      <br />
+      <br />
+      <br />
+      <br />
+
       <!-- Tarjeta de salud financiera  -->
       <section class="dashboard-section">
-        <h2>Ingresos y Gastos</h2>
+        <div class="section-header" (click)="toggleIncomeTable()">
+          <h2>Ingresos y Gastos</h2>
+        </div>
 
         <app-financial-table
           [data]="incomeAndExpenses()"

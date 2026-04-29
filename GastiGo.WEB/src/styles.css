@@ -2,14 +2,11 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 @import './styles/theme.css';
-@import './styles/button.css';
-@import './styles/modal.css';
 @import './styles/form.css';
+@import './styles/button.css';
 @import './styles/dropdown.css';
-@import './styles/table.css';
-@import './styles/tree-node.css';
-@import './styles/card.css';
 @import './styles/datalist.css';
+
 
 
 
@@ -63,6 +60,10 @@ body {
   padding: 16px;
 }
 
+.options {
+  flex-direction: row;
+}
+
 .toolbar-options {
   display: flex;
   flex-direction: column;
@@ -72,6 +73,9 @@ body {
   margin-bottom: 16px;
 }
 
+.header-toolbar {
+  flex-direction: row;
+}
 
 .toolbar-options .wrapper {
   display: flex;
@@ -117,6 +121,7 @@ body {
 
 .toolbar-options  .wrapper-details {
   width: 100% ;
+   overflow-x: auto;
 }
 
 
@@ -138,6 +143,71 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .toolbar-options .wrapper .header-toolbar {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .toolbar-options .wrapper .header-toolbar app-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .toolbar-options .wrapper .filter-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-options .wrapper .filter-toolbar .filter {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toolbar-options .wrapper .filter-toolbar .filter .form-group {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .toolbar-options .wrapper .filter-toolbar .options {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toolbar-options .wrapper .filter-toolbar .options .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .form-group {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .toolbar-options {
+    gap: 12px;
+  }
+
+  .toolbar-options .wrapper {
+    gap: 12px;
   }
 
 }

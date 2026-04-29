@@ -17,12 +17,17 @@
 </div>
 
 <app-modal [open]="modalFormOpen()" (close)="modalFormOpen.set(false)">
+
   <div modal-header>
-    <span>Nueva categoría</span>
+    <div class="modal-title">
+      <span class="title">Nueva categoría</span>
+    </div>
     <button (click)="modalFormOpen.set(false)" class="modal-close">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
+
+
 
   <div modal-body>
     <form id="categoryForm" class="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">

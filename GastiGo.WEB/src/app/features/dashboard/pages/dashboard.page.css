@@ -73,15 +73,52 @@ thead th {
   background: var(--card-bg);
   padding: 20px;
   border-radius: 8px;
+  margin-bottom: 10px;
+
 }
 
-.graph-container app-line-chart,
-.graph-container app-bar-chart {
-  display: block;
-  width: 100%;
-  min-width: 0;
+@media (max-width: 1023px) {
+  .dashboard-graph {
+    grid-template-columns: 1fr; /* Tablet y celular: 1 columna */
+  }
+  .graph-container {
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .graph-container h2 {
+    font-size: 14px;
+  }
+  app-line-chart,
+  app-bar-chart {
+    height: 220px;
+  }
 }
+@media (max-width: 768px) {
 
+  .graph-container {
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .graph-container h2 {
+    font-size: 14px;
+  }
+
+  app-line-chart,
+  app-bar-chart {
+    height: 220px;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .dashboard-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+}
 
 
 
@@ -93,30 +130,3 @@ thead th {
 }
 
 
-
-
-/* Celulares */
-@media (min-width: 480px) {
-
-}
-
-/* Tablets */
-@media (min-width: 768px) {
-}
-
-/* Laptops */
-@media (min-width: 1024px) {
-}
-
-/* Monitores grandes */
-@media (min-width: 1280px) {
-}
-
-/* Pantallas Full HD o mayores */
-@media (min-width: 1440px) {
-}
-
-/* 4K o ultra wide */
-@media (min-width: 1920px) {
-
-}
