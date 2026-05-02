@@ -15,6 +15,9 @@ yarn-error.log
 
 src/environments/environment*.ts
 
+appsettings.Development.json
+appsettings.Production.json
+
 # IDEs and editors
 .idea/
 .project
