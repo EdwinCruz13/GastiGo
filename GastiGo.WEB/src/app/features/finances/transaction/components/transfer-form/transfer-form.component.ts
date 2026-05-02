@@ -55,6 +55,7 @@ export class TransferFormComponent implements OnInit {
     fromAccountId: [null as string | null],
     toAccountId: [null as string | null],
     amount: [0, [Validators.required, Validators.nullValidator, Validators.min(0.01)]],
+    dateTransaction: [new Date(), [Validators.required, Validators.nullValidator]],
     entryType: [this.EntryType]
   });
 
@@ -111,7 +112,8 @@ export class TransferFormComponent implements OnInit {
     this.transactionForm.patchValue({
       fromAccountId: accountId ?? null,
       transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
-      userId: this.AuthServicio.userId()
+      userId: this.AuthServicio.userId(),
+      dateTransaction: new Date()
     });
   }
 
@@ -119,7 +121,8 @@ export class TransferFormComponent implements OnInit {
     this.transactionForm.patchValue({
       toAccountId: accountId ?? null,
       transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
-      userId: this.AuthServicio.userId()
+      userId: this.AuthServicio.userId(),
+      dateTransaction: new Date()
     });
   }
 
