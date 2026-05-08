@@ -42,12 +42,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("Angular",
         policy => policy
-            .WithOrigins("http://localhost:54941")
-            .WithOrigins("http://127.0.0.1:54941")
             .WithOrigins(
-                "http://44.213.110.185",
-                "http://44.213.110.185:80"
-             )
+                "http://localhost:54941",
+                "http://127.0.0.1:54941",
+                "https://gastigo.com",
+                "https://www.gastigo.com"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -66,6 +66,7 @@ var app = builder.Build();
 
 app.UseCors("Angular");
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

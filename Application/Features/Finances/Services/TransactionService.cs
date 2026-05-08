@@ -130,11 +130,42 @@ namespace Application.Features.Finances.Services
                 Account? toAccount = null;
 
                 //convertir al formato correcto
-                var localDate = transaction.dateTransaction.Value.Date;
+                //var localDate = transaction.dateTransaction.Value.Date;
+                //if (!transaction.dateTransaction.HasValue)
+                //    transaction.dateTransaction = DateTime.UtcNow;
+                //else
+                //    transaction.dateTransaction = TimeZoneInfo.ConvertTimeToUtc(localDate, TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
+
+                //convertir a formato UTC tomando en cuenta la zona horaria de Centro America
                 if (!transaction.dateTransaction.HasValue)
+                {
                     transaction.dateTransaction = DateTime.UtcNow;
+                }
                 else
-                    transaction.dateTransaction = TimeZoneInfo.ConvertTimeToUtc(localDate, TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
+                {
+                    var tz = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
+
+                    var nowLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
+
+                    var selectedDate = transaction.dateTransaction.Value;
+
+                    // Combinar fecha seleccionada + hora actual
+                    var combined = new DateTime(
+                        selectedDate.Year,
+                        selectedDate.Month,
+                        selectedDate.Day,
+                        nowLocal.Hour,
+                        nowLocal.Minute,
+                        nowLocal.Second
+                    );
+
+                    transaction.dateTransaction = TimeZoneInfo.ConvertTimeToUtc(combined, tz);
+                }
+
+
+
+
+
 
                 var user = await _userRepository.GetUserByIdAsync(transaction.UserId);
                 var transactionType = await _transactionTypeRepository.GetTransactionTypeByIdAsync(transaction.TransactionTypeId);
