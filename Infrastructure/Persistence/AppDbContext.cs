@@ -263,6 +263,7 @@ namespace Infrastructure.Persistence
                 entity.Property(x => x.Name).IsRequired();
                 entity.Property(x => x.Description).HasMaxLength(150);
                 entity.Property(x => x.Balance).IsRequired();
+                entity.Property(x => x.State);
             });
 
 

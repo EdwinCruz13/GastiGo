@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories.Finances
 
         public async Task<IEnumerable<Account?>> GetAllAccountsByUserIDAsync(Guid UserID)
         {
-            return await _context.Accounts.Where(a => a.UserId == UserID).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currency).ToListAsync();
+            return await _context.Accounts.Where(a => a.UserId == UserID && a.State == true).Include(u => u.User).Include(t => t.AccountType).Include(b => b.Bank).Include(c => c.Currency).ToListAsync();
         }
 
         public async Task UpdateAsync(Account account)

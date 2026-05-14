@@ -25,6 +25,7 @@ namespace Domain.Features.Finances.Entities
         public Double Balance { get; private set; }
 
         public DateTime InitialBalanceDate { get; private set; }
+        public Boolean State { get; set; }
 
         private Account() { } // EF
 
@@ -37,6 +38,7 @@ namespace Domain.Features.Finances.Entities
             Name = name;
             Description = description;
             Balance = balance;
+            State = true;
         }
 
         /// <summary>
