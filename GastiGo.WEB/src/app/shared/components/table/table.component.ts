@@ -24,7 +24,7 @@ export class TableComponent implements OnChanges, OnInit {
   searchTerm: string = '';
 
   // paginación
-  pageSize: number = 25;
+  pageSize: number = 35;
   currentPage: number = 1;
 
   filteredData: any[] = [];

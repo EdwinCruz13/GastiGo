@@ -143,23 +143,22 @@ namespace Application.Features.Finances.Services
                 }
                 else
                 {
-                    var tz = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
-
-                    var nowLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
-
-                    var selectedDate = transaction.dateTransaction.Value;
-
-                    // Combinar fecha seleccionada + hora actual
-                    var combined = new DateTime(
-                        selectedDate.Year,
-                        selectedDate.Month,
-                        selectedDate.Day,
-                        nowLocal.Hour,
-                        nowLocal.Minute,
-                        nowLocal.Second
+                    var tz = TimeZoneInfo.FindSystemTimeZoneById(
+                        "Central America Standard Time"
                     );
 
-                    transaction.dateTransaction = TimeZoneInfo.ConvertTimeToUtc(combined, tz);
+                    var selectedDateTime = transaction.dateTransaction.Value;
+
+                    // datetime-local llega sin zona horaria.
+                    // Indicamos explícitamente que representa una hora local.
+                    selectedDateTime = DateTime.SpecifyKind(
+                        selectedDateTime,
+                        DateTimeKind.Unspecified
+                    );
+
+                    // Convertir hora local de Nicaragua/Centroamérica a UTC
+                    transaction.dateTransaction =
+                        TimeZoneInfo.ConvertTimeToUtc(selectedDateTime, tz);
                 }
 
 

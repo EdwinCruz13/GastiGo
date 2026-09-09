@@ -12,11 +12,12 @@ import { TransactionTypeService } from '@core/services/finances/transaction-type
 import { TransactionService } from '@core/services/finances/transaction.service';
 import { DropdownSelectComponent } from '@shared/components/dropdown-select/dropdown-select.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
+import { DateInputComponent } from '@shared/components/input-date/date-input.component';
 
 @Component({
   selector: 'app-entry-form',
   standalone: true,
-  imports: [CommonModule, ModalComponent, DropdownSelectComponent ,ReactiveFormsModule],
+  imports: [CommonModule, ModalComponent, DropdownSelectComponent ,ReactiveFormsModule, DateInputComponent],
   templateUrl: './entry-form.component.html'
 })
 export class EntryFormComponent implements OnInit {
@@ -55,7 +56,7 @@ export class EntryFormComponent implements OnInit {
     fromAccountId: [null as string | null],
     toAccountId: [null as string | null],
     amount: [0, [Validators.required, Validators.nullValidator, Validators.min(0.01)]],
-    dateTransaction: [new Date(), [Validators.required, Validators.nullValidator]],
+    dateTransaction: [new Date(), [Validators.required]],
     entryType: [this.EntryType]
   });
 
@@ -164,7 +165,7 @@ export class EntryFormComponent implements OnInit {
         toAccountId: this.EntryType === 'IN' ? accountId : null,
         transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
         userId: this.AuthServicio.userId(),
-        dateTransaction: new Date() // Establecer la fecha actual al seleccionar una cuenta
+        //dateTransaction: new Date() // Establecer la fecha actual al seleccionar una cuenta
       });
     }
 
@@ -174,7 +175,7 @@ export class EntryFormComponent implements OnInit {
         categoryId: categoryId,
         transactionTypeId: this.tipoTransactionSeleccionada().transactionTypeId ?? null,
         userId: this.AuthServicio.userId(),
-        dateTransaction: new Date() // Establecer la fecha actual al seleccionar una categoría
+        //dateTransaction: new Date() // Establecer la fecha actual al seleccionar una categoría
       });
     }
 

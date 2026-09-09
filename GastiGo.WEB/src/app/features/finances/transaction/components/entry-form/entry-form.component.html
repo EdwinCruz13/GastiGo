@@ -62,15 +62,24 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label"> Fecha </label>
+        <!-- <label class="form-label"> Fecha </label> -->
 
-        <input
+
+
+         <app-date-input
+          label="Fecha Transaccion"
+          formControlName="dateTransaction"
+          [includeTime]="true">
+        </app-date-input>
+
+
+        <!-- <input
           type="date"
           class="form-input"
           placeholder="Fecha"
           formControlName="dateTransaction"
           autocomplete="off"
-        />
+        /> -->
       </div>
     </form>
   </div>

@@ -1,76 +1,170 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  forwardRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 
 @Component({
   selector: 'app-date-input',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './date-input.component.html',
-  styleUrls: ['./date-input.component.css']
+  styleUrls: ['./date-input.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DateInputComponent),
+      multi: true
+    }
+  ]
 })
-export class DateInputComponent implements OnChanges {
+export class DateInputComponent implements ControlValueAccessor {
 
   @Input() label?: string;
-  @Input() value: Date | string | null = null;
+
   @Input() min?: string;
   @Input() max?: string;
 
+  @Input() includeTime: boolean = false;
+
+  // Para mantener compatibilidad con [value]
+  @Input()
+  set value(value: Date | string | null) {
+    this.internalValue = this.formatDate(value);
+  }
+
+  // Para mantener compatibilidad con (valueChange)
   @Output() valueChange = new EventEmitter<string>();
 
   internalValue: string | null = null;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['value']) {
-      this.internalValue = this.formatDate(this.value);
-    }
+  disabled = false;
+
+  private onChange: (value: string | null) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  // Reactive Forms
+  writeValue(value: Date | string | null): void {
+    this.internalValue = this.formatDate(value);
   }
 
-  // Emitir el valor formateado cuando el usuario cambie la fecha
-  onChange(value: string) {
+  registerOnChange(fn: (value: string | null) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  onValueChange(value: string): void {
+
     this.internalValue = value;
+
+    // Para formControlName
+    this.onChange(value);
+
+    // Para [value] + (valueChange)
     this.valueChange.emit(value);
   }
 
-  // Formatea la fecha a yyyy-MM-dd para el input
-  private formatDate(value: Date | string | null): string | null {
-    if (!value) return null;
+  onBlur(): void {
+    this.onTouched();
+  }
 
-    // Si ya viene como yyyy-MM-dd, devolverlo tal cual
-    if (typeof value === 'string') {
-      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        return value;
-      }
+  private formatDate(
+    value: Date | string | null
+  ): string | null {
 
-      const parsed = this.parseLocalDate(value);
-      return parsed ? this.toInputDateFormat(parsed) : null;
+    if (!value) {
+      return null;
     }
 
-    return this.toInputDateFormat(value);
+    if (value instanceof Date) {
+      return this.toInputFormat(value);
+    }
+
+    // yyyy-MM-dd
+    if (
+      !this.includeTime &&
+      /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      return value;
+    }
+
+    // yyyy-MM-ddTHH:mm:ss
+    if (
+      this.includeTime &&
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(value)
+    ) {
+      return value;
+    }
+
+    // Formato API / SQL
+    if (this.includeTime) {
+
+      const match = value.match(
+        /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/
+      );
+
+      if (match) {
+        return `${match[1]}T${match[2]}`;
+      }
+    }
+
+    const parsed = new Date(value);
+
+    if (isNaN(parsed.getTime())) {
+      return null;
+    }
+
+    return this.toInputFormat(parsed);
   }
 
-  // Parsear fechas en formato dd/MM/yyyy o dd-MM-yyyy
-  private parseLocalDate(value: string): Date | null {
-    const parts = value.split(/[\/-]/);
+  private toInputFormat(date: Date): string {
 
-    if (parts.length !== 3) return null;
-
-    // Para formato dd/MM/yyyy
-    const day = Number(parts[0]);
-    const month = Number(parts[1]);
-    const year = Number(parts[2]);
-
-    if (!day || !month || !year) return null;
-
-    return new Date(year, month - 1, day);
-  }
-
-  // Convertir una fecha a formato yyyy-MM-dd para el input
-  private toInputDateFormat(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
+    const month = String(
+      date.getMonth() + 1
+    ).padStart(2, '0');
+
+    const day = String(
+      date.getDate()
+    ).padStart(2, '0');
+
+    if (!this.includeTime) {
+      return `${year}-${month}-${day}`;
+    }
+
+    const hours = String(
+      date.getHours()
+    ).padStart(2, '0');
+
+    const minutes = String(
+      date.getMinutes()
+    ).padStart(2, '0');
+
+    const seconds = String(
+      date.getSeconds()
+    ).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 }

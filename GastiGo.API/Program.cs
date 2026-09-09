@@ -16,6 +16,7 @@ builder.Services
     .AddJwtAuthentication(builder.Configuration);
 
 
+
 builder.Services
 .AddControllers()
 .AddJsonOptions(options =>
@@ -55,7 +56,7 @@ builder.Services.AddCors(options =>
 
 
 // ================================
-// Construir la aplicación
+// Construir la aplicaciï¿½n
 // ================================
 var app = builder.Build();
 

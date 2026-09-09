@@ -4,7 +4,19 @@
   }
 
   <div class="date-wrapper">
-    <input type="date" class="date-input" [(ngModel)]="internalValue" (ngModelChange)="onChange($event)" />
+    <!-- <input type="date" class="date-input" [(ngModel)]="internalValue" (ngModelChange)="onChange($event)" /> -->
+
+    <input
+      [type]="includeTime ? 'datetime-local' : 'date'"
+      class="date-input"
+      [ngModel]="internalValue"
+      (ngModelChange)="onValueChange($event)"
+      (blur)="onBlur()"
+      [disabled]="disabled"
+      [min]="min"
+      [max]="max"
+      [step]="includeTime ? 1 : null"
+    />
 
     <i class="fa-solid fa-calendar calendar-icon"></i>
   </div>

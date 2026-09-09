@@ -167,10 +167,12 @@ export class TransactionPage implements OnInit {
   //abre el modal con el formulario para agregar una nueva transacción
   closeEntryForm() {
     this.showEntryForm.set(false);
+    this.showTransferForm.set(false);
   }
 
-  closeEntryFormByResult(result: boolean) {
+  closeEntryFormByResult() {
     this.showEntryForm.set(false);
+    this.showTransferForm.set(false);
     this.resetTransactions();
   }
 

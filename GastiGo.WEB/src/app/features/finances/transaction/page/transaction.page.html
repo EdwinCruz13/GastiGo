@@ -75,13 +75,13 @@
             <app-entry-form
               [EntryType]="tipoMov()"
               (close)="closeEntryForm()"
-              (result)="closeEntryFormByResult(false)"
+              (result)="closeEntryFormByResult()"
             >
             </app-entry-form>
           }
 
           @if (showTransferForm()) {
-            <app-transfer-form [EntryType]="'TRANSFER'" (close)="showTransferForm.set(false)">
+            <app-transfer-form [EntryType]="'TRANSFER'" (close)="closeEntryForm()" (result)="closeEntryFormByResult()">
             </app-transfer-form>
           }
         </div>
