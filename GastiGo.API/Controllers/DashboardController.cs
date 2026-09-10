@@ -66,7 +66,7 @@ namespace GastiGo.API.Controllers
                     Success = false,
                     Message = "No se encontraron transacciones para el usuario especificado",
                     Data = null,
-                    Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }
+                    Errors = new List<string> { $"No se encontraron transacciones para el usuario con ID {userId}." }  
                 });
             }
             return Ok(new ApiResponse<object>
